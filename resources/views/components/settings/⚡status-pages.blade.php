@@ -81,89 +81,78 @@ new #[Layout('layouts.app')] class extends Component
 ?>
 
 <div class="max-w-2xl">
-    <h1 class="mb-6 text-lg font-semibold">Ayarlar</h1>
+    <x-ui.page-header :title="__('app.settings_title')" :description="__('app.settings_description')" class="mb-6" />
     <x-settings.tabs />
 
     <div class="mb-4 flex justify-end">
         @unless ($creating)
-            <button wire:click="startCreate" class="rounded-md bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800">+ Yeni durum sayfası</button>
+            <x-ui.button variant="primary" wire:click="startCreate">
+                <x-phosphor-plus class="size-4" /> {{ __('app.status_pages_new') }}
+            </x-ui.button>
         @endunless
     </div>
 
     @if ($creating)
-        <form wire:submit="save" class="mb-6 rounded-lg border border-neutral-200 bg-white p-6">
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-neutral-700">Başlık</label>
-                    <input wire:model.live="title" type="text" class="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm">
-                    @error('title') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
+        <form wire:submit="save" class="mb-6">
+            <x-ui.card>
+                <div class="space-y-4">
+                    <x-ui.field :label="__('app.status_pages_title_field')" error="title">
+                        <x-ui.input wire:model.live="title" type="text" :invalid="$errors->has('title')" />
+                    </x-ui.field>
+                    <x-ui.field :label="__('app.status_pages_slug')" error="slug">
+                        <div class="flex items-center rounded-md border border-neutral-300 text-sm dark:border-neutral-700">
+                            <span class="px-3 text-neutral-500 dark:text-neutral-400">{{ url('/durum') }}/</span>
+                            <input wire:model="slug" type="text" class="w-full rounded-r-md bg-transparent px-1 py-2 text-neutral-900 focus:outline-none dark:text-neutral-100">
+                        </div>
+                    </x-ui.field>
+                    <x-ui.checkbox wire:model="show_history" :label="__('app.status_pages_show_history')" />
+                    <x-ui.field :label="__('app.status_pages_monitors')" :hint="__('app.status_pages_monitors_hint')">
+                        <div class="max-h-40 space-y-1 overflow-y-auto rounded-md border border-neutral-300 p-2 dark:border-neutral-700">
+                            @foreach ($monitors as $monitor)
+                                <x-ui.checkbox wire:model="monitor_ids" value="{{ $monitor->id }}" :label="$monitor->name" />
+                            @endforeach
+                        </div>
+                    </x-ui.field>
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-neutral-700">Adres</label>
-                    <div class="mt-1 flex items-center rounded-md border border-neutral-300 text-sm">
-                        <span class="px-3 text-neutral-500">{{ url('/durum') }}/</span>
-                        <input wire:model="slug" type="text" class="w-full rounded-r-md px-1 py-2">
-                    </div>
-                    @error('slug') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
+                <div class="mt-6 flex items-center gap-3">
+                    <x-ui.button type="submit" variant="primary">{{ __('app.status_pages_publish') }}</x-ui.button>
+                    <x-ui.button type="button" variant="ghost" wire:click="cancel">{{ __('app.cancel') }}</x-ui.button>
                 </div>
-                <div>
-                    <label class="flex items-center gap-2 text-sm text-neutral-700">
-                        <input wire:model="show_history" type="checkbox" class="rounded border-neutral-300"> Geçmiş kesintileri göster
-                    </label>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-neutral-700">Gösterilecek monitörler (opt-in — hiçbiri işaretlenmezse sayfa boş kalır)</label>
-                    <div class="mt-1 max-h-40 space-y-1 overflow-y-auto rounded-md border border-neutral-300 p-2">
-                        @foreach ($monitors as $monitor)
-                            <label class="flex items-center gap-2 text-sm">
-                                <input type="checkbox" wire:model="monitor_ids" value="{{ $monitor->id }}" class="rounded border-neutral-300">
-                                {{ $monitor->name }}
-                            </label>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
-            <div class="mt-6 flex items-center gap-3">
-                <button type="submit" class="rounded-md bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800">Yayınla</button>
-                <button type="button" wire:click="cancel" class="text-sm text-neutral-600">Vazgeç</button>
-            </div>
+            </x-ui.card>
         </form>
     @endif
 
-    <div class="overflow-hidden rounded-lg border border-neutral-200 bg-white">
-        <table class="w-full text-sm">
-            <thead class="border-b border-neutral-200 bg-neutral-50 text-left text-xs uppercase text-neutral-500">
-                <tr>
-                    <th class="px-4 py-2 font-medium">Başlık</th>
-                    <th class="px-4 py-2 font-medium">Monitör</th>
-                    <th class="px-4 py-2 font-medium">Durum</th>
-                    <th class="px-4 py-2 font-medium"></th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-neutral-100">
-                @forelse ($pages as $page)
-                    <tr wire:key="page-{{ $page->id }}">
-                        <td class="px-4 py-3">
-                            <div class="font-medium">{{ $page->title }}</div>
-                            <a href="{{ route('status-page.show', $page->slug) }}" target="_blank" class="text-xs text-neutral-500 hover:underline">/durum/{{ $page->slug }}</a>
-                        </td>
-                        <td class="px-4 py-3 text-neutral-600">{{ $page->monitors_count }}</td>
-                        <td class="px-4 py-3">
-                            <span class="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium {{ $page->enabled ? 'bg-emerald-100 text-emerald-700' : 'bg-neutral-100 text-neutral-500' }}">
-                                {{ $page->enabled ? 'Yayında' : 'Pasif' }}
-                            </span>
-                        </td>
-                        <td class="px-4 py-3 text-right text-xs">
-                            <button wire:click="toggleEnabled({{ $page->id }})" class="font-medium text-neutral-600 hover:text-neutral-900">
-                                {{ $page->enabled ? 'Yayından kaldır' : 'Yayınla' }}
-                            </button>
-                            <button wire:click="delete({{ $page->id }})" wire:confirm="Sil?" class="ml-3 font-medium text-red-600 hover:text-red-800">Sil</button>
-                        </td>
-                    </tr>
-                @empty
-                    <tr><td colspan="4" class="px-4 py-8 text-center text-neutral-500">Durum sayfası yok.</td></tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
+    <x-ui.table>
+        <x-slot:head>
+            <th>{{ __('app.status_pages_title_field') }}</th>
+            <th>{{ __('app.incidents_col_monitor') }}</th>
+            <th>{{ __('app.monitors_col_status') }}</th>
+            <th></th>
+        </x-slot:head>
+
+        @forelse ($pages as $page)
+            <tr wire:key="page-{{ $page->id }}">
+                <td>
+                    <div class="font-medium">{{ $page->title }}</div>
+                    <a href="{{ route('status-page.show', $page->slug) }}" target="_blank" class="text-xs text-neutral-500 hover:text-brand-700 hover:underline dark:text-neutral-400 dark:hover:text-brand-400">/durum/{{ $page->slug }}</a>
+                </td>
+                <td class="text-neutral-600 dark:text-neutral-400">{{ $page->monitors_count }}</td>
+                <td>
+                    <x-ui.badge :color="$page->enabled ? 'emerald' : 'neutral'">{{ $page->enabled ? __('app.status_pages_live') : __('app.channel_inactive') }}</x-ui.badge>
+                </td>
+                <td class="text-right text-xs">
+                    <button wire:click="toggleEnabled({{ $page->id }})" class="font-medium text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100">
+                        {{ $page->enabled ? __('app.status_pages_unpublish') : __('app.status_pages_publish') }}
+                    </button>
+                    <button wire:click="delete({{ $page->id }})" wire:confirm="{{ __('app.maintenance_delete_confirm') }}" class="ml-3 font-medium text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300">{{ __('app.delete') }}</button>
+                </td>
+            </tr>
+        @empty
+            <tr>
+                <td colspan="4">
+                    <x-ui.empty-state icon="globe" :title="__('app.status_pages_empty')" />
+                </td>
+            </tr>
+        @endforelse
+    </x-ui.table>
 </div>

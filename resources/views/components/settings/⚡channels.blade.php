@@ -31,21 +31,21 @@ new #[Layout('layouts.app')] class extends Component
         ChannelVerificationService::send($channel);
 
         $this->reset(['name', 'email']);
-        session()->flash('channels-status', 'Kanal oluşturuldu. Doğrulama bağlantısı gönderildi.');
+        session()->flash('channels-status', __('app.flash_channel_created'));
     }
 
     public function resendVerification(int $channelId): void
     {
         try {
             Throttle::hit('resend-channel-verify:'.request()->ip(), 3);
-        } catch (TooManyAttemptsException) {
-            session()->flash('channels-status', 'Çok fazla deneme. Lütfen biraz sonra tekrar deneyin.');
+        } catch (TooManyAttemptsException $e) {
+            session()->flash('channels-status', __('auth.too_many_attempts', ['seconds' => $e->availableInSeconds]));
 
             return;
         }
 
         ChannelVerificationService::send(AlertChannel::findOrFail($channelId));
-        session()->flash('channels-status', 'Doğrulama bağlantısı tekrar gönderildi.');
+        session()->flash('channels-status', __('app.flash_channel_verification_resent'));
     }
 
     public function toggleEnabled(int $channelId): void
@@ -58,15 +58,15 @@ new #[Layout('layouts.app')] class extends Component
     {
         try {
             Throttle::hit('test-email:'.request()->ip(), 5);
-        } catch (TooManyAttemptsException) {
-            session()->flash('channels-status', 'Çok fazla deneme. Lütfen biraz sonra tekrar deneyin.');
+        } catch (TooManyAttemptsException $e) {
+            session()->flash('channels-status', __('auth.too_many_attempts', ['seconds' => $e->availableInSeconds]));
 
             return;
         }
 
         $channel = AlertChannel::findOrFail($channelId);
         Mail::to($channel->config['email'])->send(new TestEmail($channel, Auth::user()->locale));
-        session()->flash('channels-status', 'Test e-postası gönderildi.');
+        session()->flash('channels-status', __('app.flash_test_email_sent'));
     }
 
     public function delete(int $channelId): void
@@ -82,74 +82,65 @@ new #[Layout('layouts.app')] class extends Component
 ?>
 
 <div class="max-w-2xl">
-    <h1 class="mb-6 text-lg font-semibold">Ayarlar</h1>
+    <x-ui.page-header :title="__('app.settings_title')" :description="__('app.settings_description')" class="mb-6" />
     <x-settings.tabs />
 
     @if (session('channels-status'))
-        <p class="mb-4 text-sm text-emerald-700">{{ session('channels-status') }}</p>
+        <x-ui.alert variant="success" class="mb-4">{{ session('channels-status') }}</x-ui.alert>
     @endif
 
-    <div class="mb-6 rounded-lg border border-neutral-200 bg-white p-6">
-        <h2 class="mb-4 text-sm font-semibold text-neutral-700">Yeni e-posta kanalı</h2>
+    <x-ui.card class="mb-6">
+        <h2 class="mb-4 text-sm font-semibold text-neutral-700 dark:text-neutral-300">{{ __('app.channels_new') }}</h2>
         <form wire:submit="create" class="flex items-end gap-3">
-            <div>
-                <label class="block text-sm font-medium text-neutral-700">Ad</label>
-                <input wire:model="name" type="text" placeholder="Ops ekibi" class="mt-1 w-40 rounded-md border border-neutral-300 px-3 py-2 text-sm">
-                @error('name') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
-            </div>
-            <div class="flex-1">
-                <label class="block text-sm font-medium text-neutral-700">E-posta</label>
-                <input wire:model="email" type="email" class="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm">
-                @error('email') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
-            </div>
-            <button type="submit" class="rounded-md bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800">Ekle</button>
+            <x-ui.field :label="__('app.field_name')" error="name" class="w-40 shrink-0">
+                <x-ui.input wire:model="name" type="text" placeholder="{{ __('app.channels_name_placeholder') }}" :invalid="$errors->has('name')" />
+            </x-ui.field>
+            <x-ui.field :label="__('auth.field_email')" error="email" class="flex-1">
+                <x-ui.input wire:model="email" type="email" :invalid="$errors->has('email')" />
+            </x-ui.field>
+            <x-ui.button type="submit" variant="primary">{{ __('app.add') }}</x-ui.button>
         </form>
-    </div>
+    </x-ui.card>
 
-    <div class="overflow-hidden rounded-lg border border-neutral-200 bg-white">
-        <table class="w-full text-sm">
-            <thead class="border-b border-neutral-200 bg-neutral-50 text-left text-xs uppercase text-neutral-500">
-                <tr>
-                    <th class="px-4 py-2 font-medium">Ad</th>
-                    <th class="px-4 py-2 font-medium">Durum</th>
-                    <th class="px-4 py-2 font-medium"></th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-neutral-100">
-                @forelse ($channels as $channel)
-                    <tr wire:key="channel-{{ $channel->id }}">
-                        <td class="px-4 py-3">
-                            <div class="font-medium">{{ $channel->name }}</div>
-                            <div class="text-xs text-neutral-500">{{ $channel->config['email'] ?? '' }}</div>
-                        </td>
-                        <td class="px-4 py-3">
-                            @if ($channel->isVerified())
-                                <span class="inline-flex items-center rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-700">Doğrulandı</span>
-                            @else
-                                <span class="inline-flex items-center rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700">Doğrulanmadı</span>
-                            @endif
-                            @unless ($channel->enabled)
-                                <span class="ml-1 inline-flex items-center rounded-full bg-neutral-100 px-2 py-0.5 text-xs font-medium text-neutral-500">Pasif</span>
-                            @endunless
-                        </td>
-                        <td class="px-4 py-3 text-right text-xs">
-                            <div class="flex justify-end gap-3">
-                                @unless ($channel->isVerified())
-                                    <button wire:click="resendVerification({{ $channel->id }})" class="font-medium text-neutral-600 hover:text-neutral-900">Tekrar gönder</button>
-                                @else
-                                    <button wire:click="sendTest({{ $channel->id }})" class="font-medium text-neutral-600 hover:text-neutral-900">Test gönder</button>
-                                @endunless
-                                <button wire:click="toggleEnabled({{ $channel->id }})" class="font-medium text-neutral-600 hover:text-neutral-900">
-                                    {{ $channel->enabled ? 'Pasifleştir' : 'Aktifleştir' }}
-                                </button>
-                                <button wire:click="delete({{ $channel->id }})" wire:confirm="Bu kanalı silmek istediğine emin misin?" class="font-medium text-red-600 hover:text-red-800">Sil</button>
-                            </div>
-                        </td>
-                    </tr>
-                @empty
-                    <tr><td colspan="3" class="px-4 py-8 text-center text-neutral-500">Henüz bildirim kanalı yok.</td></tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
+    <x-ui.table>
+        <x-slot:head>
+            <th>{{ __('app.field_name') }}</th>
+            <th>{{ __('app.monitors_col_status') }}</th>
+            <th></th>
+        </x-slot:head>
+
+        @forelse ($channels as $channel)
+            <tr wire:key="channel-{{ $channel->id }}">
+                <td>
+                    <div class="font-medium">{{ $channel->name }}</div>
+                    <div class="text-xs text-neutral-500 dark:text-neutral-400">{{ $channel->config['email'] ?? '' }}</div>
+                </td>
+                <td>
+                    <x-ui.badge :color="$channel->isVerified() ? 'emerald' : 'amber'">{{ $channel->isVerified() ? __('app.channel_verified') : __('app.channel_unverified') }}</x-ui.badge>
+                    @unless ($channel->enabled)
+                        <x-ui.badge color="neutral" class="ml-1">{{ __('app.channel_inactive') }}</x-ui.badge>
+                    @endunless
+                </td>
+                <td class="text-right text-xs">
+                    <div class="flex justify-end gap-3">
+                        @unless ($channel->isVerified())
+                            <button wire:click="resendVerification({{ $channel->id }})" class="font-medium text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100">{{ __('app.channel_resend') }}</button>
+                        @else
+                            <button wire:click="sendTest({{ $channel->id }})" class="font-medium text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100">{{ __('app.channel_send_test') }}</button>
+                        @endunless
+                        <button wire:click="toggleEnabled({{ $channel->id }})" class="font-medium text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100">
+                            {{ $channel->enabled ? __('app.channel_deactivate') : __('app.channel_activate') }}
+                        </button>
+                        <button wire:click="delete({{ $channel->id }})" wire:confirm="{{ __('app.channel_delete_confirm') }}" class="font-medium text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300">{{ __('app.delete') }}</button>
+                    </div>
+                </td>
+            </tr>
+        @empty
+            <tr>
+                <td colspan="3">
+                    <x-ui.empty-state icon="bell" :title="__('app.channels_empty')" />
+                </td>
+            </tr>
+        @endforelse
+    </x-ui.table>
 </div>

@@ -79,69 +79,66 @@ new #[Layout('layouts.app')] class extends Component
 ?>
 
 <div class="max-w-2xl">
-    <h1 class="mb-6 text-lg font-semibold">Ayarlar</h1>
+    <x-ui.page-header :title="__('app.settings_title')" :description="__('app.settings_description')" class="mb-6" />
     <x-settings.tabs />
 
     <div class="mb-4 flex justify-end">
         @if ($editingId === null)
-            <button wire:click="startCreate" class="rounded-md bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800">+ Yeni müşteri</button>
+            <x-ui.button variant="primary" wire:click="startCreate">
+                <x-phosphor-plus class="size-4" /> {{ __('app.clients_new') }}
+            </x-ui.button>
         @endif
     </div>
 
     @if ($editingId !== null)
-        <form wire:submit="save" class="mb-6 rounded-lg border border-neutral-200 bg-white p-6">
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-neutral-700">Ad</label>
-                    <input wire:model="name" type="text" class="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm">
-                    @error('name') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-neutral-700">Marka rengi</label>
-                        <input wire:model="brand_color" type="color" class="mt-1 h-10 w-full rounded-md border border-neutral-300">
+        <form wire:submit="save" class="mb-6">
+            <x-ui.card>
+                <div class="space-y-4">
+                    <x-ui.field :label="__('app.field_name')" error="name">
+                        <x-ui.input wire:model="name" type="text" :invalid="$errors->has('name')" />
+                    </x-ui.field>
+                    <div class="grid grid-cols-2 gap-4">
+                        <x-ui.field :label="__('app.clients_brand_color')">
+                            <input wire:model="brand_color" type="color" class="mt-1 h-10 w-full rounded-md border border-neutral-300 dark:border-neutral-700">
+                        </x-ui.field>
+                        <x-ui.field label="Logo URL">
+                            <x-ui.input wire:model="logo_url" type="text" />
+                        </x-ui.field>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-neutral-700">Logo URL</label>
-                        <input wire:model="logo_url" type="text" class="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm">
-                    </div>
+                    <x-ui.field :label="__('app.clients_contact_emails')" :hint="__('app.clients_contact_emails_hint')">
+                        <x-ui.input wire:model="contact_emails_raw" type="text" placeholder="ops@acme.com, alerts@acme.com" />
+                    </x-ui.field>
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-neutral-700">İletişim e-postaları (virgülle ayır)</label>
-                    <input wire:model="contact_emails_raw" type="text" placeholder="ops@acme.com, alerts@acme.com" class="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm">
-                    <p class="mt-1 text-xs text-neutral-500">Bu adresler için otomatik olarak doğrulanmış bildirim kanalları oluşturulur.</p>
+                <div class="mt-6 flex items-center gap-3">
+                    <x-ui.button type="submit" variant="primary">{{ __('app.save') }}</x-ui.button>
+                    <x-ui.button type="button" variant="ghost" wire:click="cancel">{{ __('app.cancel') }}</x-ui.button>
                 </div>
-            </div>
-            <div class="mt-6 flex items-center gap-3">
-                <button type="submit" class="rounded-md bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800">Kaydet</button>
-                <button type="button" wire:click="cancel" class="text-sm text-neutral-600">Vazgeç</button>
-            </div>
+            </x-ui.card>
         </form>
     @endif
 
-    <div class="overflow-hidden rounded-lg border border-neutral-200 bg-white">
-        <table class="w-full text-sm">
-            <thead class="border-b border-neutral-200 bg-neutral-50 text-left text-xs uppercase text-neutral-500">
-                <tr>
-                    <th class="px-4 py-2 font-medium">Ad</th>
-                    <th class="px-4 py-2 font-medium">Monitör sayısı</th>
-                    <th class="px-4 py-2 font-medium"></th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-neutral-100">
-                @forelse ($clients as $client)
-                    <tr wire:key="client-{{ $client->id }}">
-                        <td class="px-4 py-3 font-medium">{{ $client->name }}</td>
-                        <td class="px-4 py-3 text-neutral-600">{{ $client->monitors_count }}</td>
-                        <td class="px-4 py-3 text-right text-xs">
-                            <button wire:click="edit({{ $client->id }})" class="font-medium text-neutral-600 hover:text-neutral-900">Düzenle</button>
-                            <button wire:click="delete({{ $client->id }})" wire:confirm="Bu müşteriyi silmek istediğine emin misin?" class="ml-3 font-medium text-red-600 hover:text-red-800">Sil</button>
-                        </td>
-                    </tr>
-                @empty
-                    <tr><td colspan="3" class="px-4 py-8 text-center text-neutral-500">Henüz müşteri yok.</td></tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
+    <x-ui.table>
+        <x-slot:head>
+            <th>{{ __('app.field_name') }}</th>
+            <th>{{ __('app.clients_monitor_count') }}</th>
+            <th></th>
+        </x-slot:head>
+
+        @forelse ($clients as $client)
+            <tr wire:key="client-{{ $client->id }}">
+                <td class="font-medium">{{ $client->name }}</td>
+                <td class="text-neutral-600 dark:text-neutral-400">{{ $client->monitors_count }}</td>
+                <td class="text-right text-xs">
+                    <button wire:click="edit({{ $client->id }})" class="font-medium text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100">{{ __('app.edit') }}</button>
+                    <button wire:click="delete({{ $client->id }})" wire:confirm="{{ __('app.clients_delete_confirm') }}" class="ml-3 font-medium text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300">{{ __('app.delete') }}</button>
+                </td>
+            </tr>
+        @empty
+            <tr>
+                <td colspan="3">
+                    <x-ui.empty-state icon="buildings" :title="__('app.clients_empty')" />
+                </td>
+            </tr>
+        @endforelse
+    </x-ui.table>
 </div>
