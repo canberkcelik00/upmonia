@@ -168,6 +168,18 @@ new #[Layout('layouts.app')] class extends Component
         return [
             'clients' => Client::orderBy('name')->get(),
             'recentChecks' => $this->monitor->checkResults()->orderByDesc('ts')->limit(20)->get(),
+            // Trend charts read the 1m rollup table, not raw check_results: post segment-log
+            // compaction (CheckResultApplier), a stable monitor's raw checks collapse into one
+            // long-lived row, so the rollup table is what still has one data point per minute.
+            'chartChecks' => $this->monitor->rollups1m()
+                ->orderByDesc('bucket')
+                ->limit(90)
+                ->get()
+                ->map(fn ($r) => (object) [
+                    'ts' => $r->bucket,
+                    'ok' => $r->fail_n === 0,
+                    'latency_ms' => $r->max_ms,
+                ]),
             'channels' => \App\Models\AlertChannel::whereNull('client_id')->orderBy('name')->get(),
             'attachedChannelIds' => $this->monitor->alertChannels()->pluck('alert_channels.id')->all(),
         ];
@@ -175,117 +187,141 @@ new #[Layout('layouts.app')] class extends Component
 };
 ?>
 
-<div class="max-w-3xl">
-    <div class="mb-6 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-            <h1 class="text-lg font-semibold">{{ $monitor->name }}</h1>
+<div class="max-w-4xl">
+    <x-ui.page-header :back="route('monitors.index')" :back-label="__('app.monitors_title')" title="{{ $monitor->name }}">
+        <x-slot:titleMeta>
             <x-ui.status-pill :status="$monitor->state->status" />
             @if ($monitor->state->flapping)
-                <span class="inline-flex items-center rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-700">Flapping</span>
+                <x-ui.badge color="amber">{{ __('app.monitor_flapping') }}</x-ui.badge>
             @endif
-        </div>
-        <div class="flex items-center gap-2">
-            <button wire:click="checkNow" wire:loading.attr="disabled" class="rounded-md border border-neutral-300 px-3 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-50">
-                Şimdi kontrol et
-            </button>
-            <button wire:click="togglePause" class="rounded-md border border-neutral-300 px-3 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-50">
-                {{ $monitor->state->status === 'paused' ? 'Devam ettir' : 'Duraklat' }}
-            </button>
+        </x-slot:titleMeta>
+        <x-slot:actions>
+            <x-ui.button variant="secondary" size="sm" wire:click="checkNow" wire:loading.attr="disabled" wire:target="checkNow">
+                <x-phosphor-lightning wire:loading.remove wire:target="checkNow" class="size-4" />
+                <x-phosphor-spinner-gap wire:loading wire:target="checkNow" class="size-4 animate-spin" />
+                {{ __('app.monitor_check_now') }}
+            </x-ui.button>
+            <x-ui.button variant="secondary" size="sm" wire:click="togglePause" wire:loading.attr="disabled" wire:target="togglePause">
+                @if ($monitor->state->status === 'paused')
+                    <x-phosphor-play class="size-4" /> {{ __('app.monitors_resume') }}
+                @else
+                    <x-phosphor-pause class="size-4" /> {{ __('app.monitors_pause') }}
+                @endif
+            </x-ui.button>
             @unless ($editing)
-                <button wire:click="startEditing" class="rounded-md border border-neutral-300 px-3 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-50">
-                    Düzenle
-                </button>
+                <x-ui.button variant="secondary" size="sm" wire:click="startEditing">
+                    <x-phosphor-pencil class="size-4" />
+                    {{ __('app.edit') }}
+                </x-ui.button>
             @endunless
-            <button wire:click="delete" wire:confirm="Bu monitörü silmek istediğine emin misin? Bu işlem geri alınamaz." class="rounded-md border border-red-200 px-3 py-1.5 text-sm font-medium text-red-600 hover:bg-red-50">
-                Sil
-            </button>
-        </div>
-    </div>
+            <x-ui.button variant="danger" size="sm" wire:click="delete" wire:confirm="{{ __('app.monitor_delete_confirm') }}">
+                <x-phosphor-trash class="size-4" />
+                {{ __('app.delete') }}
+            </x-ui.button>
+        </x-slot:actions>
+    </x-ui.page-header>
 
     @if ($monitor->state->last_error_msg && $monitor->state->status !== 'up')
-        <div class="mb-6 rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">
-            <strong>{{ \App\Checks\ErrorClassifier::label($monitor->state->last_error_class) }}</strong>
-            <div class="mt-1 text-xs text-red-600">{{ $monitor->state->last_error_msg }}</div>
-        </div>
+        <x-ui.alert variant="error" class="mb-6">
+            <strong class="font-medium">{{ \App\Checks\ErrorClassifier::label($monitor->state->last_error_class) }}</strong>
+            <div class="mt-1 break-words text-xs opacity-80">{{ $monitor->state->last_error_msg }}</div>
+        </x-ui.alert>
     @endif
 
     @if ($editing)
-        <form wire:submit="save" class="mb-6 rounded-lg border border-neutral-200 bg-white p-6">
-            @include('components.monitors.form-fields')
+        <form wire:submit="save" class="mb-6">
+            <x-ui.card>
+                @include('components.monitors.form-fields')
 
-            <div class="mt-6 flex items-center gap-3">
-                <button type="submit" class="rounded-md bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800">Kaydet</button>
-                <button type="button" wire:click="cancelEditing" class="text-sm text-neutral-600">Vazgeç</button>
-            </div>
+                <div class="mt-6 flex items-center gap-3">
+                    <x-ui.button type="submit" variant="primary">{{ __('app.save') }}</x-ui.button>
+                    <x-ui.button type="button" variant="ghost" wire:click="cancelEditing">{{ __('app.cancel') }}</x-ui.button>
+                </div>
+            </x-ui.card>
         </form>
     @else
-        <div class="mb-6 grid grid-cols-2 gap-4 rounded-lg border border-neutral-200 bg-white p-6 text-sm sm:grid-cols-3">
-            <div><div class="text-neutral-500">Tür</div><div class="font-medium">{{ $monitor->type }}</div></div>
-            @if ($monitor->url)
-                <div class="col-span-2"><div class="text-neutral-500">URL</div><div class="font-medium break-all">{{ $monitor->url }}</div></div>
-            @endif
-            @if ($monitor->host)
-                <div><div class="text-neutral-500">Sunucu</div><div class="font-medium">{{ $monitor->host }}:{{ $monitor->port }}</div></div>
-            @endif
-            <div><div class="text-neutral-500">Kontrol aralığı</div><div class="font-medium">{{ $monitor->interval_s }}sn</div></div>
-            <div><div class="text-neutral-500">Son gecikme</div><div class="font-medium">{{ $monitor->state->last_latency_ms ? $monitor->state->last_latency_ms.' ms' : '—' }}</div></div>
-            @if ($monitor->type === 'heartbeat')
-                <div class="col-span-2"><div class="text-neutral-500">Heartbeat URL</div><div class="font-mono text-xs break-all">{{ route('heartbeat', $monitor->heartbeat_token) }}</div></div>
-            @endif
-            @if ($monitor->state->cert_expires_at)
-                <div><div class="text-neutral-500">Sertifika bitişi</div><div class="font-medium">{{ $monitor->state->cert_expires_at->format('Y-m-d') }}</div></div>
-            @endif
-        </div>
+        <x-ui.card class="mb-6">
+            <div class="grid grid-cols-2 gap-4 text-sm sm:grid-cols-3">
+                <div><div class="text-neutral-500 dark:text-neutral-400">{{ __('app.monitors_col_type') }}</div><div class="font-medium">{{ __('app.monitor_type_'.$monitor->type) }}</div></div>
+                @if ($monitor->url)
+                    <div class="col-span-2"><div class="text-neutral-500 dark:text-neutral-400">{{ __('app.field_url') }}</div><div class="font-medium break-all">{{ $monitor->url }}</div></div>
+                @endif
+                @if ($monitor->host)
+                    <div><div class="text-neutral-500 dark:text-neutral-400">{{ __('app.field_host') }}</div><div class="font-medium">{{ $monitor->host }}:{{ $monitor->port }}</div></div>
+                @endif
+                <div><div class="text-neutral-500 dark:text-neutral-400">{{ __('app.field_interval') }}</div><div class="font-medium">{{ $monitor->interval_s }}{{ __('app.unit_seconds_short') }}</div></div>
+                <div><div class="text-neutral-500 dark:text-neutral-400">{{ __('app.monitor_last_latency') }}</div><div class="font-mono font-medium">{{ $monitor->state->last_latency_ms ? $monitor->state->last_latency_ms.' ms' : '—' }}</div></div>
+                @if ($monitor->type === 'heartbeat')
+                    <div class="col-span-2"><div class="text-neutral-500 dark:text-neutral-400">{{ __('app.field_heartbeat_url') }}</div><div class="break-all font-mono text-xs">{{ route('heartbeat', $monitor->heartbeat_token) }}</div></div>
+                @endif
+                @if ($monitor->state->cert_expires_at)
+                    <div><div class="text-neutral-500 dark:text-neutral-400">{{ __('app.monitor_cert_expiry') }}</div><div class="font-medium">{{ $monitor->state->cert_expires_at->toDisplayDate() }}</div></div>
+                @endif
+            </div>
+        </x-ui.card>
     @endif
 
-    <h2 class="mb-3 text-sm font-semibold text-neutral-700">Bildirim kanalları</h2>
-    <div class="mb-6 rounded-lg border border-neutral-200 bg-white p-4">
+    @if ($chartChecks->isNotEmpty())
+        <x-ui.section-heading>{{ __('app.monitor_performance') }}</x-ui.section-heading>
+        <x-ui.card class="mb-6">
+            <div class="mb-4 flex items-center justify-between">
+                <span class="text-xs font-medium text-neutral-500 dark:text-neutral-400">{{ __('app.monitor_latency_trend') }}</span>
+            </div>
+            <x-ui.latency-chart :checks="$chartChecks" />
+            <div class="mt-5 flex items-center justify-between">
+                <span class="text-xs font-medium text-neutral-500 dark:text-neutral-400">{{ __('app.monitor_uptime_history') }}</span>
+            </div>
+            <x-ui.uptime-bar :checks="$chartChecks" class="mt-2" />
+        </x-ui.card>
+    @endif
+
+    <x-ui.section-heading>{{ __('app.monitor_channels') }}</x-ui.section-heading>
+    <x-ui.card class="mb-6">
         @if ($channels->isEmpty())
-            <p class="text-sm text-neutral-500">
-                Henüz bildirim kanalı yok. <a href="{{ route('settings.channels') }}" class="text-neutral-900 underline">Ayarlar'dan ekle</a>.
+            <p class="text-sm text-neutral-500 dark:text-neutral-400">
+                {{ __('app.monitor_channels_empty') }} <a href="{{ route('settings.channels') }}" wire:navigate class="font-medium text-brand-700 hover:underline dark:text-brand-400">{{ __('app.monitor_channels_empty_cta') }}</a>.
             </p>
         @else
             <div class="space-y-2">
                 @foreach ($channels as $channel)
-                    <label class="flex items-center gap-2 text-sm">
-                        <input type="checkbox" wire:click="toggleChannel({{ $channel->id }})" @checked(in_array($channel->id, $attachedChannelIds)) class="rounded border-neutral-300">
-                        {{ $channel->name }}
+                    <x-ui.checkbox wire:click="toggleChannel({{ $channel->id }})" :checked="in_array($channel->id, $attachedChannelIds)" :label="$channel->name">
                         @unless ($channel->isVerified())
-                            <span class="text-xs text-amber-600">(doğrulanmadı — bildirim gönderilmez)</span>
+                            <x-ui.badge color="amber">{{ __('app.channel_unverified') }}</x-ui.badge>
                         @endunless
-                    </label>
+                    </x-ui.checkbox>
                 @endforeach
             </div>
         @endif
-    </div>
+    </x-ui.card>
 
-    <h2 class="mb-3 text-sm font-semibold text-neutral-700">Son kontroller</h2>
-    <div class="overflow-hidden rounded-lg border border-neutral-200 bg-white">
-        <table class="w-full text-sm">
-            <thead class="border-b border-neutral-200 bg-neutral-50 text-left text-xs uppercase text-neutral-500">
-                <tr>
-                    <th class="px-4 py-2 font-medium">Zaman</th>
-                    <th class="px-4 py-2 font-medium">Sonuç</th>
-                    <th class="px-4 py-2 font-medium">Gecikme</th>
-                    <th class="px-4 py-2 font-medium">Detay</th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-neutral-100">
-                @forelse ($recentChecks as $check)
-                    <tr wire:key="check-{{ $check->id }}">
-                        <td class="px-4 py-2 text-neutral-600">{{ $check->ts->format('Y-m-d H:i:s') }}</td>
-                        <td class="px-4 py-2">
-                            <span class="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium {{ $check->ok ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700' }}">
-                                {{ $check->ok ? 'OK' : 'FAIL' }}
-                            </span>
-                        </td>
-                        <td class="px-4 py-2 text-neutral-600">{{ $check->latency_ms ? $check->latency_ms.' ms' : '—' }}</td>
-                        <td class="px-4 py-2 text-neutral-600">{{ $check->error_class ? \App\Checks\ErrorClassifier::label($check->error_class) : ($check->status_code ?? '—') }}</td>
-                    </tr>
-                @empty
-                    <tr><td colspan="4" class="px-4 py-6 text-center text-neutral-500">Henüz kontrol yapılmadı.</td></tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
+    <x-ui.section-heading>{{ __('app.monitor_recent_checks') }}</x-ui.section-heading>
+    <x-ui.table>
+        <x-slot:head>
+            <th>{{ __('app.monitor_col_time') }}</th>
+            <th>{{ __('app.monitor_col_result') }}</th>
+            <th>{{ __('app.monitors_col_latency') }}</th>
+            <th>{{ __('app.monitor_col_detail') }}</th>
+            <th>{{ __('app.monitor_col_seen') }}</th>
+            <th>{{ __('app.monitor_col_last_confirmed') }}</th>
+        </x-slot:head>
+
+        @forelse ($recentChecks as $check)
+            <tr wire:key="check-{{ $check->id }}">
+                <td class="font-mono text-xs text-neutral-600 dark:text-neutral-400">{{ $check->ts->toDisplay() }}</td>
+                <td>
+                    <x-ui.badge :color="$check->ok ? 'emerald' : 'red'">{{ $check->ok ? __('app.monitor_result_ok') : __('app.monitor_result_fail') }}</x-ui.badge>
+                </td>
+                <td class="font-mono text-xs text-neutral-600 dark:text-neutral-400">{{ $check->latency_ms ? $check->latency_ms.' ms' : '—' }}</td>
+                <td class="text-neutral-600 dark:text-neutral-400">{{ $check->error_class ? \App\Checks\ErrorClassifier::label($check->error_class) : ($check->status_code ?? '—') }}</td>
+                <td class="font-mono text-xs text-neutral-600 dark:text-neutral-400">{{ __('app.monitor_seen_nx', ['count' => $check->sample_count]) }}</td>
+                <td class="font-mono text-xs text-neutral-600 dark:text-neutral-400">{{ $check->updated_at->toDisplay() }}</td>
+            </tr>
+        @empty
+            <tr>
+                <td colspan="6">
+                    <x-ui.empty-state icon="clock-counter-clockwise" :title="__('app.monitor_no_checks')" />
+                </td>
+            </tr>
+        @endforelse
+    </x-ui.table>
 </div>

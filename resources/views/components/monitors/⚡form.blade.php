@@ -95,17 +95,18 @@ new #[Layout('layouts.app')] class extends Component
 ?>
 
 <div class="max-w-2xl">
-    <h1 class="mb-6 text-lg font-semibold">Yeni monitör</h1>
+    <x-ui.page-header :title="__('app.monitors_new')" />
 
-    <form wire:submit="save" class="rounded-lg border border-neutral-200 bg-white p-6">
-        @include('components.monitors.form-fields')
+    <form wire:submit="save">
+        <x-ui.card>
+            @include('components.monitors.form-fields')
 
-        <div class="mt-6 flex items-center gap-3">
-            <button type="submit" wire:loading.attr="disabled"
-                    class="rounded-md bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800 disabled:opacity-50">
-                Monitörü oluştur
-            </button>
-            <a href="{{ route('monitors.index') }}" class="text-sm text-neutral-600">Vazgeç</a>
-        </div>
+            <div class="mt-6 flex items-center gap-3">
+                <x-ui.button type="submit" variant="primary" wire:loading.attr="disabled">
+                    {{ __('app.monitor_create_submit') }}
+                </x-ui.button>
+                <x-ui.button variant="ghost" href="{{ route('monitors.index') }}" wire:navigate>{{ __('app.cancel') }}</x-ui.button>
+            </div>
+        </x-ui.card>
     </form>
 </div>
