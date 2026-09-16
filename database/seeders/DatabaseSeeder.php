@@ -2,7 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\Membership;
+use App\Models\Organization;
 use App\Models\User;
+use App\Services\SlugGenerator;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -17,9 +20,20 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
+        $user = User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
+        ]);
+
+        $organization = Organization::create([
+            'name' => 'Test Organization',
+            'slug' => SlugGenerator::uniqueOrganizationSlug('Test Organization'),
+        ]);
+
+        Membership::create([
+            'user_id' => $user->id,
+            'organization_id' => $organization->id,
+            'role' => 'owner',
         ]);
     }
 }
