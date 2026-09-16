@@ -46,6 +46,12 @@ class MaintenanceWindow extends Model
         return ! $this->monitors()->exists() || $this->monitors()->where('monitors.id', $monitor->id)->exists();
     }
 
+    /**
+     * Deliberate design decision, not an oversight: a maintenance window only suppresses
+     * outbound notifications (see CheckResultApplier's notify_pending logic). Checks still
+     * run and incidents are still opened/closed as normal during a window, so uptime history
+     * and rollups stay accurate — only the customer-facing alert noise is silenced.
+     */
     public static function suppressesNotificationsFor(Monitor $monitor): bool
     {
         return static::query()

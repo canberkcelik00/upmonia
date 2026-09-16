@@ -29,7 +29,12 @@ class HealthController extends Controller
             $dbOk = false;
         }
 
-        $lastCheckAt = $dbOk ? CheckResult::max('ts') : null;
+        // max('updated_at'), not max('ts'): check_results is a compacted segment log
+        // (CheckResultApplier) — ts stops advancing for a monitor that stays stable while
+        // updated_at keeps advancing every tick it's still actively checked. updated_at is
+        // always >= ts by construction, so it alone is a correct "is probing still landing
+        // data" signal.
+        $lastCheckAt = $dbOk ? CheckResult::max('updated_at') : null;
         $lastCheckAgeS = $lastCheckAt ? now()->diffInSeconds($lastCheckAt) : null;
 
         // Monitors run on their own interval_s (min 60s); anything over 5 minutes since the

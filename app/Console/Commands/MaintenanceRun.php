@@ -64,6 +64,17 @@ class MaintenanceRun extends Command
      * (cheaper, and check_results may already be pruned for older hours); 1m aggregates raw
      * check_results. All percentile math happens in PHP — MySQL has no PERCENTILE_CONT — which
      * is fine at the row volumes a single shared-hosting account handles.
+     *
+     * check_results is a compacted segment log (see CheckResultApplier): a row covers
+     * [ts, updated_at], not a single instant. The 1m branch below therefore selects rows that
+     * *overlap* [since, upTo) — updated_at >= since AND ts < upTo — rather than rows that
+     * started in the window, and walks every whole-minute bucket each row overlaps within that
+     * range. Since $since normally advances by ~1 minute every tick, a long-lived stable
+     * segment only ever contributes to the bucket(s) actually inside the current tick's narrow
+     * window, not its entire history; a segment can only span multiple buckets in one tick if
+     * this command itself was delayed. The segment's single retained latency_ms is reused for
+     * every bucket it contributes to (only the latest sample survives compaction) — a
+     * reasonable approximation, not a precise per-minute reading.
      */
     private function rollup(string $granularity, string $table, \Carbon\Carbon $upTo, ?string $fromRollup = null): void
     {
@@ -77,31 +88,51 @@ class MaintenanceRun extends Command
 
         $bucketFormat = $granularity === '1m' ? '%Y-%m-%d %H:%i:00' : '%Y-%m-%d %H:00:00';
 
-        $rows = $fromRollup
-            ? DB::table("check_rollups_{$fromRollup}")
+        $groups = [];
+
+        if ($fromRollup) {
+            $rows = DB::table("check_rollups_{$fromRollup}")
                 ->selectRaw("monitor_id, region, DATE_FORMAT(bucket, '{$bucketFormat}') as bucket_key, ok_n, fail_n, max_ms")
                 ->where('bucket', '>=', $since)->where('bucket', '<', $upTo)
-                ->get()
-            : DB::table('check_results')
-                ->selectRaw("monitor_id, region, DATE_FORMAT(ts, '{$bucketFormat}') as bucket_key, ok, latency_ms")
-                ->where('ts', '>=', $since)->where('ts', '<', $upTo)
                 ->get();
+            $rowCount = $rows->count();
 
-        $groups = [];
-        foreach ($rows as $row) {
-            $key = "{$row->monitor_id}|{$row->region}|{$row->bucket_key}";
-            $groups[$key] ??= ['monitor_id' => $row->monitor_id, 'region' => $row->region, 'bucket' => $row->bucket_key, 'ok_n' => 0, 'fail_n' => 0, 'latencies' => []];
+            foreach ($rows as $row) {
+                $key = "{$row->monitor_id}|{$row->region}|{$row->bucket_key}";
+                $groups[$key] ??= ['monitor_id' => $row->monitor_id, 'region' => $row->region, 'bucket' => $row->bucket_key, 'ok_n' => 0, 'fail_n' => 0, 'latencies' => []];
 
-            if ($fromRollup) {
                 $groups[$key]['ok_n'] += $row->ok_n;
                 $groups[$key]['fail_n'] += $row->fail_n;
                 if ($row->max_ms !== null) {
                     $groups[$key]['latencies'][] = $row->max_ms;
                 }
-            } else {
-                $row->ok ? $groups[$key]['ok_n']++ : $groups[$key]['fail_n']++;
-                if ($row->latency_ms !== null) {
-                    $groups[$key]['latencies'][] = (int) $row->latency_ms;
+            }
+        } else {
+            $rows = DB::table('check_results')
+                ->select('monitor_id', 'region', 'ts', 'updated_at', 'ok', 'latency_ms')
+                ->where('updated_at', '>=', $since)
+                ->where('ts', '<', $upTo)
+                ->get();
+            $rowCount = $rows->count();
+
+            $lastBucketFloor = $upTo->copy()->subSecond()->startOfMinute(); // upTo is exclusive
+
+            foreach ($rows as $row) {
+                $segStart = \Carbon\Carbon::parse($row->ts);
+                $segEnd = \Carbon\Carbon::parse($row->updated_at);
+
+                $rangeStart = ($segStart->gt($since) ? $segStart : $since)->copy()->startOfMinute();
+                $rangeEnd = $segEnd->lt($upTo) ? $segEnd->copy()->startOfMinute() : $lastBucketFloor;
+
+                for ($bucket = $rangeStart->copy(); $bucket->lte($rangeEnd); $bucket->addMinute()) {
+                    $bucketKey = $bucket->format('Y-m-d H:i:00');
+                    $key = "{$row->monitor_id}|{$row->region}|{$bucketKey}";
+                    $groups[$key] ??= ['monitor_id' => $row->monitor_id, 'region' => $row->region, 'bucket' => $bucketKey, 'ok_n' => 0, 'fail_n' => 0, 'latencies' => []];
+
+                    $row->ok ? $groups[$key]['ok_n']++ : $groups[$key]['fail_n']++;
+                    if ($row->latency_ms !== null) {
+                        $groups[$key]['latencies'][] = (int) $row->latency_ms;
+                    }
                 }
             }
         }
@@ -128,7 +159,7 @@ class MaintenanceRun extends Command
         }
 
         JobState::put($watermarkKey, $upTo->toDateTimeString());
-        $this->info(ucfirst($granularity)." rollup: {$rows->count()} row(s) -> ".count($groups).' bucket(s).');
+        $this->info(ucfirst($granularity)." rollup: {$rowCount} row(s) -> ".count($groups).' bucket(s).');
     }
 
     private function percentile(array $sorted, float $p): ?int

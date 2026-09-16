@@ -11,11 +11,17 @@ use App\Models\MonitorState;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Applies one CheckOutcome to a monitor: writes the raw check_results row, runs it through
- * IncidentStateMachine, opens/closes the incidents row, appends an incident_events audit
- * entry, and schedules the monitor's next check — all inside one transaction with a row
+ * Applies one CheckOutcome to a monitor: writes/updates the check_results segment row, runs
+ * it through IncidentStateMachine, opens/closes the incidents row, appends an incident_events
+ * audit entry, and schedules the monitor's next check — all inside one transaction with a row
  * lock on monitor_states, so two overlapping probe:run invocations (shouldn't happen given
  * the scheduler's withoutOverlapping(), but cheap insurance) can't race each other.
+ *
+ * check_results is a compacted segment log, not one row per check: a row is only inserted
+ * when the outcome (ok/error_class) actually changes; otherwise the existing row's latest
+ * sample and updated_at/sample_count are refreshed in place. This keeps the table from
+ * growing unboundedly for monitors that stay stable for long stretches. See
+ * MaintenanceRun::rollup() for how this is reconciled back into per-minute/hour data.
  */
 class CheckResultApplier
 {
@@ -27,22 +33,55 @@ class CheckResultApplier
             /** @var MonitorState $state */
             $state = MonitorState::where('monitor_id', $monitor->id)->lockForUpdate()->firstOrFail();
 
-            CheckResult::create([
-                'monitor_id' => $monitor->id,
-                'region' => $monitor->region,
-                'ts' => now(),
-                'ok' => $result->ok,
-                'status_code' => $result->statusCode,
-                'latency_ms' => $result->latencyMs,
-                'dns_ms' => $result->dnsMs,
-                'tcp_ms' => $result->tcpMs,
-                'tls_ms' => $result->tlsMs,
-                'ttfb_ms' => $result->ttfbMs,
-                'error_class' => $result->errorClass,
-                'error_msg' => $result->errorMsg,
-                'resolved_ip' => $result->resolvedIp,
-                'redirect_chain' => $result->redirectChain,
-            ]);
+            // Segment log: only insert a new check_results row when the outcome actually
+            // changes (ok/error_class). If the previous check landed the same outcome, refresh
+            // that row's latest sample in place instead of appending another near-identical
+            // row every tick — this is what keeps check_results from growing unboundedly for
+            // stable monitors. `orderByDesc('ts')->orderByDesc('id')` is satisfied by the
+            // existing (monitor_id, ts) index with no filesort; the id tiebreaker only matters
+            // if two segments for the same monitor share an identical `ts` to the second.
+            $latest = CheckResult::where('monitor_id', $monitor->id)
+                ->orderByDesc('ts')
+                ->orderByDesc('id')
+                ->first();
+
+            $sameOutcome = $latest
+                && $latest->ok === $result->ok
+                && $latest->error_class === $result->errorClass;
+
+            if ($sameOutcome) {
+                $latest->update([
+                    'latency_ms' => $result->latencyMs,
+                    'dns_ms' => $result->dnsMs,
+                    'tcp_ms' => $result->tcpMs,
+                    'tls_ms' => $result->tlsMs,
+                    'ttfb_ms' => $result->ttfbMs,
+                    'status_code' => $result->statusCode,
+                    'resolved_ip' => $result->resolvedIp,
+                    'redirect_chain' => $result->redirectChain,
+                    'sample_count' => $latest->sample_count + 1,
+                    'updated_at' => now(),
+                ]);
+            } else {
+                CheckResult::create([
+                    'monitor_id' => $monitor->id,
+                    'region' => $monitor->region,
+                    'ts' => now(),
+                    'ok' => $result->ok,
+                    'status_code' => $result->statusCode,
+                    'latency_ms' => $result->latencyMs,
+                    'dns_ms' => $result->dnsMs,
+                    'tcp_ms' => $result->tcpMs,
+                    'tls_ms' => $result->tlsMs,
+                    'ttfb_ms' => $result->ttfbMs,
+                    'error_class' => $result->errorClass,
+                    'error_msg' => $result->errorMsg,
+                    'resolved_ip' => $result->resolvedIp,
+                    'redirect_chain' => $result->redirectChain,
+                    'sample_count' => 1,
+                    'updated_at' => now(),
+                ]);
+            }
 
             $transition = $this->stateMachine->evaluate($state, $monitor, $result);
 

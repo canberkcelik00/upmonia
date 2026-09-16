@@ -12,14 +12,17 @@ class CheckResult extends Model
     protected $fillable = [
         'monitor_id', 'region', 'ts', 'ok', 'status_code', 'latency_ms', 'dns_ms', 'tcp_ms',
         'tls_ms', 'ttfb_ms', 'error_class', 'error_msg', 'resolved_ip', 'redirect_chain',
+        'sample_count', 'updated_at',
     ];
 
     protected function casts(): array
     {
         return [
             'ts' => 'datetime',
+            'updated_at' => 'datetime',
             'ok' => 'boolean',
             'redirect_chain' => 'array',
+            'sample_count' => 'integer',
         ];
     }
 
