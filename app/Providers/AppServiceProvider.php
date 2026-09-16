@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Carbon\Carbon;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
@@ -21,6 +22,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Single source of truth for user-facing date/time display (dd-mm-yyyy H:i).
+        Carbon::macro('toDisplay', fn () => $this->format('d-m-Y H:i'));
+        Carbon::macro('toDisplayDate', fn () => $this->format('d-m-Y'));
+
         // Dev fallback: without a Resend key, log outbound mail instead of letting the
         // Resend SDK throw on every send. In production a missing key is left alone on
         // purpose — sends then fail loudly (fail closed) instead of silently no-op'ing.

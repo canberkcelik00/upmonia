@@ -35,6 +35,18 @@ Route::get('/api/health/deep', [HealthController::class, 'deep'])->name('health.
 
 Route::get('/deploy', \App\Http\Controllers\DeployController::class)->name('deploy');
 
+Route::get('/dil/{locale}', function (string $locale) {
+    if (in_array($locale, \App\Http\Middleware\SetLocale::SUPPORTED, true)) {
+        session(['locale' => $locale]);
+
+        if (auth()->check()) {
+            auth()->user()->update(['locale' => $locale]);
+        }
+    }
+
+    return redirect()->back();
+})->name('locale.switch');
+
 Route::middleware('auth')->group(function () {
     Route::post('/logout', LogoutController::class)->name('logout');
 
