@@ -8,7 +8,7 @@
     </tr>
     <tr>
         <td style="padding:2px 12px 2px 0;color:#737373;">{{ __('mail.incident_triggered.started_at', [], $locale) }}</td>
-        <td>{{ $incident->started_at->timezone(config('app.timezone'))->format('Y-m-d H:i') }}</td>
+        <td>{{ $incident->started_at->toDisplay() }}</td>
     </tr>
 </table>
 
