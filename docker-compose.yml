@@ -18,5 +18,19 @@ services:
     volumes:
       - mysqldata:/var/lib/mysql
 
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: uptik-laravel-phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: uptik
+      PMA_PASSWORD: uptik
+    ports:
+      - "8081:80"
+    depends_on:
+      mysql:
+        condition: service_healthy
+
 volumes:
   mysqldata:
