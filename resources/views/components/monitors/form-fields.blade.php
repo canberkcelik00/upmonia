@@ -2,142 +2,121 @@
      @include, not a nested Livewire component, so wire:model binds to whichever parent
      component included it. Keeps the ~5-monitor-type conditional field set in one place. --}}
 <div class="space-y-4">
-    <div>
-        <label class="block text-sm font-medium text-neutral-700">Ad</label>
-        <input wire:model="name" type="text" class="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm">
-        @error('name') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
-    </div>
+    <x-ui.field :label="__('app.field_name')" error="name">
+        <x-ui.input wire:model="name" type="text" :invalid="$errors->has('name')" />
+    </x-ui.field>
 
-    <div>
-        <label class="block text-sm font-medium text-neutral-700">Müşteri (opsiyonel)</label>
-        <select wire:model="client_id" class="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm">
-            <option value="">— Yok —</option>
+    <x-ui.field :label="__('app.field_client')">
+        <x-ui.select wire:model="client_id">
+            <option value="">{{ __('app.field_client_none') }}</option>
             @foreach ($clients as $client)
                 <option value="{{ $client->id }}">{{ $client->name }}</option>
             @endforeach
-        </select>
-    </div>
+        </x-ui.select>
+    </x-ui.field>
 
-    <div>
-        <label class="block text-sm font-medium text-neutral-700">Tür</label>
-        <select wire:model.live="type" {{ $editing ?? false ? 'disabled' : '' }} class="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm disabled:bg-neutral-100">
-            <option value="http">HTTP</option>
-            <option value="keyword">Anahtar kelime (Keyword)</option>
-            <option value="ssl">SSL sertifikası</option>
-            <option value="tcp_port">TCP port</option>
-            <option value="heartbeat">Heartbeat</option>
-        </select>
-        @if($editing ?? false)
-            <p class="mt-1 text-xs text-neutral-500">Tür oluşturduktan sonra değiştirilemez.</p>
-        @endif
-    </div>
+    <x-ui.field :label="__('app.field_type')" :hint="($editing ?? false) ? __('app.field_type_locked_hint') : null">
+        <x-ui.select wire:model.live="type" :disabled="$editing ?? false">
+            <option value="http">{{ __('app.monitor_type_http') }}</option>
+            <option value="keyword">{{ __('app.monitor_type_keyword') }}</option>
+            <option value="ssl">{{ __('app.monitor_type_ssl') }}</option>
+            <option value="tcp_port">{{ __('app.monitor_type_tcp_port') }}</option>
+            <option value="heartbeat">{{ __('app.monitor_type_heartbeat') }}</option>
+        </x-ui.select>
+    </x-ui.field>
 
     @if (in_array($type, ['http', 'keyword', 'ssl']))
-        <div>
-            <label class="block text-sm font-medium text-neutral-700">URL</label>
-            <input wire:model="url" type="text" placeholder="https://example.com" class="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm">
-            @error('url') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
-        </div>
-    @endif
-
-    @if (in_array($type, ['http', 'keyword']))
-        <div class="grid grid-cols-2 gap-4">
-            <div>
-                <label class="block text-sm font-medium text-neutral-700">Yöntem</label>
-                <select wire:model="method" class="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm">
-                    @foreach (['GET','POST','PUT','PATCH','DELETE','HEAD'] as $m)
-                        <option value="{{ $m }}">{{ $m }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div>
-                <label class="block text-sm font-medium text-neutral-700">Beklenen durum kodları</label>
-                <input wire:model="expected_status_raw" type="text" placeholder="200, 201 (boş = 2xx/3xx)" class="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm">
-            </div>
-        </div>
-
-        <div>
-            <label class="block text-sm font-medium text-neutral-700">Özel başlıklar (her satıra bir tane: Anahtar: Değer)</label>
-            <textarea wire:model="headers_raw" rows="3" placeholder="Authorization: Bearer ..." class="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 font-mono text-xs"></textarea>
-        </div>
-
-        <div class="flex items-center gap-6">
-            <label class="flex items-center gap-2 text-sm text-neutral-700">
-                <input wire:model="follow_redirects" type="checkbox" class="rounded border-neutral-300"> Yönlendirmeleri takip et
-            </label>
-            <label class="flex items-center gap-2 text-sm text-neutral-700">
-                <input wire:model="verify_ssl" type="checkbox" class="rounded border-neutral-300"> SSL sertifikasını doğrula
-            </label>
-        </div>
+        <x-ui.field :label="__('app.field_url')" error="url">
+            <x-ui.input wire:model="url" type="text" placeholder="https://example.com" :invalid="$errors->has('url')" />
+        </x-ui.field>
     @endif
 
     @if ($type === 'keyword')
         <div class="grid grid-cols-2 gap-4">
-            <div>
-                <label class="block text-sm font-medium text-neutral-700">Anahtar kelime</label>
-                <input wire:model="keyword" type="text" class="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm">
-                @error('keyword') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
-            </div>
-            <div>
-                <label class="block text-sm font-medium text-neutral-700">Mod</label>
-                <select wire:model="keyword_mode" class="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm">
-                    <option value="present">Bulunmalı</option>
-                    <option value="absent">Bulunmamalı</option>
-                </select>
-            </div>
+            <x-ui.field :label="__('app.field_keyword')" error="keyword">
+                <x-ui.input wire:model="keyword" type="text" :invalid="$errors->has('keyword')" />
+            </x-ui.field>
+            <x-ui.field :label="__('app.field_keyword_mode')">
+                <x-ui.select wire:model="keyword_mode">
+                    <option value="present">{{ __('app.field_keyword_mode_present') }}</option>
+                    <option value="absent">{{ __('app.field_keyword_mode_absent') }}</option>
+                </x-ui.select>
+            </x-ui.field>
         </div>
     @endif
 
     @if ($type === 'ssl')
-        <div>
-            <label class="block text-sm font-medium text-neutral-700">Sertifika bitişine kaç gün kala uyar</label>
-            <input wire:model="ssl_warn_days" type="number" class="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm">
-        </div>
+        <x-ui.field :label="__('app.field_ssl_warn_days')">
+            <x-ui.input wire:model="ssl_warn_days" type="number" />
+        </x-ui.field>
     @endif
 
     @if ($type === 'tcp_port')
         <div class="grid grid-cols-2 gap-4">
-            <div>
-                <label class="block text-sm font-medium text-neutral-700">Sunucu (host)</label>
-                <input wire:model="host" type="text" class="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm">
-                @error('host') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
-            </div>
-            <div>
-                <label class="block text-sm font-medium text-neutral-700">Port</label>
-                <input wire:model="port" type="number" class="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm">
-                @error('port') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
-            </div>
+            <x-ui.field :label="__('app.field_host')" error="host">
+                <x-ui.input wire:model="host" type="text" :invalid="$errors->has('host')" />
+            </x-ui.field>
+            <x-ui.field :label="__('app.field_port')" error="port">
+                <x-ui.input wire:model="port" type="number" :invalid="$errors->has('port')" />
+            </x-ui.field>
         </div>
     @endif
 
     @if ($type === 'heartbeat')
-        <div>
-            <label class="block text-sm font-medium text-neutral-700">Grace süresi (saniye)</label>
-            <input wire:model="heartbeat_grace_s" type="number" class="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm">
-            <p class="mt-1 text-xs text-neutral-500">Bu süre içinde ping gelmezse monitör DOWN'a düşer.</p>
-        </div>
+        <x-ui.field :label="__('app.field_heartbeat_grace')" :hint="__('app.field_heartbeat_grace_hint')">
+            <x-ui.input wire:model="heartbeat_grace_s" type="number" />
+        </x-ui.field>
     @endif
 
-    <div class="grid grid-cols-3 gap-4">
-        <div>
-            <label class="block text-sm font-medium text-neutral-700">Kontrol aralığı (sn)</label>
-            <input wire:model="interval_s" type="number" min="60" class="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm">
-            @error('interval_s') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
+    <x-ui.field :label="__('app.field_interval')" error="interval_s">
+        <x-ui.input wire:model="interval_s" type="number" min="60" :invalid="$errors->has('interval_s')" />
+    </x-ui.field>
+
+    {{-- Advanced settings: type-tuning fields with sensible defaults, rarely touched after
+         initial setup. Collapsed by default per the progressive-disclosure brief — keeps the
+         always-relevant fields above uncluttered while power users can still reach everything. --}}
+    <details class="group rounded-xl border border-neutral-200 bg-white shadow-[var(--shadow-card)] dark:border-neutral-800 dark:bg-neutral-900">
+        <summary class="flex cursor-pointer list-none items-center justify-between px-5 py-3.5 text-sm font-medium text-neutral-700 select-none dark:text-neutral-300">
+            {{ __('app.field_advanced') }}
+            <x-phosphor-caret-down class="size-4 text-neutral-400 transition-transform duration-150 group-open:rotate-180" />
+        </summary>
+
+        <div class="space-y-4 border-t border-neutral-200 p-5 dark:border-neutral-800">
+            @if (in_array($type, ['http', 'keyword']))
+                <div class="grid grid-cols-2 gap-4">
+                    <x-ui.field :label="__('app.field_method')">
+                        <x-ui.select wire:model="method">
+                            @foreach (['GET','POST','PUT','PATCH','DELETE','HEAD'] as $m)
+                                <option value="{{ $m }}">{{ $m }}</option>
+                            @endforeach
+                        </x-ui.select>
+                    </x-ui.field>
+                    <x-ui.field :label="__('app.field_expected_status')">
+                        <x-ui.input wire:model="expected_status_raw" type="text" placeholder="{{ __('app.field_expected_status_placeholder') }}" />
+                    </x-ui.field>
+                </div>
+
+                <x-ui.field :label="__('app.field_headers')">
+                    <x-ui.textarea wire:model="headers_raw" rows="3" placeholder="Authorization: Bearer ..." mono />
+                </x-ui.field>
+
+                <div class="flex items-center gap-6">
+                    <x-ui.checkbox wire:model="follow_redirects" :label="__('app.field_follow_redirects')" />
+                    <x-ui.checkbox wire:model="verify_ssl" :label="__('app.field_verify_ssl')" />
+                </div>
+            @endif
+
+            <div class="grid grid-cols-3 gap-4">
+                <x-ui.field :label="__('app.field_timeout')">
+                    <x-ui.input wire:model="timeout_ms" type="number" />
+                </x-ui.field>
+                <x-ui.field :label="__('app.field_confirm_threshold')" :hint="__('app.field_confirm_threshold_hint')">
+                    <x-ui.input wire:model="confirm_threshold" type="number" min="1" />
+                </x-ui.field>
+                <x-ui.field :label="__('app.field_recover_threshold')" :hint="__('app.field_recover_threshold_hint')">
+                    <x-ui.input wire:model="recover_threshold" type="number" min="1" />
+                </x-ui.field>
+            </div>
         </div>
-        <div>
-            <label class="block text-sm font-medium text-neutral-700">Zaman aşımı (ms)</label>
-            <input wire:model="timeout_ms" type="number" class="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm">
-        </div>
-        <div></div>
-        <div>
-            <label class="block text-sm font-medium text-neutral-700">Onay eşiği</label>
-            <input wire:model="confirm_threshold" type="number" min="1" class="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm">
-            <p class="mt-1 text-xs text-neutral-500">Kaç ardışık hatadan sonra DOWN sayılır.</p>
-        </div>
-        <div>
-            <label class="block text-sm font-medium text-neutral-700">Kurtarma eşiği</label>
-            <input wire:model="recover_threshold" type="number" min="1" class="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm">
-            <p class="mt-1 text-xs text-neutral-500">Kaç ardışık başarıdan sonra UP sayılır.</p>
-        </div>
-    </div>
+    </details>
 </div>
