@@ -15,5 +15,11 @@ Artisan::command('inspire', function () {
 // ->runInBackground(): that needs proc_open(), which restrictive shared-hosting PHP configs
 // often disable. Both commands run in-process, one after the other, inside one schedule:run —
 // fine, since ConcurrentHttpChecker keeps probe:run itself fast regardless of batch size.
-Schedule::command('probe:run')->everyMinute()->withoutOverlapping();
-Schedule::command('maintenance:run')->everyMinute()->withoutOverlapping();
+//
+// withoutOverlapping(5): an explicit 5-minute mutex expiry. Without an argument Laravel
+// defaults to 1440 minutes (24h) — if a run is ever killed abnormally (OOM, host kill,
+// max_execution_time) without a graceful signal, the mutex is never released and both
+// commands would silently stop firing for up to a day. 5 minutes comfortably covers normal
+// runtime (ProbeRun's own lock_seconds default is 50s) while keeping any stuck-lock outage short.
+Schedule::command('probe:run')->everyMinute()->withoutOverlapping(5);
+Schedule::command('maintenance:run')->everyMinute()->withoutOverlapping(5);
