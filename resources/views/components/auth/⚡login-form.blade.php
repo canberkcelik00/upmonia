@@ -46,43 +46,33 @@ new #[Layout('layouts.guest')] class extends Component
 }
 ?>
 
-<div class="rounded-lg border border-neutral-200 bg-white p-6">
-    <h1 class="mb-6 text-lg font-semibold">Giriş yap</h1>
+<x-ui.card padding="p-6">
+    <h1 class="mb-6 text-xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-50">{{ __('auth.login_title') }}</h1>
 
     @error('form')
-        <div class="mb-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">{{ $message }}</div>
+        <x-ui.alert variant="error" class="mb-4">{{ $message }}</x-ui.alert>
     @enderror
 
     <form wire:submit="submit" class="space-y-4">
-        <div>
-            <label for="email" class="block text-sm font-medium text-neutral-700">E-posta</label>
-            <input wire:model="email" id="email" type="email" autocomplete="email"
-                   class="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm">
-            @error('email') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
-        </div>
+        <x-ui.field :label="__('auth.field_email')" error="email">
+            <x-ui.input wire:model="email" id="email" type="email" autocomplete="email" :invalid="$errors->has('email')" />
+        </x-ui.field>
 
-        <div>
-            <label for="password" class="block text-sm font-medium text-neutral-700">Parola</label>
-            <input wire:model="password" id="password" type="password" autocomplete="current-password"
-                   class="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm">
-            @error('password') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
-        </div>
+        <x-ui.field :label="__('auth.field_password')" error="password">
+            <x-ui.input wire:model="password" id="password" type="password" autocomplete="current-password" :invalid="$errors->has('password')" />
+        </x-ui.field>
 
         <div class="flex items-center justify-between text-sm">
-            <label class="flex items-center gap-2 text-neutral-700">
-                <input wire:model="remember" type="checkbox" class="rounded border-neutral-300">
-                Beni hatırla
-            </label>
-            <a href="{{ route('password.request') }}" class="text-neutral-600 underline">Parolamı unuttum</a>
+            <x-ui.checkbox wire:model="remember" :label="__('auth.remember_me')" />
+            <a href="{{ route('password.request') }}" wire:navigate class="text-brand-700 hover:underline dark:text-brand-400">{{ __('auth.forgot_password') }}</a>
         </div>
 
-        <button type="submit" wire:loading.attr="disabled"
-                class="w-full rounded-md bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800 disabled:opacity-50">
-            Giriş yap
-        </button>
+        <x-ui.button type="submit" variant="primary" class="w-full" wire:loading.attr="disabled">
+            {{ __('auth.login_title') }}
+        </x-ui.button>
     </form>
 
-    <p class="mt-4 text-center text-sm text-neutral-600">
-        Hesabın yok mu? <a href="{{ route('signup') }}" class="font-medium text-neutral-900 underline">Kayıt ol</a>
+    <p class="mt-4 text-center text-sm text-neutral-600 dark:text-neutral-400">
+        {{ __('auth.no_account') }} <a href="{{ route('signup') }}" wire:navigate class="font-medium text-brand-700 hover:underline dark:text-brand-400">{{ __('auth.signup_title') }}</a>
     </p>
-</div>
+</x-ui.card>

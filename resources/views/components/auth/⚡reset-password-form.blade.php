@@ -56,37 +56,28 @@ new #[Layout('layouts.guest')] class extends Component
 }
 ?>
 
-<div class="rounded-lg border border-neutral-200 bg-white p-6">
-    <h1 class="mb-6 text-lg font-semibold">Yeni parola belirle</h1>
+<x-ui.card padding="p-6">
+    <h1 class="mb-6 text-xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-50">{{ __('auth.set_new_password') }}</h1>
 
     @error('form')
-        <div class="mb-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">{{ $message }}</div>
+        <x-ui.alert variant="error" class="mb-4">{{ $message }}</x-ui.alert>
     @enderror
 
     <form wire:submit="submit" class="space-y-4">
-        <div>
-            <label for="email" class="block text-sm font-medium text-neutral-700">E-posta</label>
-            <input wire:model="email" id="email" type="email" autocomplete="email"
-                   class="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm">
-            @error('email') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
-        </div>
+        <x-ui.field :label="__('auth.field_email')" error="email">
+            <x-ui.input wire:model="email" id="email" type="email" autocomplete="email" :invalid="$errors->has('email')" />
+        </x-ui.field>
 
-        <div>
-            <label for="password" class="block text-sm font-medium text-neutral-700">Yeni parola</label>
-            <input wire:model="password" id="password" type="password" autocomplete="new-password"
-                   class="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm">
-            @error('password') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
-        </div>
+        <x-ui.field :label="__('auth.field_new_password')" error="password">
+            <x-ui.input wire:model="password" id="password" type="password" autocomplete="new-password" :invalid="$errors->has('password')" />
+        </x-ui.field>
 
-        <div>
-            <label for="password_confirmation" class="block text-sm font-medium text-neutral-700">Yeni parola (tekrar)</label>
-            <input wire:model="password_confirmation" id="password_confirmation" type="password" autocomplete="new-password"
-                   class="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm">
-        </div>
+        <x-ui.field :label="__('auth.field_new_password_confirm')">
+            <x-ui.input wire:model="password_confirmation" id="password_confirmation" type="password" autocomplete="new-password" />
+        </x-ui.field>
 
-        <button type="submit" wire:loading.attr="disabled"
-                class="w-full rounded-md bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800 disabled:opacity-50">
-            Parolamı güncelle
-        </button>
+        <x-ui.button type="submit" variant="primary" class="w-full" wire:loading.attr="disabled">
+            {{ __('auth.update_password') }}
+        </x-ui.button>
     </form>
-</div>
+</x-ui.card>

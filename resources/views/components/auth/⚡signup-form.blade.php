@@ -79,55 +79,40 @@ new #[Layout('layouts.guest')] class extends Component
 }
 ?>
 
-<div class="rounded-lg border border-neutral-200 bg-white p-6">
-    <h1 class="mb-6 text-lg font-semibold">Hesap oluştur</h1>
+<x-ui.card padding="p-6">
+    <h1 class="mb-6 text-xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-50">{{ __('auth.signup_heading') }}</h1>
 
     @error('form')
-        <div class="mb-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">{{ $message }}</div>
+        <x-ui.alert variant="error" class="mb-4">{{ $message }}</x-ui.alert>
     @enderror
 
     <form wire:submit="submit" class="space-y-4">
-        <div>
-            <label for="name" class="block text-sm font-medium text-neutral-700">Ad Soyad</label>
-            <input wire:model="name" id="name" type="text" autocomplete="name"
-                   class="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm">
-            @error('name') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
-        </div>
+        <x-ui.field :label="__('auth.field_full_name')" error="name">
+            <x-ui.input wire:model="name" id="name" type="text" autocomplete="name" :invalid="$errors->has('name')" />
+        </x-ui.field>
 
-        <div>
-            <label for="organization_name" class="block text-sm font-medium text-neutral-700">Şirket / ajans adı</label>
-            <input wire:model="organization_name" id="organization_name" type="text"
-                   class="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm">
-            @error('organization_name') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
-        </div>
+        <x-ui.field :label="__('auth.field_organization')" error="organization_name">
+            <x-ui.input wire:model="organization_name" id="organization_name" type="text" :invalid="$errors->has('organization_name')" />
+        </x-ui.field>
 
-        <div>
-            <label for="email" class="block text-sm font-medium text-neutral-700">E-posta</label>
-            <input wire:model="email" id="email" type="email" autocomplete="email"
-                   class="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm">
-            @error('email') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
-        </div>
+        <x-ui.field :label="__('auth.field_email')" error="email">
+            <x-ui.input wire:model="email" id="email" type="email" autocomplete="email" :invalid="$errors->has('email')" />
+        </x-ui.field>
 
-        <div>
-            <label for="password" class="block text-sm font-medium text-neutral-700">Parola</label>
-            <input wire:model="password" id="password" type="password" autocomplete="new-password"
-                   class="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm">
-            @error('password') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
-        </div>
+        <x-ui.field :label="__('auth.field_password')" error="password">
+            <x-ui.input wire:model="password" id="password" type="password" autocomplete="new-password" :invalid="$errors->has('password')" />
+        </x-ui.field>
 
-        <div>
-            <label for="password_confirmation" class="block text-sm font-medium text-neutral-700">Parola (tekrar)</label>
-            <input wire:model="password_confirmation" id="password_confirmation" type="password" autocomplete="new-password"
-                   class="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm">
-        </div>
+        <x-ui.field :label="__('auth.field_password_confirm')">
+            <x-ui.input wire:model="password_confirmation" id="password_confirmation" type="password" autocomplete="new-password" />
+        </x-ui.field>
 
-        <button type="submit" wire:loading.attr="disabled"
-                class="w-full rounded-md bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800 disabled:opacity-50">
-            Hesap oluştur
-        </button>
+        <x-ui.button type="submit" variant="primary" class="w-full" wire:loading.attr="disabled">
+            {{ __('auth.signup_heading') }}
+        </x-ui.button>
     </form>
 
-    <p class="mt-4 text-center text-sm text-neutral-600">
-        Zaten hesabın var mı? <a href="{{ route('login') }}" class="font-medium text-neutral-900 underline">Giriş yap</a>
+    <p class="mt-4 text-center text-sm text-neutral-600 dark:text-neutral-400">
+        {{ __('auth.has_account') }} <a href="{{ route('login') }}" wire:navigate class="font-medium text-brand-700 hover:underline dark:text-brand-400">{{ __('auth.login_title') }}</a>
     </p>
-</div>
+</x-ui.card>

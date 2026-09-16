@@ -33,32 +33,28 @@ new #[Layout('layouts.guest')] class extends Component
 }
 ?>
 
-<div class="rounded-lg border border-neutral-200 bg-white p-6">
-    <h1 class="mb-6 text-lg font-semibold">Parolamı unuttum</h1>
+<x-ui.card padding="p-6">
+    <h1 class="mb-6 text-xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-50">{{ __('auth.forgot_password') }}</h1>
 
     @if ($sent)
-        <p class="text-sm text-neutral-700">{{ __('auth.password_reset_sent') }}</p>
+        <x-ui.alert variant="success">{{ __('auth.password_reset_sent') }}</x-ui.alert>
     @else
         @error('form')
-            <div class="mb-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">{{ $message }}</div>
+            <x-ui.alert variant="error" class="mb-4">{{ $message }}</x-ui.alert>
         @enderror
 
         <form wire:submit="submit" class="space-y-4">
-            <div>
-                <label for="email" class="block text-sm font-medium text-neutral-700">E-posta</label>
-                <input wire:model="email" id="email" type="email" autocomplete="email"
-                       class="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm">
-                @error('email') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
-            </div>
+            <x-ui.field :label="__('auth.field_email')" error="email">
+                <x-ui.input wire:model="email" id="email" type="email" autocomplete="email" :invalid="$errors->has('email')" />
+            </x-ui.field>
 
-            <button type="submit" wire:loading.attr="disabled"
-                    class="w-full rounded-md bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800 disabled:opacity-50">
-                Sıfırlama bağlantısı gönder
-            </button>
+            <x-ui.button type="submit" variant="primary" class="w-full" wire:loading.attr="disabled">
+                {{ __('auth.send_reset_link') }}
+            </x-ui.button>
         </form>
     @endif
 
-    <p class="mt-4 text-center text-sm text-neutral-600">
-        <a href="{{ route('login') }}" class="font-medium text-neutral-900 underline">Girişe dön</a>
+    <p class="mt-4 text-center text-sm text-neutral-600 dark:text-neutral-400">
+        <a href="{{ route('login') }}" wire:navigate class="font-medium text-brand-700 hover:underline dark:text-brand-400">{{ __('auth.back_to_login') }}</a>
     </p>
-</div>
+</x-ui.card>
