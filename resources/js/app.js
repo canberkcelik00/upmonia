@@ -6,27 +6,47 @@
 // never in CSS — so content stays visible by default with no script, a failed script, or
 // prefers-reduced-motion, instead of depending on the animation to reveal it.
 (function () {
-    var targets = document.querySelectorAll('[data-reveal], [data-reveal-stagger]');
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    if (! targets.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches || ! ('IntersectionObserver' in window)) {
+    // The signature strip sits right under the hero, so on most screens it's already inside
+    // the viewport on load — an IntersectionObserver fires for it almost immediately, too
+    // close to first paint to read as a visible entrance. It plays once on load instead,
+    // guaranteed and regardless of scroll position.
+    document.querySelectorAll('[data-reveal-stagger]').forEach(function (el) {
+        if (reduceMotion) {
+            return;
+        }
+
+        var bars = Array.from(el.children);
+
+        bars.forEach(function (bar, i) {
+            bar.style.opacity = '0';
+            bar.style.transform = 'scaleY(0.1)';
+            bar.style.transformOrigin = 'bottom';
+            bar.style.transition = 'opacity .6s ease-out, transform .6s cubic-bezier(.16,.9,.28,1.05)';
+            bar.style.transitionDelay = Math.min(i * 24, 650) + 'ms';
+        });
+
+        // Double rAF: the first frame commits the hidden state above, the second flips it
+        // to visible — guarantees the browser paints "hidden" before it paints "revealed",
+        // so the transition actually plays instead of appearing already-finished.
+        requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+                bars.forEach(function (bar) {
+                    bar.style.opacity = '1';
+                    bar.style.transform = 'scaleY(1)';
+                });
+            });
+        });
+    });
+
+    var targets = document.querySelectorAll('[data-reveal]');
+
+    if (! targets.length || reduceMotion || ! ('IntersectionObserver' in window)) {
         return;
     }
 
     targets.forEach(function (el) {
-        if (el.hasAttribute('data-reveal-stagger')) {
-            // Each bar rises from its own baseline and fades in, ~24ms apart — a nod to the
-            // brand's "kontrol şeridi" as the one graphic that's allowed to feel alive.
-            Array.from(el.children).forEach(function (bar, i) {
-                bar.style.opacity = '0';
-                bar.style.transform = 'scaleY(0.1)';
-                bar.style.transformOrigin = 'bottom';
-                bar.style.transition = 'opacity .6s ease-out, transform .6s cubic-bezier(.16,.9,.28,1.05)';
-                bar.style.transitionDelay = Math.min(i * 24, 650) + 'ms';
-            });
-
-            return;
-        }
-
         el.style.opacity = '0';
         el.style.transform = 'translateY(30px)';
         el.style.transition = 'opacity .8s ease-out, transform .8s cubic-bezier(.16,.8,.24,1)';
@@ -41,16 +61,8 @@
                 return;
             }
 
-            if (entry.target.hasAttribute('data-reveal-stagger')) {
-                Array.from(entry.target.children).forEach(function (bar) {
-                    bar.style.opacity = '1';
-                    bar.style.transform = 'scaleY(1)';
-                });
-            } else {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
             observer.unobserve(entry.target);
         });
     }, {threshold: 0.15, rootMargin: '0px 0px -40px 0px'});
