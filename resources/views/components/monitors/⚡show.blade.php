@@ -153,9 +153,21 @@ new #[Layout('layouts.app')] class extends Component
     public function togglePause(): void
     {
         $state = $this->monitor->state;
-        $state->update($state->status === 'paused'
-            ? ['status' => 'pending', 'next_check_at' => now()]
-            : ['status' => 'paused']);
+
+        if ($state->status === 'paused') {
+            // Resuming with an open incident must re-enter the state machine as 'down' (not
+            // 'pending'), otherwise IncidentStateMachine::evaluate() falls into the pending/
+            // suspect/up branch, which never produces a 'recovered' transition — the incident
+            // would stay open forever even after the monitor starts reporting ok again.
+            $state->update([
+                'status' => $state->current_incident_id ? 'down' : 'pending',
+                'consecutive_ok' => 0,
+                'next_check_at' => now(),
+            ]);
+        } else {
+            $state->update(['status' => 'paused']);
+        }
+
         $this->monitor->refresh();
     }
 
