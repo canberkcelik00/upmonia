@@ -20,7 +20,7 @@
             </x-ui.select>
         </x-ui.field>
 
-        <x-ui.field :label="__('app.field_type')" :hint="$editing ? __('app.field_type_locked_hint') : null">
+        <x-ui.field :label="__('app.field_type')" :hint="$editing ? __('app.field_type_locked_hint') : __('app.monitor_type_' . $type . '_hint')">
             <x-ui.select wire:model.live="type" :disabled="$editing">
                 <option value="http">{{ __('app.monitor_type_http') }}</option>
                 <option value="keyword">{{ __('app.monitor_type_keyword') }}</option>

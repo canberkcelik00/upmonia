@@ -37,6 +37,11 @@ return [
     'monitor_type_ssl' => 'SSL sertifikası',
     'monitor_type_tcp_port' => 'TCP port',
     'monitor_type_heartbeat' => 'Heartbeat',
+    'monitor_type_http_hint' => 'Bir URL\'ye düzenli istek atar, HTTP durum koduna bakarak siteyi ayakta mı diye kontrol eder.',
+    'monitor_type_keyword_hint' => 'HTTP monitörü gibi çalışır, ayrıca sayfa içeriğinde belirlediğin bir kelimenin bulunup bulunmadığını da kontrol eder.',
+    'monitor_type_ssl_hint' => 'Sitenin SSL sertifikasının geçerliliğini ve bitiş tarihine ne kadar kaldığını izler.',
+    'monitor_type_tcp_port_hint' => 'Belirttiğin host ve port\'a bağlanmayı dener; web arayüzü olmayan servisler (veritabanı, mail sunucusu vb.) için uygundur.',
+    'monitor_type_heartbeat_hint' => 'Ping bekler: servisin sana düzenli aralıklarla sinyal göndermesini ister, sinyal kesilirse kesinti olarak işaretler.',
 
     // Monitors: index
     'monitors_title' => 'Monitörler',

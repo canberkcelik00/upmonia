@@ -37,6 +37,11 @@ return [
     'monitor_type_ssl' => 'SSL certificate',
     'monitor_type_tcp_port' => 'TCP port',
     'monitor_type_heartbeat' => 'Heartbeat',
+    'monitor_type_http_hint' => 'Requests a URL on a schedule and checks the HTTP status code to confirm the site is up.',
+    'monitor_type_keyword_hint' => 'Works like an HTTP monitor, but also checks whether a word you choose appears in the page content.',
+    'monitor_type_ssl_hint' => 'Watches the site\'s SSL certificate validity and how many days remain before it expires.',
+    'monitor_type_tcp_port_hint' => 'Tries to connect to a host and port you specify — for services without a web interface (database, mail server, etc).',
+    'monitor_type_heartbeat_hint' => 'Waits for a ping: expects the service to signal you on a schedule, and flags it down if the signal stops.',
 
     // Monitors: index
     'monitors_title' => 'Monitors',
