@@ -61,7 +61,7 @@ class DemoAgencySeeder extends Seeder
         // 4. Non-existent domain — expected DOWN, dns_nxdomain. Also the vehicle for exercising
         // the notification pipeline end-to-end: a verified email channel is attached below.
         $downMonitor = Monitor::create($defaults + [
-            'name' => 'Nonexistent domain', 'type' => 'http', 'url' => 'https://this-domain-does-not-exist-uptik-demo.invalid',
+            'name' => 'Nonexistent domain', 'type' => 'http', 'url' => 'https://this-domain-does-not-exist-upvane-demo.invalid',
         ]);
 
         // 5. Wrong expected_status against a 200 — expected DOWN, http_unexpected_status.

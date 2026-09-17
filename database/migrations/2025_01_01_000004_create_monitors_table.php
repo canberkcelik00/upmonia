@@ -29,7 +29,7 @@ return new class extends Migration
             $table->integer('timeout_ms')->default(10000);
             // v1: single vantage point (shared hosting = one server). Kept as a column for
             // forward-compatibility with a future multi-region worker, not read for branching today.
-            // Actual value is set from config('uptik.default_region') at creation time, not this DB default.
+            // Actual value is set from config('upvane.default_region') at creation time, not this DB default.
             $table->string('region')->default('local');
             $table->boolean('follow_redirects')->default(true);
             $table->unsignedSmallInteger('max_redirects')->default(5);

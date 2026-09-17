@@ -18,7 +18,7 @@ use App\Models\Monitor;
  * (each re-validated by SsrfGuard before it's added), while finished jobs drop out. A job
  * that's still redirecting after Monitor::max_redirects rounds is reported as redirect_loop.
  *
- * runBatch() itself only chunks the incoming monitors into config('uptik.probe.concurrency')
+ * runBatch() itself only chunks the incoming monitors into config('upvane.probe.concurrency')
  * -sized waves and hands each wave to runChunk() in turn, so no more than `concurrency`
  * outbound sockets/DNS lookups are ever in flight at once — worst-case wall time becomes
  * ceil(batch_size / concurrency) * timeout instead of one flat timeout period, a deliberate
@@ -36,11 +36,11 @@ class ConcurrentHttpChecker
      */
     public function runBatch(iterable $monitors): array
     {
-        $concurrency = max(1, (int) config('uptik.probe.concurrency'));
+        $concurrency = max(1, (int) config('upvane.probe.concurrency'));
         $outcomes = [];
 
         // Chunked so curl_multi never runs more than `concurrency` handles at once —
-        // config('uptik.probe.concurrency') used to be read nowhere; batch_size (up to 60)
+        // config('upvane.probe.concurrency') used to be read nowhere; batch_size (up to 60)
         // was fired as a single curl_multi round regardless. Each chunk still runs its own
         // full redirect-following round loop to completion before the next chunk starts.
         foreach (collect($monitors)->chunk($concurrency) as $chunk) {

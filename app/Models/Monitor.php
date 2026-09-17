@@ -27,7 +27,7 @@ class Monitor extends Model
             'expected_status' => 'array',
             // Custom request headers, e.g. {"Authorization": "Bearer ..."}. Encrypted at rest
             // via Laravel's APP_KEY-backed cipher — the Laravel-native equivalent of the source
-            // app's hand-rolled AES-256-GCM envelope over UPTIK_SECRET_KEY.
+            // app's hand-rolled AES-256-GCM envelope over APP_KEY.
             'headers' => 'encrypted:array',
             'follow_redirects' => 'boolean',
             'verify_ssl' => 'boolean',

@@ -1,17 +1,17 @@
 services:
   mysql:
     image: mysql:8.0
-    container_name: uptik-laravel-mysql
+    container_name: upvane-laravel-mysql
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: uptik
-      MYSQL_USER: uptik
-      MYSQL_PASSWORD: uptik
+      MYSQL_DATABASE: upvane
+      MYSQL_USER: upvane
+      MYSQL_PASSWORD: upvane
     ports:
       - "3307:3306"
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uuptik", "-puptik"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uupvane", "-pupvane"]
       interval: 3s
       timeout: 3s
       retries: 20
@@ -20,12 +20,12 @@ services:
 
   phpmyadmin:
     image: phpmyadmin:latest
-    container_name: uptik-laravel-phpmyadmin
+    container_name: upvane-laravel-phpmyadmin
     restart: unless-stopped
     environment:
       PMA_HOST: mysql
-      PMA_USER: uptik
-      PMA_PASSWORD: uptik
+      PMA_USER: upvane
+      PMA_PASSWORD: upvane
     ports:
       - "8081:80"
     depends_on:

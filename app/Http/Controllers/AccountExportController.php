@@ -36,7 +36,7 @@ class AccountExportController extends Controller
             'clients' => \App\Models\Client::get()->map->only(['id', 'name', 'contact_emails']),
         ];
 
-        $filename = 'uptik-export-'.now()->format('Y-m-d').'.json';
+        $filename = 'upvane-export-'.now()->format('Y-m-d').'.json';
 
         return response(json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES))
             ->header('Content-Type', 'application/json')

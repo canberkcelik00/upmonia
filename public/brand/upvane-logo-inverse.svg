@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 168 28">
+  <g stroke="#edeef1" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M3.5 14.5 9 20 20.5 8.5"/>
+    <path d="M13.5 8.5h7v7"/>
+  </g>
+  <text x="30" y="20.5" font-family="'Schibsted Grotesk', Arial, sans-serif" font-weight="700" font-size="19" letter-spacing="-0.5" fill="#edeef1">upvane</text>
+</svg>

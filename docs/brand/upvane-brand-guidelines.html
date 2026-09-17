@@ -1,0 +1,1532 @@
+<title>Upvane Marka Rehberi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --bg:#f6f6f7;
+    --surface:#ffffff;
+    --surface-2:#f1f1f3;
+    --line:#e4e4e8;
+    --line-strong:#d2d3d8;
+    --ink:#0d0e12;
+    --ink-2:#3b3d45;
+    --muted:#6a6d76;
+    --faint:#9a9ca4;
+    --on-ink:#ffffff;
+    --up:#12a05c;
+    --up-text:#0a7a44;
+    --up-soft:#e6f6ee;
+    --warn:#e5a00d;
+    --warn-text:#8f5a00;
+    --warn-soft:#fdf3dc;
+    --down:#e03a2f;
+    --down-text:#b4231a;
+    --down-soft:#fde9e7;
+    --idle:#a3a5ad;
+    --idle-soft:#efeff2;
+    --nodata:#e7e7eb;
+    --badge-bg:#b4231a;
+    --badge-fg:#ffffff;
+    --client:#0e7c86;
+    --icon-bg:#0d0e12;
+    --code-bg:#0d0e12;
+    --code-fg:#e3e4e8;
+    --sans:'Schibsted Grotesk', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --mono:'Geist Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0a0b0d;
+      --surface:#121317;
+      --surface-2:#1a1b20;
+      --line:#24262c;
+      --line-strong:#30323a;
+      --ink:#edeef1;
+      --ink-2:#c3c5cc;
+      --muted:#8f929b;
+      --faint:#62656e;
+      --on-ink:#0a0b0d;
+      --up:#2bc47a;
+      --up-text:#4fd894;
+      --up-soft:rgba(43,196,122,.12);
+      --warn:#f2b53a;
+      --warn-text:#f5c45e;
+      --warn-soft:rgba(242,181,58,.12);
+      --down:#ff5b4e;
+      --down-text:#ff7a70;
+      --down-soft:rgba(255,91,78,.13);
+      --idle:#5e6169;
+      --idle-soft:#1e2025;
+      --nodata:#23252b;
+      --badge-bg:#ff5b4e;
+      --badge-fg:#0a0b0d;
+      --client:#2fb3bd;
+      --icon-bg:#0d0e12;
+      --code-bg:#1a1b20;
+      --code-fg:#e3e4e8;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0a0b0d;
+    --surface:#121317;
+    --surface-2:#1a1b20;
+    --line:#24262c;
+    --line-strong:#30323a;
+    --ink:#edeef1;
+    --ink-2:#c3c5cc;
+    --muted:#8f929b;
+    --faint:#62656e;
+    --on-ink:#0a0b0d;
+    --up:#2bc47a;
+    --up-text:#4fd894;
+    --up-soft:rgba(43,196,122,.12);
+    --warn:#f2b53a;
+    --warn-text:#f5c45e;
+    --warn-soft:rgba(242,181,58,.12);
+    --down:#ff5b4e;
+    --down-text:#ff7a70;
+    --down-soft:rgba(255,91,78,.13);
+    --idle:#5e6169;
+    --idle-soft:#1e2025;
+    --nodata:#23252b;
+    --badge-bg:#ff5b4e;
+    --badge-fg:#0a0b0d;
+    --client:#2fb3bd;
+    --icon-bg:#0d0e12;
+    --code-bg:#1a1b20;
+    --code-fg:#e3e4e8;
+  }
+
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;padding-inline:20px;}
+  h1,h2,h3,h4,h5,p{margin:0;}
+  h1,h2,h3{text-wrap:balance;}
+  a{color:inherit;}
+  button{font:inherit;color:inherit;}
+  .mono{font-family:var(--mono);font-variant-numeric:tabular-nums;}
+  .muted{color:var(--muted);}
+
+  /* ---------- book layout ---------- */
+  .book{max-width:1320px;margin:0 auto;display:grid;grid-template-columns:220px minmax(0,1fr);gap:56px;padding-block:32px 140px;}
+  .toc{position:sticky;top:24px;align-self:start;display:grid;gap:22px;}
+  .toc .lockup{font-size:22px;}
+  .toc nav{display:grid;gap:2px;}
+  .toc nav a{display:grid;grid-template-columns:26px 1fr;padding:5px 8px;border-radius:6px;text-decoration:none;font-size:14px;color:var(--ink-2);}
+  .toc nav a span{font-family:var(--mono);font-size:11.5px;color:var(--faint);padding-top:2px;}
+  .toc nav a:hover{background:var(--surface-2);color:var(--ink);}
+  .toc nav a:focus-visible,.seg button:focus-visible{outline:2px solid var(--ink);outline-offset:2px;}
+  .toc .meta{font-family:var(--mono);font-size:11.5px;color:var(--muted);line-height:1.7;}
+  .seg{display:inline-flex;border:1px solid var(--line-strong);border-radius:7px;padding:2px;background:var(--surface);justify-self:start;}
+  .seg button{border:0;background:transparent;padding:3px 9px;border-radius:5px;font-size:12px;font-weight:500;color:var(--muted);cursor:pointer;}
+  .seg button[aria-pressed="true"]{background:var(--ink);color:var(--on-ink);}
+  main{min-width:0;}
+
+  @media (max-width:1080px){
+    .book{grid-template-columns:minmax(0,1fr);gap:28px;}
+    .toc{position:static;border-bottom:1px solid var(--line);padding-bottom:22px;}
+    .toc nav{grid-template-columns:repeat(auto-fill,minmax(170px,1fr));}
+  }
+
+  .lockup{display:inline-flex;align-items:center;gap:.28em;font-weight:700;letter-spacing:-.035em;color:var(--ink);line-height:1;}
+  .lockup svg{width:.95em;height:.95em;flex:none;transform:translateY(.02em);}
+
+  /* ---------- cover ---------- */
+  .cover{display:grid;gap:30px;padding-bottom:64px;border-bottom:1px solid var(--line);}
+  .cover .eyebrow{font-family:var(--mono);font-size:12px;color:var(--muted);}
+  .cover h1{font-size:clamp(44px,7vw,92px);font-weight:700;letter-spacing:-.045em;line-height:.95;}
+  .cover h1 em{font-style:normal;color:var(--down);}
+  .cover .lede{font-size:18px;color:var(--ink-2);max-width:62ch;}
+  .cover .ticks{height:72px;gap:3px;}
+  .cover .ticks span{border-radius:2px;}
+  .strip-cap{display:flex;justify-content:space-between;gap:12px;font-family:var(--mono);font-size:12px;color:var(--muted);}
+  .strip-cap b{font-weight:500;color:var(--down-text);}
+  .facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));border-top:1px solid var(--line);}
+  .facts div{padding:14px 18px 0 0;display:grid;gap:2px;}
+  .facts dt{font-size:12px;color:var(--muted);}
+  .facts dd{margin:0;font-size:14.5px;font-weight:500;}
+
+  /* ---------- chapters ---------- */
+  .chapter{padding-top:96px;scroll-margin-top:24px;}
+  .ch-head{display:grid;gap:12px;margin-bottom:40px;max-width:70ch;}
+  .ch-num{font-family:var(--mono);font-size:12.5px;color:var(--muted);}
+  .ch-head h2{font-size:clamp(32px,4vw,52px);font-weight:700;letter-spacing:-.035em;line-height:1;}
+  .ch-head p{font-size:16.5px;color:var(--ink-2);}
+  .sub{margin-top:48px;display:grid;gap:18px;}
+  .sub > h3{font-size:21px;font-weight:600;letter-spacing:-.02em;}
+  .sub > p{color:var(--ink-2);max-width:70ch;}
+  .prose{display:grid;gap:12px;max-width:70ch;color:var(--ink-2);}
+
+  .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:28px 36px;}
+  .col{display:grid;gap:6px;align-content:start;padding-top:16px;border-top:1px solid var(--line);}
+  .col h4{font-size:16px;font-weight:600;letter-spacing:-.01em;}
+  .col p{font-size:14.5px;color:var(--muted);}
+
+  .box{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:28px;}
+  .grid-cells{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;}
+  .cell{border:1px solid var(--line);border-radius:10px;background:var(--surface);padding:24px 20px 16px;display:grid;gap:16px;justify-items:center;align-content:start;}
+  .cell .cap{font-size:12.5px;color:var(--muted);text-align:center;max-width:34ch;}
+
+  .pairs{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;}
+  .pair{background:var(--surface);border:1px solid var(--line);border-radius:10px;display:grid;}
+  .pair > div{padding:14px 18px;display:grid;gap:4px;}
+  .pair > div + div{border-top:1px solid var(--line);}
+  .pair .tag{font-family:var(--mono);font-size:11.5px;}
+  .pair .yes .tag{color:var(--up-text);}
+  .pair .no .tag{color:var(--down-text);}
+  .pair .no .t{color:var(--muted);text-decoration:line-through;text-decoration-color:color-mix(in oklab, var(--down) 55%, transparent);}
+  .pair .t{font-size:15px;}
+  .pair .why{font-size:13px;color:var(--muted);padding-top:0;}
+
+  .tbl-wrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:10px;}
+  .spec{width:100%;border-collapse:collapse;min-width:640px;}
+  .spec th{font-size:12px;font-weight:500;color:var(--muted);text-align:left;padding:10px 16px;border-bottom:1px solid var(--line);white-space:nowrap;}
+  .spec td{padding:11px 16px;border-bottom:1px solid var(--line);font-size:14px;vertical-align:top;}
+  .spec tr:last-child td{border-bottom:0;}
+  .spec .m{font-family:var(--mono);font-size:12.5px;color:var(--ink-2);white-space:nowrap;font-variant-numeric:tabular-nums;}
+  .spec .r{color:var(--muted);font-size:13.5px;}
+  .spec .n{font-weight:500;white-space:nowrap;}
+  .spec .sw span{display:block;width:28px;height:28px;border-radius:6px;border:1px solid var(--line);}
+  .ok{color:var(--up-text);font-family:var(--mono);font-size:12px;}
+  .gfx{color:var(--muted);font-family:var(--mono);font-size:12px;}
+
+  pre.code{margin:0;background:var(--code-bg);color:var(--code-fg);border-radius:10px;padding:20px 22px;overflow-x:auto;font-family:var(--mono);font-size:12.5px;line-height:1.7;}
+  pre.code .c{color:#7d808a;}
+
+  /* ---------- shared product components ---------- */
+  .ticks{display:flex;align-items:stretch;gap:2px;height:20px;}
+  .ticks span{flex:1 1 0;min-width:2px;border-radius:1px;background:var(--up);}
+  .ticks .s{background:var(--warn);}
+  .ticks .d{background:var(--down);}
+  .ticks .p{background:var(--idle-soft);}
+  .ticks .n{background:var(--nodata);}
+  .pill{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px 0 7px;border-radius:5px;font-size:12.5px;font-weight:500;white-space:nowrap;background:var(--idle-soft);color:var(--ink-2);}
+  .pill i{width:6px;height:6px;border-radius:50%;background:var(--idle);flex:none;}
+  .pill.up{background:var(--up-soft);color:var(--up-text);}
+  .pill.up i{background:var(--up);}
+  .pill.warn{background:var(--warn-soft);color:var(--warn-text);}
+  .pill.warn i{background:var(--warn);}
+  .pill.down{background:var(--down-soft);color:var(--down-text);}
+  .pill.down i{background:var(--down);}
+  .live{position:relative;width:8px;height:8px;border-radius:50%;background:var(--down);flex:none;}
+  .live::after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid var(--down);animation:ping 1.6s ease-out infinite;}
+  @keyframes ping{from{transform:scale(1);opacity:.7}to{transform:scale(2.6);opacity:0}}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:32px;padding:0 12px;border-radius:6px;border:1px solid transparent;font-size:13px;font-weight:500;white-space:nowrap;}
+  .btn svg{width:14px;height:14px;}
+  .btn-primary{background:var(--ink);color:var(--on-ink);}
+  .btn-secondary{background:var(--surface);border-color:var(--line-strong);color:var(--ink);}
+  .btn-ghost{background:transparent;color:var(--ink-2);}
+  .btn-danger{background:var(--surface);border-color:var(--line-strong);color:var(--down-text);}
+  .btn-sm{height:28px;padding:0 10px;font-size:12.5px;}
+  .field{display:flex;align-items:center;gap:8px;height:32px;padding:0 10px;border:1px solid var(--line-strong);border-radius:6px;background:var(--surface);font-size:13px;color:var(--muted);}
+  .field svg{width:14px;height:14px;color:var(--muted);flex:none;}
+  .field.select{color:var(--ink);justify-content:space-between;}
+  .fseg{display:inline-flex;border:1px solid var(--line-strong);border-radius:6px;background:var(--surface);height:32px;overflow:hidden;}
+  .fseg span{display:flex;align-items:center;gap:6px;padding:0 11px;font-size:13px;color:var(--muted);border-left:1px solid var(--line);}
+  .fseg span:first-child{border-left:0;}
+  .fseg span.on{color:var(--ink);background:var(--surface-2);font-weight:500;}
+  .fseg b{font-family:var(--mono);font-weight:500;font-size:11.5px;color:var(--faint);}
+  .fseg span.on b{color:var(--muted);}
+
+  /* Form section: label column + panel, used on every settings/edit screen so a form
+     never sits half-width and left-aligned inside the full app container. */
+  .fsection{display:grid;grid-template-columns:280px 1fr;gap:32px;border-top:1px solid var(--line);padding:28px 0;}
+  .fsection:first-child{border-top:0;padding-top:0;}
+  .fsection h5{margin:0 0 6px;font-size:15px;font-weight:600;letter-spacing:-.005em;}
+  .fsection .fdesc{font-size:13px;color:var(--muted);max-width:36ch;line-height:1.5;}
+  .fpanel{border:1px solid var(--line);border-radius:10px;background:var(--surface);overflow:hidden;}
+  .fpanel .fbody{padding:20px;display:grid;gap:14px;}
+  .fpanel .factions{border-top:1px solid var(--line);background:var(--surface-2);padding:12px 20px;display:flex;justify-content:flex-end;gap:10px;}
+  .fsection.danger h5{color:var(--down-text);}
+  .fsection.danger .fpanel{border-color:color-mix(in oklab, var(--down) 30%, var(--line));}
+  @media (max-width:760px){.fsection{grid-template-columns:1fr;gap:10px;}}
+  .count{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--badge-bg);color:var(--badge-fg);font-family:var(--mono);font-size:11px;font-weight:600;}
+  .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
+
+  /* ---------- screens ---------- */
+  .screen{display:grid;gap:12px;margin-top:40px;}
+  .screen-cap{display:flex;justify-content:space-between;align-items:baseline;gap:24px;flex-wrap:wrap;}
+  .screen-cap h4{font-size:17px;font-weight:600;letter-spacing:-.015em;}
+  .screen-cap p{color:var(--muted);font-size:14px;max-width:66ch;}
+  .scroll{overflow-x:auto;border-radius:12px;}
+  .frame{border:1px solid var(--line-strong);border-radius:12px;overflow:hidden;background:var(--bg);}
+  .frame-bar{height:36px;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--line);background:var(--surface);}
+  .url{font-family:var(--mono);font-size:11.5px;color:var(--muted);background:var(--surface-2);padding:3px 12px;border-radius:5px;}
+
+  .app{min-width:980px;background:var(--bg);font-size:13.5px;}
+  .topbar{height:52px;display:flex;align-items:center;gap:28px;padding:0 24px;background:var(--surface);border-bottom:1px solid var(--line);}
+  .topbar .lockup{font-size:19px;}
+  .topbar .lockup svg{color:var(--down);}
+  .tabs{display:flex;align-self:stretch;gap:4px;}
+  .tabs a{display:flex;align-items:center;gap:7px;padding:0 10px;font-size:13.5px;font-weight:500;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;text-decoration:none;}
+  .tabs a.on{color:var(--ink);border-bottom-color:var(--ink);}
+  .tb-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
+  .org{display:flex;align-items:center;gap:8px;height:32px;padding:0 4px;font-size:13px;font-weight:500;color:var(--ink);}
+  .org .sq{width:18px;height:18px;border-radius:4px;background:var(--ink);color:var(--on-ink);font-size:10.5px;font-weight:700;display:grid;place-items:center;}
+  .loc{font-family:var(--mono);font-size:12px;color:var(--muted);padding:0 4px;}
+  .avatar{width:30px;height:30px;border-radius:50%;background:var(--surface-2);border:1px solid var(--line);display:grid;place-items:center;font-size:11.5px;font-weight:600;color:var(--ink-2);}
+  .app-body{padding:22px 28px 28px;display:grid;gap:20px;}
+  .incident{display:flex;align-items:center;gap:14px;padding:10px 12px 10px 16px;border-radius:8px;background:var(--down-soft);border:1px solid color-mix(in oklab, var(--down) 28%, transparent);}
+  .inc-main{display:flex;align-items:baseline;gap:10px;flex:1;min-width:0;}
+  .inc-main strong{color:var(--down-text);font-weight:600;}
+  .inc-main .nm{font-weight:500;color:var(--ink);}
+  .inc-main .mono{font-size:12px;color:var(--muted);}
+  .inc-timer{font-family:var(--mono);font-size:14px;font-weight:500;color:var(--down-text);}
+  .summary{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;}
+  .statement{font-size:27px;font-weight:700;letter-spacing:-.025em;line-height:1.1;}
+  .summary .meta{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:8px;}
+  .summary .meta b{font-weight:500;color:var(--ink-2);}
+  .filters{display:flex;align-items:center;gap:10px;}
+  .filters .search{width:240px;}
+  .filters .client{width:170px;margin-left:auto;}
+  .tablebox{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .tbl{width:100%;border-collapse:collapse;}
+  .tbl th{font-size:12px;font-weight:500;color:var(--muted);text-align:left;padding:9px 16px;border-bottom:1px solid var(--line);white-space:nowrap;}
+  .tbl td{padding:11px 16px;border-bottom:1px solid var(--line);vertical-align:middle;}
+  .tbl tr:last-child td{border-bottom:0;}
+  .tbl .num{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:12.5px;white-space:nowrap;}
+  .tbl th.num{font-family:var(--sans);font-size:12px;}
+  .mname{font-weight:500;color:var(--ink);}
+  .msub{font-size:12px;color:var(--muted);margin-top:1px;}
+  .msub .warnnote{color:var(--warn-text);}
+  .tbl .ticks{width:190px;height:18px;}
+  .stat-cell{display:flex;align-items:center;gap:8px;}
+  .stat-cell .mono{font-size:12px;color:var(--muted);}
+  .row-issue td{background:color-mix(in oklab, var(--down-soft) 45%, transparent);}
+  .more td{padding:10px 16px;font-size:13px;color:var(--muted);background:var(--surface-2);}
+  .more a{color:var(--ink);font-weight:500;text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--line-strong);margin-left:8px;}
+  .dots{color:var(--faint);letter-spacing:1px;}
+
+  .crumb{font-size:12.5px;color:var(--muted);}
+  .dhead{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;}
+  .dtitle{display:flex;align-items:center;gap:12px;margin-top:6px;}
+  .dtitle h5{font-size:24px;font-weight:700;letter-spacing:-.025em;line-height:1.15;}
+  .dmeta{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:8px;}
+  .threshold{display:flex;align-items:center;gap:10px;margin-top:12px;font-size:13px;color:var(--ink-2);}
+  .threshold .pips{display:flex;gap:3px;}
+  .threshold .pips span{width:14px;height:6px;border-radius:2px;background:var(--nodata);}
+  .threshold .pips span.on{background:var(--warn);}
+  .dactions{display:flex;gap:8px;}
+  .figs{display:grid;grid-template-columns:repeat(4,1fr);background:var(--surface);border:1px solid var(--line);border-radius:10px;}
+  .fig{padding:14px 18px;border-left:1px solid var(--line);display:grid;gap:4px;}
+  .fig:first-child{border-left:0;}
+  .fig .lbl{font-size:12px;color:var(--muted);}
+  .fig .val{font-family:var(--mono);font-size:22px;font-weight:500;letter-spacing:-.02em;font-variant-numeric:tabular-nums;}
+  .fig .val small{font-size:13px;color:var(--muted);font-weight:400;margin-left:2px;}
+  .fig .val.warn{color:var(--warn-text);}
+  .dgrid{display:grid;grid-template-columns:1.45fr 1fr;gap:16px;}
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;}
+  .panel-h{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line);}
+  .panel-h h6{margin:0;font-size:13.5px;font-weight:600;}
+  .panel-h .mono{font-size:11.5px;color:var(--muted);}
+  .chart{display:block;width:100%;height:auto;padding:10px 12px 6px;}
+  .c-grid{stroke:var(--line);stroke-width:1;}
+  .c-limit{stroke:var(--line-strong);stroke-width:1;stroke-dasharray:4 4;}
+  .c-area{fill:var(--ink);opacity:.06;}
+  .c-line{fill:none;stroke:var(--ink);stroke-width:1.75;stroke-linejoin:round;stroke-linecap:round;}
+  .c-dot{fill:var(--warn);stroke:var(--surface);stroke-width:2;}
+  .c-lbl{fill:var(--muted);font-family:var(--mono);font-size:10px;}
+  .c-val{fill:var(--ink);font-family:var(--mono);font-size:11px;font-weight:500;}
+  .checks .res{font-family:var(--mono);font-size:11.5px;font-weight:600;}
+  .checks .res.ok{color:var(--up-text);}
+  .checks .res.fail{color:var(--down-text);}
+  .checks td{padding:9px 16px;font-size:12.5px;}
+  .checks .t{font-family:var(--mono);font-size:12px;color:var(--ink-2);white-space:nowrap;}
+
+  .sp{min-width:700px;background:var(--bg);padding:40px 48px 32px;display:grid;gap:28px;}
+  .sp-head{display:flex;align-items:center;justify-content:space-between;}
+  .client-logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px;letter-spacing:-.02em;}
+  .client-logo .cl{width:30px;height:30px;border-radius:7px;background:var(--client);color:#fff;display:grid;place-items:center;font-size:15px;font-weight:700;}
+  .sp-state{display:flex;align-items:center;gap:14px;padding:20px 22px;background:var(--surface);border:1px solid var(--line);border-radius:10px;}
+  .sp-state .okc{width:34px;height:34px;border-radius:50%;background:var(--up);display:grid;place-items:center;flex:none;}
+  .sp-state .okc svg{width:18px;height:18px;color:#fff;}
+  .sp-state h5{font-size:21px;font-weight:700;letter-spacing:-.02em;}
+  .sp-state .mono{margin-left:auto;font-size:12px;color:var(--muted);}
+  .sp-list{background:var(--surface);border:1px solid var(--line);border-radius:10px;}
+  .sp-item{padding:16px 22px;border-top:1px solid var(--line);display:grid;gap:10px;}
+  .sp-item:first-child{border-top:0;}
+  .sp-row{display:flex;justify-content:space-between;align-items:center;gap:12px;}
+  .sp-row .nm{font-weight:500;font-size:14.5px;}
+  .sp-row .pc{font-family:var(--mono);font-size:12.5px;color:var(--muted);}
+  .sp-item .ticks{height:28px;gap:1.5px;}
+  .sp-item .ticks span{min-width:1.5px;border-radius:1px;}
+  .sp-legend{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--faint);}
+  .sp-hist h6{margin:0 0 10px;font-size:14px;font-weight:600;}
+  .sp-hist ul{list-style:none;margin:0;padding:0;border-top:1px solid var(--line);}
+  .sp-hist li{display:grid;grid-template-columns:150px 1fr auto;gap:16px;padding:12px 0;border-bottom:1px solid var(--line);font-size:13.5px;}
+  .sp-hist .d,.sp-hist .dur{font-family:var(--mono);font-size:12px;color:var(--muted);}
+  .sp-foot{display:flex;justify-content:center;}
+  .sp-foot .lockup{font-size:12.5px;font-weight:600;color:var(--muted);letter-spacing:-.01em;gap:.4em;}
+  .sp-foot .lockup span{font-weight:400;}
+
+  .mailbg{min-width:640px;background:var(--surface-2);padding:32px 20px;display:flex;justify-content:center;}
+  .mail{width:560px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:28px 32px;display:grid;gap:18px;}
+  .mail .lockup{font-size:16px;}
+  .mail .lockup svg{color:var(--down);}
+  .mail h5{font-size:22px;font-weight:700;letter-spacing:-.02em;line-height:1.2;}
+  .mail p{font-size:14px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:110px 1fr;border-top:1px solid var(--line);}
+  .kv div{padding:9px 0;border-bottom:1px solid var(--line);font-size:13px;}
+  .kv .k{color:var(--muted);}
+  .kv .v{font-family:var(--mono);font-size:12.5px;color:var(--ink);overflow-wrap:anywhere;}
+  .mail .ticks{height:22px;}
+  .mail .foot{font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;}
+
+  /* ---------- logo chapter ---------- */
+  .hero-logo{display:grid;place-items:center;padding:72px 20px;background:var(--surface);border:1px solid var(--line);border-radius:12px;}
+  .hero-logo .lockup{font-size:clamp(56px,10vw,120px);}
+  .construct{position:relative;width:180px;height:180px;color:var(--ink);}
+  .construct svg{position:absolute;inset:0;width:100%;height:100%;}
+  .construct .g line{stroke:var(--line-strong);stroke-width:.05;}
+  .construct .k circle{fill:var(--down);}
+  .clear{position:relative;padding:28px 34px;border:1px dashed var(--line-strong);border-radius:4px;}
+  .clear .lockup{font-size:44px;}
+  .clear .x{position:absolute;font-family:var(--mono);font-size:10.5px;color:var(--muted);}
+  .variants{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;}
+  .variant{border-radius:10px;padding:38px 20px;display:grid;place-items:center;gap:14px;border:1px solid var(--line);}
+  .variant .lockup{font-size:34px;}
+  .variant .cap{font-size:12.5px;}
+  .v-paper{background:#ffffff;}
+  .v-paper .lockup{color:#0d0e12;}
+  .v-paper .cap{color:#6a6d76;}
+  .v-ink{background:#0d0e12;border-color:#24262c;}
+  .v-ink .lockup{color:#edeef1;}
+  .v-ink .cap{color:#8f929b;}
+  .icons{display:flex;align-items:flex-end;gap:18px;}
+  .appicon{width:var(--s);height:var(--s);border-radius:calc(var(--s) * .24);background:var(--icon-bg);display:grid;place-items:center;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);flex:none;}
+  .appicon svg{width:62%;height:62%;color:var(--c,#2bc47a);}
+  .tabs-demo{display:grid;gap:8px;justify-items:start;}
+  .tabchip{display:flex;align-items:center;gap:8px;height:32px;padding:0 12px 0 9px;border:1px solid var(--line);border-radius:7px 7px 0 0;border-bottom:0;background:var(--surface);font-size:12.5px;color:var(--ink-2);}
+  .tabchip .appicon{--s:16px;}
+  .tabchip small{font-family:var(--mono);font-size:11px;color:var(--muted);}
+  .donts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;}
+  .dont{border:1px solid var(--line);border-radius:10px;background:var(--surface);display:grid;}
+  .dont .stage{height:120px;display:grid;place-items:center;border-bottom:1px solid var(--line);overflow:hidden;}
+  .dont .stage .lockup{font-size:30px;}
+  .dont p{padding:12px 14px;font-size:13px;color:var(--ink-2);display:flex;gap:8px;}
+  .dont p b{font-family:var(--mono);font-size:11.5px;color:var(--down-text);font-weight:500;padding-top:1px;}
+
+  /* ---------- type chapter ---------- */
+  .type-hero{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;}
+  .specimen{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:28px;display:grid;gap:18px;align-content:start;}
+  .specimen .fam{display:flex;justify-content:space-between;gap:10px;font-size:13px;color:var(--muted);}
+  .specimen .fam b{color:var(--ink);font-weight:600;}
+  .specimen .big{font-size:clamp(64px,8vw,104px);font-weight:700;letter-spacing:-.05em;line-height:.9;}
+  .specimen .bigm{font-family:var(--mono);font-size:clamp(44px,5.4vw,70px);font-weight:500;letter-spacing:-.04em;line-height:.95;}
+  .specimen .weights{display:grid;gap:4px;font-size:22px;letter-spacing:-.02em;}
+  .specimen .glyphs{font-size:17px;letter-spacing:.04em;color:var(--ink-2);}
+  .specimen .mglyphs{font-family:var(--mono);font-size:14px;color:var(--ink-2);line-height:1.8;}
+
+  /* ---------- color chapter ---------- */
+  .palette{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;}
+  .chip{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface);}
+  .chip .fill{height:96px;border-bottom:1px solid var(--line);}
+  .chip .info{padding:10px 12px;display:grid;gap:1px;}
+  .chip .info b{font-size:13.5px;font-weight:600;}
+  .chip .info span{font-family:var(--mono);font-size:11.5px;color:var(--muted);}
+  .ratio{display:grid;grid-template-columns:minmax(0,90fr) minmax(0,6fr) minmax(0,2fr) minmax(0,1.2fr) minmax(0,.8fr);height:56px;border-radius:10px;overflow:hidden;border:1px solid var(--line);}
+  .ratio div{position:relative;}
+  .ratio-cap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-family:var(--mono);font-size:12px;color:var(--muted);}
+
+  .footer{margin-top:120px;padding-top:28px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;font-size:13px;color:var(--muted);}
+  .footer .lockup{font-size:18px;}
+
+  @media (max-width:640px){
+    body{font-size:14.5px;}
+    .chapter{padding-top:72px;}
+    .box,.specimen{padding:20px;}
+    .cover .ticks{height:48px;gap:2px;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .live::after{animation:none;}
+  }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="g" viewBox="0 0 24 24"><path d="M3.5 12.5 9 18 20.5 6.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.5 6.5h7v7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 16 16"><path d="M8 3v10M3 8h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+  <symbol id="i-search" viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="m10.5 10.5 3 3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 16 16"><path d="m4 6 4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-check" viewBox="0 0 16 16"><path d="m3.5 8.5 3 3 6-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 16 16"><path d="M13 8a5 5 0 1 1-1.5-3.55M13 3v3h-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<div class="book">
+  <aside class="toc">
+    <span class="lockup"><svg><use href="#g"/></svg>upvane</span>
+    <nav aria-label="İçindekiler">
+      <a href="#marka"><span>01</span>Marka</a>
+      <a href="#logo"><span>02</span>Logo</a>
+      <a href="#renk"><span>03</span>Renk</a>
+      <a href="#tipografi"><span>04</span>Tipografi</a>
+      <a href="#dil"><span>05</span>Dil ve veri</a>
+      <a href="#arayuz"><span>06</span>Arayüz</a>
+      <a href="#uygulamalar"><span>07</span>Uygulamalar</a>
+      <a href="#kod"><span>08</span>Kod ve varlıklar</a>
+    </nav>
+    <div class="seg" role="group" aria-label="Görünüm teması">
+      <button type="button" id="th-system" data-t-theme="system" aria-pressed="true">Sistem</button>
+      <button type="button" id="th-light" data-t-theme="light" aria-pressed="false">Açık</button>
+      <button type="button" id="th-dark" data-t-theme="dark" aria-pressed="false">Koyu</button>
+    </div>
+    <div class="meta">Marka Rehberi 1.0<br>Eylül 2026<br>docs/brand/</div>
+  </aside>
+
+  <main>
+    <header class="cover">
+      <span class="eyebrow">Upvane Marka Rehberi · Sürüm 1.0 · Eylül 2026</span>
+      <h1>Renk yalnızca <em>bir şey olduğunda</em> gelir.</h1>
+      <p class="lede">Bu rehber Upvane'in nasıl göründüğünü, nasıl konuştuğunu ve ekranlarının hangi kurallarla kurulduğunu anlatıyor. Uygulama arayüzü, durum sayfaları, e-postalar ve pazarlama malzemeleri bu kurallara göre hazırlanıyor. Bir karar bu rehberle çelişiyorsa ya rehber güncellenmeli ya da karar değişmeli.</p>
+      <div style="display:grid;gap:8px;">
+        <div class="ticks" data-t="u31 s1 u25 d3" role="img" aria-label="Son 60 dakikanın kontrolleri: 56 başarılı, 1 şüpheli, son 3 kontrol kesinti"></div>
+        <div class="strip-cap"><span>13:32</span><span>markanın imza grafiği: kontrol şeridi</span><span><b>14:29 kesinti</b></span></div>
+      </div>
+      <dl class="facts">
+        <div><dt>Ürün</dt><dd>Uptime ve olay izleme</dd></div>
+        <div><dt>Kimin için</dt><dd>Ajanslar ve müşteri siteleri</dd></div>
+        <div><dt>Birincil dil</dt><dd>Türkçe, İngilizce ikinci</dd></div>
+        <div><dt>Alan adı</dt><dd class="mono">upvane.app</dd></div>
+      </dl>
+    </header>
+
+    <!-- ============ 01 MARKA ============ -->
+    <section class="chapter" id="marka">
+      <div class="ch-head">
+        <span class="ch-num">01</span>
+        <h2>Marka</h2>
+        <p>Upvane, dijital ajansların ve serbest çalışanların müşteri sitelerini izlediği bir araç. Kullanıcı ekranı açtığında tek bir şey soruyor: şu an bir sorun var mı? Markanın her kararı bu sorunun cevabını hızlandırmak için veriliyor.</p>
+      </div>
+
+      <div class="sub">
+        <h3>İsim</h3>
+        <div class="prose">
+          <p><b>Up</b>, izlenen durumun adı: bir mühendisin söylediği gibi, sade. <b>Vane</b> ise rüzgârgülü, yani koşullar değiştiğinde ilk hareket eden ve hangi yöne döndüğünü gösteren alet. İkisi birlikte ürünün işini anlatıyor: sistem ayaktayken sessiz duruyor, bir şey değiştiği anda yönünü gösteriyor.</p>
+          <p>Yazılışı her zaman <b>Upvane</b> (cümle içinde) ya da logoda <b>upvane</b>. “UpVane”, “Up Vane” ya da “UPVANE” kullanılmıyor. Türkçe eklerde kesme işareti ve ünlü uyumu kullanılıyor: Upvane'e, Upvane'de, Upvane'in, Upvane ile.</p>
+        </div>
+      </div>
+
+      <div class="sub">
+        <h3>Üç ilke</h3>
+        <div class="cols">
+          <div class="col"><h4>Renk = durum</h4><p>Arayüzde yeşil, sarı ve kırmızı sadece durum anlatıyor. Butonlar, linkler, seçili sekmeler ve odak halkaları mürekkep renginde. Markanın ayrı bir vurgu rengi yok, çünkü kullanıcının dikkati durum renklerine ait.</p></div>
+          <div class="col"><h4>Önce cevap</h4><p>Her ekran cevabı bir cümleyle veriyor: “2 monitörde sorun var”, “Tüm sistemler çalışıyor”. Sayılar, grafikler ve tablolar bu cümleden sonra geliyor. Sorunlu olanlar listenin başına diziliyor.</p></div>
+          <div class="col"><h4>Rakam veridir</h4><p>Gecikme, yüzde ve saat her yerde mono ve eşit genişlikte yazılıyor, biçimleri de Türkçe: %99,98 · 1.240 ms · 14:28:04. Hiçbir sayı yuvarlanarak ya da süslenerek gösterilmiyor.</p></div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <h3>Kişilik</h3>
+        <p>Upvane gece yarısı bir kesinti sırasında yanında olmak istediğin meslektaş gibi konuşuyor: sakin, kısa ve ne olduğunu tam olarak bilen biri.</p>
+        <div class="tbl-wrap">
+          <table class="spec">
+            <thead><tr><th>Upvane…</th><th>…ama şu değil</th><th>Pratikte</th></tr></thead>
+            <tbody>
+              <tr><td class="n">Sakin</td><td class="r">Telaşlı</td><td class="r">Ünlem işareti, “DİKKAT!”, büyük harfle bağırma yok. Kırmızı renk zaten yeterince yüksek sesle konuşuyor.</td></tr>
+              <tr><td class="n">Net</td><td class="r">Teknik jargonla dolu</td><td class="r">“HTTP 503” yazılıyor ama yanında ne anlama geldiği de söyleniyor: “erişilemiyor”.</td></tr>
+              <tr><td class="n">Dürüst</td><td class="r">Pazarlamacı</td><td class="r">%99,20 %99,2 diye yuvarlanmıyor. Veri yoksa grafik uydurulmuyor, “veri yok” yazılıyor.</td></tr>
+              <tr><td class="n">Yerel</td><td class="r">Çeviri gibi</td><td class="r">Önce Türkçe yazılıyor. Saat dilimi TSİ, sayılar Türkçe biçimde. İngilizce metin bir çeviri değil, ikinci dil.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 02 LOGO ============ -->
+    <section class="chapter" id="logo">
+      <div class="ch-head">
+        <span class="ch-num">02</span>
+        <h2>Logo</h2>
+        <p>Logo iki parçadan oluşuyor: yön tiki adlı işaret ve küçük harfli yazı. Yön tiki, başarılı bir kontrolün tik işaretiyle (✓) rüzgârgülünün gösterdiği yönün (↗) tek bir çizgide birleşimi.</p>
+      </div>
+
+      <div class="hero-logo"><span class="lockup"><svg><use href="#g"/></svg>upvane</span></div>
+
+      <div class="sub">
+        <h3>Yapı</h3>
+        <div class="grid-cells">
+          <div class="cell">
+            <div class="construct">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <g class="g">
+                  <line x1="0" y1="6.5" x2="24" y2="6.5"/><line x1="0" y1="12.5" x2="24" y2="12.5"/><line x1="0" y1="18" x2="24" y2="18"/>
+                  <line x1="3.5" y1="0" x2="3.5" y2="24"/><line x1="9" y1="0" x2="9" y2="24"/><line x1="13.5" y1="0" x2="13.5" y2="24"/><line x1="20.5" y1="0" x2="20.5" y2="24"/>
+                </g>
+                <use href="#g"/>
+                <g class="k"><circle cx="3.5" cy="12.5" r=".45"/><circle cx="9" cy="18" r=".45"/><circle cx="20.5" cy="6.5" r=".45"/><circle cx="13.5" cy="6.5" r=".45"/><circle cx="20.5" cy="13.5" r=".45"/></g>
+              </svg>
+            </div>
+            <span class="cap">24 birimlik ızgara. Çizgi kalınlığı 2,6 birim, uçlar ve köşeler yuvarlak. Kırmızı noktalar çizimin geçtiği noktaları gösteriyor.</span>
+          </div>
+          <div class="cell">
+            <div class="clear">
+              <span class="lockup"><svg><use href="#g"/></svg>upvane</span>
+              <span class="x" style="top:6px;left:50%;transform:translateX(-50%)">½ işaret</span>
+              <span class="x" style="bottom:6px;left:50%;transform:translateX(-50%)">½ işaret</span>
+            </div>
+            <span class="cap">Logonun çevresinde her yönde en az işaret yüksekliğinin yarısı kadar boş alan bırakılıyor.</span>
+          </div>
+          <div class="cell">
+            <div style="display:grid;gap:14px;justify-items:center;">
+              <span class="lockup" style="font-size:18px;"><svg><use href="#g"/></svg>upvane</span>
+              <svg width="16" height="16" style="color:var(--ink)"><use href="#g"/></svg>
+            </div>
+            <span class="cap">En küçük boyutlar: logo 80 px genişlik, işaret tek başına 16 px. Bunun altında sadece uygulama ikonu kullanılıyor.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <h3>Renk varyantları</h3>
+        <p>Logo her zaman tek renk. Açık zeminde mürekkep, koyu zeminde kâğıt rengi kullanılıyor. Durum rengini yalnızca ürünün içindeki işaret alabiliyor (aşağıdaki canlı ikon bölümüne bak).</p>
+        <div class="variants">
+          <div class="variant v-paper"><span class="lockup"><svg><use href="#g"/></svg>upvane</span><span class="cap">Mürekkep, açık zemin</span></div>
+          <div class="variant v-ink"><span class="lockup"><svg><use href="#g"/></svg>upvane</span><span class="cap">Kâğıt, koyu zemin</span></div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <h3>Uygulama ikonu ve canlı favicon</h3>
+        <p>Uygulama ikonunun zemini mürekkep rengi, işareti ise organizasyonun o anki en kötü durumunun rengi. Tarayıcı sekmesi durum göstergesine dönüşüyor: kullanıcı başka bir sekmedeyken bile Upvane sekmesine bakıp bir sorun olup olmadığını anlayabiliyor. Pazarlama malzemelerinde ikon her zaman yeşil.</p>
+        <div class="grid-cells">
+          <div class="cell">
+            <div class="icons">
+              <span class="appicon" style="--s:72px"><svg><use href="#g"/></svg></span>
+              <span class="appicon" style="--s:40px"><svg><use href="#g"/></svg></span>
+              <span class="appicon" style="--s:24px"><svg><use href="#g"/></svg></span>
+              <span class="appicon" style="--s:16px"><svg><use href="#g"/></svg></span>
+            </div>
+            <span class="cap">Köşe yarıçapı kenarın %24'ü. İşaret kenarın %62'sini kaplıyor.</span>
+          </div>
+          <div class="cell">
+            <div class="tabs-demo">
+              <span class="tabchip"><span class="appicon" style="--c:#2bc47a"><svg><use href="#g"/></svg></span>Monitörler · Upvane <small>her şey çalışıyor</small></span>
+              <span class="tabchip"><span class="appicon" style="--c:#f2b53a"><svg><use href="#g"/></svg></span>Monitörler · Upvane <small>şüpheli</small></span>
+              <span class="tabchip"><span class="appicon" style="--c:#ff5b4e"><svg><use href="#g"/></svg></span>(1) Monitörler · Upvane <small>kesinti</small></span>
+            </div>
+            <span class="cap">Açık bir olay varsa sekme başlığının başına olay sayısı ekleniyor.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <h3>Yapılmaması gerekenler</h3>
+        <div class="donts">
+          <div class="dont"><div class="stage"><span class="lockup" style="letter-spacing:.02em;">UPVANE</span></div><p><b>✕</b>Büyük harf kullanma. Yazı her zaman küçük harf.</p></div>
+          <div class="dont"><div class="stage"><span class="lockup" style="color:var(--up);"><svg><use href="#g"/></svg>upvane</span></div><p><b>✕</b>Logoyu durum rengine boyama. Yeşil, sarı ve kırmızı durumlara ayrılmış.</p></div>
+          <div class="dont"><div class="stage"><span class="lockup"><svg style="transform:rotate(-45deg)"><use href="#g"/></svg>upvane</span></div><p><b>✕</b>İşareti döndürme. Ok her zaman sağ yukarıyı gösteriyor.</p></div>
+          <div class="dont"><div class="stage"><span class="lockup" style="letter-spacing:.12em;font-weight:400;">upvane<svg><use href="#g"/></svg></span></div><p><b>✕</b>Sırayı, ağırlığı ya da harf aralığını değiştirme.</p></div>
+          <div class="dont"><div class="stage" style="background:linear-gradient(135deg,#2447f5,#b14cff);"><span class="lockup" style="color:#fff;text-shadow:0 4px 14px rgba(0,0,0,.4);"><svg><use href="#g"/></svg>upvane</span></div><p><b>✕</b>Gradyan, gölge ya da efekt ekleme.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 03 RENK ============ -->
+    <section class="chapter" id="renk">
+      <div class="ch-head">
+        <span class="ch-num">03</span>
+        <h2>Renk</h2>
+        <p>Palet iki gruptan oluşuyor. Altı nötr ton arayüzün kendisini oluşturuyor. Beş durum rengi ise yalnızca durum anlatıyor. Markanın ayrı bir vurgu rengi yok.</p>
+      </div>
+
+      <div class="sub">
+        <h3>Oran</h3>
+        <div class="ratio" role="img" aria-label="Yaklaşık oranlar: yüzde 90 nötr, yüzde 6 mürekkep, geri kalanı durum renkleri">
+          <div style="background:var(--surface)"></div>
+          <div style="background:var(--ink)"></div>
+          <div style="background:var(--up)"></div>
+          <div style="background:var(--warn)"></div>
+          <div style="background:var(--down)"></div>
+        </div>
+        <div class="ratio-cap"><span>~%90 zemin, yüzey, çizgi</span><span>~%6 mürekkep: metin ve butonlar</span><span>kalan kısım: durum renkleri, sadece bir şey olduğunda</span></div>
+      </div>
+
+      <div class="sub">
+        <h3>Nötrler</h3>
+        <div class="palette">
+          <div class="chip"><div class="fill" style="background:var(--ink)"></div><div class="info"><b>Mürekkep</b><span>#0D0E12 · #EDEEF1</span></div></div>
+          <div class="chip"><div class="fill" style="background:var(--ink-2)"></div><div class="info"><b>Grafit</b><span>#3B3D45 · #C3C5CC</span></div></div>
+          <div class="chip"><div class="fill" style="background:var(--muted)"></div><div class="info"><b>Soluk</b><span>#6A6D76 · #8F929B</span></div></div>
+          <div class="chip"><div class="fill" style="background:var(--line)"></div><div class="info"><b>Çizgi</b><span>#E4E4E8 · #24262C</span></div></div>
+          <div class="chip"><div class="fill" style="background:var(--surface)"></div><div class="info"><b>Yüzey</b><span>#FFFFFF · #121317</span></div></div>
+          <div class="chip"><div class="fill" style="background:var(--bg)"></div><div class="info"><b>Zemin</b><span>#F6F6F7 · #0A0B0D</span></div></div>
+        </div>
+        <p class="muted" style="font-size:13.5px;">Hex değerleri sırasıyla açık · koyu tema. Renk örnekleri seçili temayı gösteriyor.</p>
+      </div>
+
+      <div class="sub">
+        <h3>Durum renkleri</h3>
+        <p>Her durum rengi üç tondan oluşuyor: grafikler ve noktalar için ana renk, metin için koyulaştırılmış renk (açık tema) ve etiket zeminleri için yumuşak renk.</p>
+        <div class="tbl-wrap">
+          <table class="spec">
+            <thead><tr><th></th><th>Ad</th><th>Uygulamadaki durumlar</th><th>Ana</th><th>Metin</th><th>Yumuşak</th></tr></thead>
+            <tbody>
+              <tr><td class="sw"><span style="background:var(--up)"></span></td><td class="n">Çalışıyor</td><td class="r">up</td><td class="m">#12A05C<br>#2BC47A</td><td class="m">#0A7A44<br>#4FD894</td><td class="m">#E6F6EE<br>ana %12</td></tr>
+              <tr><td class="sw"><span style="background:var(--warn)"></span></td><td class="n">Şüpheli</td><td class="r">suspect, recovering, flapping · SSL bitişi yaklaşıyor · kısmi kesintili gün</td><td class="m">#E5A00D<br>#F2B53A</td><td class="m">#8F5A00<br>#F5C45E</td><td class="m">#FDF3DC<br>ana %12</td></tr>
+              <tr><td class="sw"><span style="background:var(--down)"></span></td><td class="n">Kesinti</td><td class="r">down · açık olay · başarısız bildirim · FAIL</td><td class="m">#E03A2F<br>#FF5B4E</td><td class="m">#B4231A<br>#FF7A70</td><td class="m">#FDE9E7<br>ana %13</td></tr>
+              <tr><td class="sw"><span style="background:var(--idle)"></span></td><td class="n">Beklemede</td><td class="r">paused, pending · pasif kanal</td><td class="m">#A3A5AD<br>#5E6169</td><td class="m">Grafit</td><td class="m">#EFEFF2<br>#1E2025</td></tr>
+              <tr><td class="sw"><span style="background:var(--nodata)"></span></td><td class="n">Veri yok</td><td class="r">Şeritte henüz kontrol olmayan dilim</td><td class="m">#E7E7EB<br>#23252B</td><td class="m">—</td><td class="m">—</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="sub">
+        <h3>Kontrast</h3>
+        <p>Metin eşleşmeleri WCAG AA seviyesini (4,5:1) geçiyor. Durum renklerinin ana tonları grafik öğe olarak kullanılıyor ve hiçbir zaman tek başına anlam taşımıyor: yanlarında her zaman durum etiketi, metin ya da ekran okuyucu etiketi bulunuyor.</p>
+        <div class="tbl-wrap">
+          <table class="spec">
+            <thead><tr><th>Eşleşme</th><th>Açık</th><th>Koyu</th><th>Kullanım</th></tr></thead>
+            <tbody>
+              <tr><td class="n">Mürekkep / Yüzey</td><td class="m">19,29</td><td class="m">16,00</td><td class="r">Başlık ve gövde metni</td></tr>
+              <tr><td class="n">Grafit / Yüzey</td><td class="m">10,83</td><td class="m">10,77</td><td class="r">İkincil metin</td></tr>
+              <tr><td class="n">Soluk / Yüzey</td><td class="m">5,17</td><td class="m">5,97</td><td class="r">Etiket, meta satırı, placeholder</td></tr>
+              <tr><td class="n">Soluk / Zemin</td><td class="m">4,79</td><td class="m">6,33</td><td class="r">Sayfa zeminindeki yardımcı metin</td></tr>
+              <tr><td class="n">Metin / Yumuşak (Çalışıyor)</td><td class="m">4,84</td><td class="m">8,50</td><td class="r">Durum etiketi</td></tr>
+              <tr><td class="n">Metin / Yumuşak (Şüpheli)</td><td class="m">5,24</td><td class="m">9,18</td><td class="r">Durum etiketi</td></tr>
+              <tr><td class="n">Metin / Yumuşak (Kesinti)</td><td class="m">5,63</td><td class="m">6,27</td><td class="r">Durum etiketi, olay şeridi</td></tr>
+              <tr><td class="n">Sayaç rozeti</td><td class="m">6,57</td><td class="m">6,43</td><td class="r">Açıkta #FFF / #B4231A, koyuda #0A0B0D / #FF5B4E</td></tr>
+              <tr><td class="n">Soluk-2 / Yüzey</td><td class="m">2,74</td><td class="m">3,19</td><td class="r"><span class="gfx">sadece süs</span> · tablo içi “···”, pasif sayılar. Okunması gereken metinde kullanılmıyor.</td></tr>
+              <tr><td class="n">Şüpheli ana / Yüzey</td><td class="m">2,24</td><td class="m">10,12</td><td class="r"><span class="gfx">grafik</span> · şerit çizgisi, nokta. Yanında her zaman etiket var.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="sub">
+        <h3>Müşteri renkleri</h3>
+        <div class="prose">
+          <p>Herkese açık durum sayfaları ajansın müşterisine ait. Müşterinin marka rengi (<span class="mono">status_pages.brand_color</span>) sadece bir yerde kullanılıyor: logo yüklenmediyse baş harfin bulunduğu kare. Arka plan, buton ya da çizgi olarak kullanılmıyor, çünkü müşterinin rengi kırmızı ya da yeşil olabilir ve bu durum anlamını bozar.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 04 TİPOGRAFİ ============ -->
+    <section class="chapter" id="tipografi">
+      <div class="ch-head">
+        <span class="ch-num">04</span>
+        <h2>Tipografi</h2>
+        <p>İki aile kullanılıyor: yazılan her şey için Schibsted Grotesk, ölçülen her şey için Geist Mono. İkisi de açık lisanslı, Bunny Fonts üzerinden sunucuda barındırılıyor ve Türkçe karakterlerin hepsini destekliyor.</p>
+      </div>
+
+      <div class="type-hero">
+        <div class="specimen">
+          <div class="fam"><b>Schibsted Grotesk</b><span>Arayüz · başlık · logo</span></div>
+          <div class="big">Ağ ışığı</div>
+          <div class="weights">
+            <span style="font-weight:400">400 Normal: Monitör ara</span>
+            <span style="font-weight:500">500 Orta: Bosphorus Dental</span>
+            <span style="font-weight:600">600 Yarı kalın: Son kontroller</span>
+            <span style="font-weight:700">700 Kalın: 2 monitörde sorun var</span>
+          </div>
+          <div class="glyphs">Aa Ğğ Şş İi Iı Öö Üü Çç — 0123456789</div>
+        </div>
+        <div class="specimen">
+          <div class="fam"><b>Geist Mono</b><span>Rakam · adres · kod</span></div>
+          <div class="bigm">%99,98</div>
+          <div class="mglyphs">1.240 ms · 14:28:04 · 04:12<br>HTTP 503 · 3/3 · 1.436×<br>panel.kuzeylojistik.com/giriş</div>
+          <p class="muted" style="font-size:13.5px;">Sadece 400 ve 500 ağırlıkları. Sayı sütunları sağa hizalanıyor, tabular rakam her zaman açık.</p>
+        </div>
+      </div>
+
+      <div class="sub">
+        <h3>Ölçek</h3>
+        <div class="tbl-wrap">
+          <table class="spec">
+            <thead><tr><th>Token</th><th>Boyut / satır</th><th>Ağırlık</th><th>Harf aralığı</th><th>Örnek</th></tr></thead>
+            <tbody>
+              <tr><td class="m">text-meta</td><td class="m">12 / 16</td><td class="m">400–500</td><td class="m">0</td><td style="font-size:12px;color:var(--muted)">Tablo başlığı, meta satırı</td></tr>
+              <tr><td class="m">text-ui</td><td class="m">13,5 / 20</td><td class="m">400–500</td><td class="m">0</td><td style="font-size:13.5px">Tablo hücresi, buton, form alanı</td></tr>
+              <tr><td class="m">text-body</td><td class="m">15 / 24</td><td class="m">400</td><td class="m">0</td><td style="font-size:15px">Gövde metni, açıklamalar</td></tr>
+              <tr><td class="m">text-panel</td><td class="m">17 / 24</td><td class="m">600</td><td class="m">−0,015em</td><td style="font-size:17px;font-weight:600;letter-spacing:-.015em">Panel ve bölüm başlığı</td></tr>
+              <tr><td class="m">text-title</td><td class="m">24 / 28</td><td class="m">700</td><td class="m">−0,025em</td><td style="font-size:24px;font-weight:700;letter-spacing:-.025em;line-height:1.15">Monitör adı</td></tr>
+              <tr><td class="m">text-statement</td><td class="m">27 / 30</td><td class="m">700</td><td class="m">−0,025em</td><td style="font-size:27px;font-weight:700;letter-spacing:-.025em;line-height:1.1">Durum cümlesi</td></tr>
+              <tr><td class="m">text-figure</td><td class="m">22 / 28 mono</td><td class="m">500</td><td class="m">−0,02em</td><td class="mono" style="font-size:22px;font-weight:500;letter-spacing:-.02em">%99,91</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="sub">
+        <h3>Kurallar</h3>
+        <div class="cols">
+          <div class="col"><h4>Büyük harf yok</h4><p>Etiketler, sekmeler ve başlıklar cümle düzeninde yazılıyor. Türkçede büyük harfe çevirme i/İ ve ı/I hatası yapıyor, ayrıca metne bağıran bir ton veriyor. Tek istisna OK/FAIL gibi protokol terimleri.</p></div>
+          <div class="col"><h4>Mono sadece veri için</h4><p>Bir metin ölçülen, sayılan ya da kopyalanabilen bir şeyse mono yazılıyor: süre, saat, adres, durum kodu. Cümleler, düğmeler ve adlar mono yazılmıyor.</p></div>
+          <div class="col"><h4>Sıkı başlıklar</h4><p>20 px ve üstündeki başlıklarda harf aralığı eksiye çekiliyor, gövde metninde olduğu gibi bırakılıyor. Satır uzunluğu en fazla 70 karakter.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 05 DİL ============ -->
+    <section class="chapter" id="dil">
+      <div class="ch-head">
+        <span class="ch-num">05</span>
+        <h2>Dil ve veri</h2>
+        <p>Metinler durumu önce söylüyor, ayrıntıyı sonra veriyor. Kullanıcıya uygulama içinde ve bildirimlerde “sen” diye hitap ediliyor. Herkese açık durum sayfalarında ise hitap kullanılmıyor, çünkü o sayfayı okuyan kişi ajansın müşterisinin müşterisi.</p>
+      </div>
+
+      <div class="sub">
+        <h3>Yaz / yazma</h3>
+        <div class="pairs">
+          <div class="pair"><div class="yes"><span class="tag">yaz</span><span class="t">Kesinti — Acme Mağaza — ödeme sayfası</span></div><div class="no"><span class="tag">yazma</span><span class="t">Acme Mağaza — ödeme sayfası artık DOWN</span></div><div class="why">E-posta konusu durumla başlıyor. İngilizce terim ve büyük harf kullanılmıyor.</div></div>
+          <div class="pair"><div class="yes"><span class="tag">yaz</span><span class="t">2 monitörde sorun var</span></div><div class="no"><span class="tag">yazma</span><span class="t">Dikkat! Sistemlerinizde kritik hatalar tespit edildi!</span></div><div class="why">Sayı ve durum yeterli. Ünlem ve abartı kullanılmıyor.</div></div>
+          <div class="pair"><div class="yes"><span class="tag">yaz</span><span class="t">Zaman aşımı: 1.500 ms içinde yanıt gelmedi</span></div><div class="no"><span class="tag">yazma</span><span class="t">Bir hata oluştu</span></div><div class="why">Hata ne olduğunu ve ölçüsünü söylüyor.</div></div>
+          <div class="pair"><div class="yes"><span class="tag">yaz</span><span class="t">1/3 ardışık hata. 2 hata daha olursa Kesinti sayılır.</span></div><div class="no"><span class="tag">yazma</span><span class="t">Şüpheli</span></div><div class="why">Bir durumun ne anlama geldiği ekranda açıklanıyor.</div></div>
+          <div class="pair"><div class="yes"><span class="tag">yaz</span><span class="t">Monitörü oluştur</span></div><div class="no"><span class="tag">yazma</span><span class="t">Gönder</span></div><div class="why">Buton, tıklayınca ne olacağını söylüyor.</div></div>
+          <div class="pair"><div class="yes"><span class="tag">yaz</span><span class="t">31 monitör daha, hepsi çalışıyor.</span></div><div class="no"><span class="tag">yazma</span><span class="t">Sonraki sayfa →</span></div><div class="why">Gizlenen kısmın durumu da söyleniyor.</div></div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <h3>Sayı, saat ve süre</h3>
+        <div class="tbl-wrap">
+          <table class="spec">
+            <thead><tr><th>Veri</th><th>Türkçe</th><th>English</th><th>Kural</th></tr></thead>
+            <tbody>
+              <tr><td class="n">Çalışma oranı</td><td class="m">%99,98 · %100</td><td class="m">99.98% · 100%</td><td class="r">İki ondalık basamak, yuvarlama yukarı değil aşağı. %100 sadece hiç hata yoksa.</td></tr>
+              <tr><td class="n">Gecikme</td><td class="m">1.240 ms · 212 ms</td><td class="m">1,240 ms</td><td class="r">Her zaman ms, saniyeye çevrilmiyor. Binlik ayracı nokta.</td></tr>
+              <tr><td class="n">Saat</td><td class="m">14:28:04</td><td class="m">14:28:04</td><td class="r">24 saat düzeni. Kontrol listelerinde saniye de gösteriliyor.</td></tr>
+              <tr><td class="n">Tarih</td><td class="m">16 Eylül 2026</td><td class="m">16 Sep 2026</td><td class="r">Ay adı yazıyla. Tablolarda kısa: 16 Eyl.</td></tr>
+              <tr><td class="n">Saat dilimi</td><td class="m">(TSİ)</td><td class="m">(UTC+3)</td><td class="r">E-postalarda ve dışa açık sayfalarda yazılıyor, panel içinde yazılmıyor.</td></tr>
+              <tr><td class="n">Süren olay</td><td class="m">04:12 · 1:02:40</td><td class="m">04:12</td><td class="r">Canlı sayaç. Bir saati geçince saat hanesi ekleniyor.</td></tr>
+              <tr><td class="n">Biten olay</td><td class="m">18 dk sürdü · 2 sa 14 dk</td><td class="m">lasted 18 min</td><td class="r">Kısa birimlerle, en fazla iki birim.</td></tr>
+              <tr><td class="n">Tekrar</td><td class="m">212× · 1.436×</td><td class="m">212×</td><td class="r">Birleştirilmiş kontrol sayısı.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="sub">
+        <h3>Durum sözlüğü</h3>
+        <div class="tbl-wrap">
+          <table class="spec">
+            <thead><tr><th>Kod</th><th>Etiket</th><th>English</th><th>Anlamı (kullanıcıya bu şekilde anlatılıyor)</th></tr></thead>
+            <tbody>
+              <tr><td class="m">up</td><td><span class="pill up"><i></i>Çalışıyor</span></td><td class="r">Up</td><td class="r">Son kontroller başarılı.</td></tr>
+              <tr><td class="m">suspect</td><td><span class="pill warn"><i></i>Şüpheli</span></td><td class="r">Suspect</td><td class="r">Hata görüldü ama onay eşiği dolmadı. Henüz bildirim gitmedi.</td></tr>
+              <tr><td class="m">down</td><td><span class="pill down"><i></i>Kesinti</span></td><td class="r">Down</td><td class="r">Onay eşiği doldu, olay açıldı, bildirim gönderildi.</td></tr>
+              <tr><td class="m">recovering</td><td><span class="pill warn"><i></i>Düzeliyor</span></td><td class="r">Recovering</td><td class="r">Başarılı kontroller başladı, kurtarma eşiği bekleniyor.</td></tr>
+              <tr><td class="m">paused</td><td><span class="pill"><i></i>Duraklatıldı</span></td><td class="r">Paused</td><td class="r">Kontrol yapılmıyor, kullanıcı durdurdu.</td></tr>
+              <tr><td class="m">pending</td><td><span class="pill"><i></i>Bekliyor</span></td><td class="r">Pending</td><td class="r">İlk kontrol henüz yapılmadı.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 06 ARAYÜZ ============ -->
+    <section class="chapter" id="arayuz">
+      <div class="ch-head">
+        <span class="ch-num">06</span>
+        <h2>Arayüz</h2>
+        <p>Arayüz kenarlıklar ve ayrım çizgileriyle kuruluyor. Gölge yalnızca açılan menülerde kullanılıyor. Bir şeyi öne çıkarmak için gölge yerine konum ve durum rengi kullanılıyor.</p>
+      </div>
+
+      <div class="sub">
+        <h3>Düzen ve ölçüler</h3>
+        <div class="tbl-wrap">
+          <table class="spec">
+            <thead><tr><th>Öğe</th><th>Değer</th><th>Kural</th></tr></thead>
+            <tbody>
+              <tr><td class="n">Üst menü</td><td class="m">52 px · yüzey · alt çizgi</td><td class="r">Logo, üç sekme (Monitörler, Olaylar, Ayarlar), organizasyon adı, dil, avatar. Seçili sekmenin altında 2 px mürekkep çizgi. 1024 px altında sekmeler menü düğmesinin altına toplanıyor.</td></tr>
+              <tr><td class="n">İçerik</td><td class="m">max 1200 px · 28 px kenar</td><td class="r">Her sayfa (detay ve form dahil) aynı 1200 px kabı kullanıyor — dar bir sütunda yarım kalmıyor. Mobilde kenar boşluğu 16 px.</td></tr>
+              <tr><td class="n">Form bölümü</td><td class="m">280 px etiket · 32 px boşluk</td><td class="r">Solda başlık + açıklama, sağda panel. Panelin alt şeridi <span class="mono">surface-2</span> zeminli, buton sağa hizalı. 760 px altında tek sütuna düşer.</td></tr>
+              <tr><td class="n">Boşluk</td><td class="m">4 px taban</td><td class="r">4 · 8 · 12 · 16 · 20 · 24 · 32 · 48. Bölümler arası 20–24 px.</td></tr>
+              <tr><td class="n">Köşe</td><td class="m">5 · 6 · 10 · 12 px</td><td class="r">Durum etiketi 5, kontroller 6, panel ve tablo 10, pencere 12. Tam yuvarlak (999 px) sadece avatar, sayaç ve nokta için.</td></tr>
+              <tr><td class="n">Çizgi</td><td class="m">1 px Çizgi / Çizgi-2</td><td class="r">Paneller Çizgi, form alanları ve ikincil butonlar Çizgi-2 (#D2D3D8 · #30323A).</td></tr>
+              <tr><td class="n">Gölge</td><td class="m">sadece açılır menü</td><td class="r">0 12px 32px rgb(13 14 18 / .12). Kart, tablo ve butonlarda gölge yok.</td></tr>
+              <tr><td class="n">Hareket</td><td class="m">150 ms · ease-out</td><td class="r">Renk ve opaklık geçişleri. Tek sürekli animasyon açık olay noktasındaki nabız. prefers-reduced-motion açıksa animasyon kapatılıyor.</td></tr>
+              <tr><td class="n">İkon</td><td class="m">Phosphor regular · 16 px</td><td class="r">Butonlarda 14 px. İkonlar metnin yerine geçmiyor, yanında kullanılıyor.</td></tr>
+              <tr><td class="n">Odak</td><td class="m">2 px mürekkep · 2 px boşluk</td><td class="r">Klavye odağında her tıklanabilir öğede görünüyor.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="sub">
+        <h3>Bileşenler</h3>
+        <div class="grid-cells">
+          <div class="cell" style="justify-items:start;">
+            <div class="row"><span class="pill up"><i></i>Çalışıyor</span><span class="pill warn"><i></i>Şüpheli</span><span class="pill down"><i></i>Kesinti</span><span class="pill"><i></i>Duraklatıldı</span></div>
+            <span class="cap" style="text-align:left;"><b>Durum etiketi.</b> 22 px yükseklik, 5 px köşe, 6 px nokta, 12,5 px yazı. Hap şeklinde değil, böylece butonlarla karışmıyor.</span>
+          </div>
+          <div class="cell" style="justify-items:start;">
+            <div class="row"><span class="btn btn-primary"><svg><use href="#i-plus"/></svg>Yeni monitör</span><span class="btn btn-secondary">Şimdi kontrol et</span><span class="btn btn-ghost">Vazgeç</span><span class="btn btn-danger">Sil</span></div>
+            <span class="cap" style="text-align:left;"><b>Butonlar.</b> 32 px (küçük boy 28 px). Bir ekranda en fazla bir ana buton. Silme butonunun sadece metni kırmızı, kırmızı zemin kesintilere ayrılmış.</span>
+          </div>
+          <div class="cell" style="justify-items:stretch;">
+            <div style="display:grid;gap:8px;">
+              <span class="field"><svg><use href="#i-search"/></svg>Monitör ara...</span>
+              <span class="fseg"><span class="on">Tümü <b>38</b></span><span>Sorunlu <b>2</b></span><span>Duraklatıldı <b>1</b></span></span>
+            </div>
+            <span class="cap" style="text-align:left;"><b>Form ve filtre.</b> 32 px alan, placeholder Soluk rengi. Filtrelerin yanında sayıları yazıyor.</span>
+          </div>
+          <div class="cell" style="justify-items:stretch;">
+            <div style="display:grid;gap:10px;">
+              <div class="ticks" data-t="n4 u16 s1 u6 d3" style="height:24px;"></div>
+              <div class="row" style="font-size:12.5px;color:var(--ink-2);gap:14px;"><span class="row" style="gap:6px;"><i style="width:8px;height:14px;border-radius:1px;background:var(--up)"></i>başarılı</span><span class="row" style="gap:6px;"><i style="width:8px;height:14px;border-radius:1px;background:var(--warn)"></i>tek hata · kısmi</span><span class="row" style="gap:6px;"><i style="width:8px;height:14px;border-radius:1px;background:var(--down)"></i>kesinti</span><span class="row" style="gap:6px;"><i style="width:8px;height:14px;border-radius:1px;background:var(--nodata)"></i>veri yok</span></div>
+            </div>
+            <span class="cap" style="text-align:left;"><b>Kontrol şeridi.</b> Markanın imza grafiği. Her çizgi bir kontrol (liste: son 30, detay: son 90 dakika) ya da bir gün (durum sayfası: son 90 gün). Aralık 2 px, en az 2 px genişlik, 1 px köşe. Her zaman bir ekran okuyucu özeti var.</span>
+          </div>
+          <div class="cell" style="justify-items:stretch;">
+            <div class="incident" style="flex-wrap:wrap;">
+              <span class="live" aria-hidden="true"></span>
+              <div class="inc-main" style="flex-wrap:wrap;"><strong>Kesinti</strong><span class="nm">Acme Mağaza — ödeme sayfası</span></div>
+              <span class="inc-timer">04:12</span>
+            </div>
+            <span class="cap" style="text-align:left;"><b>Olay şeridi.</b> Açık bir olay varsa Monitörler sayfasının en üstünde duruyor: nabız atan nokta, canlı süre sayacı, Onayla ve Olayı aç butonları. Birden fazla olay varsa alt alta, en fazla üç tane.</span>
+          </div>
+          <div class="cell" style="justify-items:start;">
+            <div class="row"><span style="font-size:13.5px;font-weight:500;color:var(--muted);">Olaylar</span><span class="count">1</span></div>
+            <span class="cap" style="text-align:left;"><b>Sayaç.</b> 18 px, mono 11 px kalın. Açıkta #B4231A zemin ve beyaz yazı, koyuda #FF5B4E zemin ve koyu yazı. Sadece açık olay sayısı için kullanılıyor.</span>
+          </div>
+          <div class="cell" style="justify-items:stretch;grid-column:span 2;">
+            <div class="fsection" style="padding:0;border-top:0;grid-template-columns:150px 1fr;gap:18px;">
+              <div><h5 style="font-size:13px;">Profil</h5><p class="fdesc" style="font-size:12px;">Adın ve panel dilin.</p></div>
+              <div class="fpanel"><div class="fbody" style="padding:14px;gap:10px;"><span class="field" style="color:var(--ink);font-size:12.5px;height:28px;">Elif Kaya</span></div><div class="factions" style="padding:8px 14px;"><span class="btn btn-primary btn-sm">Kaydet</span></div></div>
+            </div>
+            <span class="cap" style="text-align:left;"><b>Form bölümü.</b> Solda 280 px etiket sütunu (burada küçültülmüş), sağda panel — her ayar ve form sayfası bunu kullanıyor, tam genişlik. Panelin alt şeridi <span class="mono">surface-2</span>, buton sağda. 760 px altında tek sütuna düşer.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <h3>Grafikler</h3>
+        <div class="cols">
+          <div class="col"><h4>Çizgi mürekkep renginde</h4><p>Gecikme çizgisi 1,75 px mürekkep, altındaki alan mürekkebin %6'sı. Grafik renkli değil. Renk yalnızca bitiş noktasında ve kesinti dilimlerinde kullanılıyor.</p></div>
+          <div class="col"><h4>Ölçek gerçek değerleri gösteriyor</h4><p>Eksen 0'dan başlıyor. Izgara çizgileri yuvarlak değerlerde (500, 1.000). Zaman aşımı sınırı kesik çizgiyle çiziliyor ve adı yazılıyor.</p></div>
+          <div class="col"><h4>Son değer yazılıyor</h4><p>Bitiş noktası durum renginde 4 px'lik bir daire, yanında mono etiketle son değer. Kullanıcı sayıyı okumak için imleci üzerine getirmek zorunda kalmıyor.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 07 UYGULAMALAR ============ -->
+    <section class="chapter" id="uygulamalar">
+      <div class="ch-head">
+        <span class="ch-num">07</span>
+        <h2>Uygulamalar</h2>
+        <p>Uygulamaya geçirilecek ekranların referans çizimleri aşağıda. Metinler uygulamanın dil dosyalarından alındı, veriler örnek. Kod bu çizimlere birebir uyacak şekilde yazılıyor.</p>
+      </div>
+
+      <div class="screen">
+        <div class="screen-cap"><h4>Monitörler</h4><p>Durum cümlesi, açık olay şeridi, önem sırasına göre dizilmiş liste, her satırda son 30 kontrol ve 24 saatlik çalışma oranı.</p></div>
+        <div class="scroll"><div class="frame">
+          <div class="frame-bar"><span class="url">upvane.app/monitors</span></div>
+          <div class="app">
+            <div class="topbar">
+              <span class="lockup"><svg><use href="#g"/></svg>upvane</span>
+              <nav class="tabs"><a class="on">Monitörler</a><a>Olaylar <span class="count">1</span></a><a>Ayarlar</a></nav>
+              <div class="tb-right"><span class="org"><span class="sq">N</span>Nokta Dijital</span><span class="loc">TR</span><span class="avatar">EK</span></div>
+            </div>
+            <div class="app-body">
+              <div class="incident">
+                <span class="live" aria-hidden="true"></span>
+                <div class="inc-main"><strong>Kesinti</strong><span class="nm">Acme Mağaza — ödeme sayfası</span><span class="mono">HTTP 503 · 3/3 ardışık hata · Ops ekibine bildirildi</span></div>
+                <span class="inc-timer">04:12</span>
+                <span class="btn btn-secondary btn-sm">Onayla</span>
+                <span class="btn btn-ghost btn-sm">Olayı aç<svg><use href="#i-arrow"/></svg></span>
+              </div>
+              <div class="summary">
+                <div><div class="statement">2 monitörde sorun var</div><div class="meta"><b>38</b> monitör · <b>35</b> çalışıyor · <b>2</b> sorunlu · <b>1</b> duraklatıldı · son kontrol 14:32:04</div></div>
+                <span class="btn btn-primary"><svg><use href="#i-plus"/></svg>Yeni monitör</span>
+              </div>
+              <div class="filters">
+                <span class="field search"><svg><use href="#i-search"/></svg>Monitör ara...</span>
+                <span class="fseg"><span class="on">Tümü <b>38</b></span><span>Sorunlu <b>2</b></span><span>Duraklatıldı <b>1</b></span></span>
+                <span class="field select client">Tüm müşteriler<svg style="width:12px;height:12px;"><use href="#i-chev"/></svg></span>
+              </div>
+              <div class="tablebox">
+                <table class="tbl">
+                  <thead><tr><th>Monitör</th><th>Son 30 kontrol</th><th>Durum</th><th class="num">Gecikme</th><th class="num">24 sa</th><th></th></tr></thead>
+                  <tbody>
+                    <tr class="row-issue"><td><div class="mname">Acme Mağaza — ödeme sayfası</div><div class="msub">Acme Tekstil · HTTP</div></td><td><div class="ticks" data-t="u27 d3"></div></td><td><div class="stat-cell"><span class="pill down"><i></i>Kesinti</span><span class="mono">4 dk</span></div></td><td class="num muted">—</td><td class="num">%98,61</td><td class="num dots">···</td></tr>
+                    <tr><td><div class="mname">Kuzey Lojistik — müşteri paneli</div><div class="msub">Kuzey Lojistik · Anahtar kelime</div></td><td><div class="ticks" data-t="u21 s1 u5 s1 u1 s1"></div></td><td><span class="pill warn"><i></i>Şüpheli</span></td><td class="num">1.240 ms</td><td class="num">%99,20</td><td class="num dots">···</td></tr>
+                    <tr><td><div class="mname">Bosphorus Dental — randevu formu</div><div class="msub">Bosphorus Dental · HTTP</div></td><td><div class="ticks" data-t="u30"></div></td><td><span class="pill up"><i></i>Çalışıyor</span></td><td class="num">212 ms</td><td class="num">%100</td><td class="num dots">···</td></tr>
+                    <tr><td><div class="mname">acmetekstil.com.tr</div><div class="msub">Acme Tekstil · SSL sertifikası · <span class="warnnote">12 gün içinde bitiyor</span></div></td><td><div class="ticks" data-t="u30"></div></td><td><span class="pill up"><i></i>Çalışıyor</span></td><td class="num muted">—</td><td class="num">%100</td><td class="num dots">···</td></tr>
+                    <tr><td><div class="mname">mail.kuzeylojistik.com:587</div><div class="msub">Kuzey Lojistik · TCP port</div></td><td><div class="ticks" data-t="u30"></div></td><td><span class="pill up"><i></i>Çalışıyor</span></td><td class="num">41 ms</td><td class="num">%100</td><td class="num dots">···</td></tr>
+                    <tr><td><div class="mname">Eski kampanya sitesi</div><div class="msub">Acme Tekstil · HTTP</div></td><td><div class="ticks" data-t="u8 p22"></div></td><td><span class="pill"><i></i>Duraklatıldı</span></td><td class="num muted">—</td><td class="num muted">—</td><td class="num dots">···</td></tr>
+                    <tr class="more"><td colspan="6">31 monitör daha, hepsi çalışıyor.<a>Tümünü göster</a></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="screen">
+        <div class="screen-cap"><h4>Monitör detayı</h4><p>Onay eşiği göstergesi, dört ölçü, gecikme eğilimi ve birleştirilmiş kontrol listesi.</p></div>
+        <div class="scroll"><div class="frame">
+          <div class="frame-bar"><span class="url">upvane.app/monitors/14</span></div>
+          <div class="app">
+            <div class="topbar">
+              <span class="lockup"><svg><use href="#g"/></svg>upvane</span>
+              <nav class="tabs"><a class="on">Monitörler</a><a>Olaylar <span class="count">1</span></a><a>Ayarlar</a></nav>
+              <div class="tb-right"><span class="org"><span class="sq">N</span>Nokta Dijital</span><span class="loc">TR</span><span class="avatar">EK</span></div>
+            </div>
+            <div class="app-body">
+              <div class="dhead">
+                <div>
+                  <div class="crumb">Monitörler / Kuzey Lojistik</div>
+                  <div class="dtitle"><h5>Kuzey Lojistik — müşteri paneli</h5><span class="pill warn"><i></i>Şüpheli</span></div>
+                  <div class="dmeta">https://panel.kuzeylojistik.com/giris · anahtar kelime “Siparişlerim” bulunmalı · her 60 sn</div>
+                  <div class="threshold"><span class="pips"><span class="on"></span><span></span><span></span></span>1/3 ardışık hata. 2 hata daha olursa Kesinti sayılır ve Ops ekibine bildirim gider.</div>
+                </div>
+                <div class="dactions"><span class="btn btn-secondary"><svg><use href="#i-refresh"/></svg>Şimdi kontrol et</span><span class="btn btn-ghost">Duraklat</span><span class="btn btn-ghost">Düzenle</span><span class="btn btn-ghost" aria-label="Daha fazla" style="width:32px;padding:0;">···</span></div>
+              </div>
+              <div class="figs">
+                <div class="fig"><span class="lbl">Son gecikme</span><span class="val warn">1.240<small>ms</small></span></div>
+                <div class="fig"><span class="lbl">Son 24 saat</span><span class="val">%99,20</span></div>
+                <div class="fig"><span class="lbl">Son 30 gün</span><span class="val">%99,91</span></div>
+                <div class="fig"><span class="lbl">Zaman aşımı</span><span class="val">1.500<small>ms</small></span></div>
+              </div>
+              <div class="dgrid">
+                <div class="panel">
+                  <div class="panel-h"><h6>Gecikme eğilimi</h6><span class="mono">son 24 saat · saatlik medyan</span></div>
+                  <svg class="chart" viewBox="0 0 600 160" role="img" aria-label="Son 24 saatte saatlik medyan gecikme 280 ms civarından 1.240 ms'ye yükseldi">
+                    <line class="c-grid" x1="44" y1="136" x2="592" y2="136"/><line class="c-grid" x1="44" y1="97.25" x2="592" y2="97.25"/><line class="c-grid" x1="44" y1="58.5" x2="592" y2="58.5"/><line class="c-limit" x1="44" y1="19.75" x2="592" y2="19.75"/>
+                    <text class="c-lbl" x="38" y="139" text-anchor="end">0</text><text class="c-lbl" x="38" y="100.25" text-anchor="end">500</text><text class="c-lbl" x="38" y="61.5" text-anchor="end">1.000</text><text class="c-lbl" x="38" y="22.75" text-anchor="end">1.500</text><text class="c-lbl" x="50" y="14">zaman aşımı</text>
+                    <path class="c-area" d="M44 136 L44 111.82 L67.83 112.91 L91.65 112.36 L115.48 113.53 L139.3 113.99 L163.13 114.38 L186.96 112.67 L210.78 111.05 L234.61 108.41 L258.43 105.85 L282.26 104.85 L306.09 106.86 L329.91 108.02 L353.74 109.03 L377.57 107.17 L401.39 104.23 L425.22 100.74 L449.04 96.32 L472.87 90.28 L496.7 82.68 L520.52 77.1 L544.35 65.86 L568.17 52.3 L592 39.9 L592 136 Z"/>
+                    <polyline class="c-line" points="44,111.82 67.83,112.91 91.65,112.36 115.48,113.53 139.3,113.99 163.13,114.38 186.96,112.67 210.78,111.05 234.61,108.41 258.43,105.85 282.26,104.85 306.09,106.86 329.91,108.02 353.74,109.03 377.57,107.17 401.39,104.23 425.22,100.74 449.04,96.32 472.87,90.28 496.7,82.68 520.52,77.1 544.35,65.86 568.17,52.3 592,39.9"/>
+                    <circle class="c-dot" cx="592" cy="39.9" r="4"/><text class="c-val" x="580" y="33" text-anchor="end">1.240 ms</text>
+                    <text class="c-lbl" x="44" y="154">dün 15:00</text><text class="c-lbl" x="258.43" y="154" text-anchor="middle">00:00</text><text class="c-lbl" x="592" y="154" text-anchor="end">14:00</text>
+                  </svg>
+                </div>
+                <div class="panel">
+                  <div class="panel-h"><h6>Son kontroller</h6><span class="mono">aynı sonuçlar birleştirilir</span></div>
+                  <table class="tbl checks"><tbody>
+                    <tr><td class="t">14:32:04</td><td><span class="res fail">FAIL</span></td><td>Zaman aşımı (1.500 ms)</td><td class="num muted">1×</td></tr>
+                    <tr><td class="t">14:31:04</td><td><span class="res ok">OK</span></td><td>200 · kelime bulundu</td><td class="num muted">212×</td></tr>
+                    <tr><td class="t">10:58:04</td><td><span class="res fail">FAIL</span></td><td>Zaman aşımı (1.500 ms)</td><td class="num muted">1×</td></tr>
+                    <tr><td class="t">10:57:04</td><td><span class="res ok">OK</span></td><td>200 · kelime bulundu</td><td class="num muted">1.436×</td></tr>
+                  </tbody></table>
+                </div>
+              </div>
+
+              <div class="dgrid">
+                <div class="panel">
+                  <div class="panel-h"><h6>Ayrıntılar</h6></div>
+                  <div class="kv" style="grid-template-columns:150px 1fr;">
+                    <div class="k">Tür</div><div class="v" style="font-family:var(--sans);color:var(--ink);font-size:13px;">Anahtar kelime (Keyword)</div>
+                    <div class="k">Yöntem</div><div class="v" style="font-family:var(--sans);color:var(--ink);font-size:13px;">GET</div>
+                    <div class="k">Yönlendirme</div><div class="v" style="font-family:var(--sans);color:var(--ink);font-size:13px;">Takip ediliyor</div>
+                    <div class="k">SSL doğrulama</div><div class="v" style="font-family:var(--sans);color:var(--ink);font-size:13px;">Açık</div>
+                  </div>
+                </div>
+                <div class="panel">
+                  <div class="panel-h"><h6>Bildirim kanalları</h6></div>
+                  <div style="padding:14px 16px;display:grid;gap:10px;">
+                    <label class="row" style="gap:9px;font-size:13.5px;"><input type="checkbox" checked disabled style="accent-color:var(--ink);">Ops ekibi</label>
+                    <label class="row" style="gap:9px;font-size:13.5px;color:var(--muted);"><input type="checkbox" disabled>Satış ekibi<span class="pill warn" style="height:18px;"><i></i>Doğrulanmadı</span></label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="screen">
+        <div class="screen-cap"><h4>Herkese açık durum sayfası</h4><p>Müşterinin baş harfi ya da logosu, tek bir genel durum cümlesi, 90 günlük şeritler ve geçmiş olaylar. Upvane sadece en altta görünüyor.</p></div>
+        <div class="scroll"><div class="frame">
+          <div class="frame-bar"><span class="url">upvane.app/durum/bosphorus-dental</span></div>
+          <div class="sp">
+            <div class="sp-head"><span class="client-logo"><span class="cl">B</span>Bosphorus Dental</span><span class="muted" style="font-size:13px;">Hizmet durumu</span></div>
+            <div class="sp-state"><span class="okc"><svg><use href="#i-check"/></svg></span><h5>Tüm sistemler çalışıyor</h5><span class="mono">Son kontrol 14:32</span></div>
+            <div class="sp-list">
+              <div class="sp-item"><div class="sp-row"><span class="nm">Web sitesi</span><span class="pc">%99,99</span></div><div class="ticks" data-t="u46 s1 u43" role="img" aria-label="90 günün 89'unda kesintisiz, 1 günde kısmi kesinti"></div></div>
+              <div class="sp-item"><div class="sp-row"><span class="nm">Randevu formu</span><span class="pc">%99,94</span></div><div class="ticks" data-t="u85 s1 u4" role="img" aria-label="90 günün 89'unda kesintisiz, 4 gün önce kısmi kesinti"></div></div>
+              <div class="sp-item"><div class="sp-row"><span class="nm">E-posta</span><span class="pc">%100</span></div><div class="ticks" data-t="u90" role="img" aria-label="90 gün kesintisiz"></div><div class="sp-legend"><span>90 gün önce</span><span>Bugün</span></div></div>
+            </div>
+            <div class="sp-hist"><h6>Geçmiş olaylar</h6><ul>
+              <li><span class="d">12 Eylül 2026</span><span>Randevu formu yanıt vermedi</span><span class="dur">18 dk sürdü</span></li>
+              <li><span class="d">3 Ağustos 2026</span><span>Web sitesi yanıt vermedi</span><span class="dur">6 dk sürdü</span></li>
+            </ul></div>
+            <div class="sp-foot"><span class="lockup"><svg><use href="#g"/></svg><span>Upvane ile desteklenmektedir</span></span></div>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="screen">
+        <div class="screen-cap"><h4>Kesinti e-postası</h4><p>Konu satırı durumla başlıyor. Gövdede ne olduğu, adres, yanıt, başlangıç saati (TSİ), müşteri ve son 30 kontrol var. Tek bir ana buton kullanılıyor.</p></div>
+        <div class="scroll"><div class="frame">
+          <div class="frame-bar"><span class="url">Konu: Kesinti — Acme Mağaza — ödeme sayfası</span></div>
+          <div class="mailbg"><div class="mail">
+            <span class="lockup"><svg><use href="#g"/></svg>upvane</span>
+            <div style="display:grid;gap:10px;"><span class="pill down" style="justify-self:start;"><i></i>Kesinti</span><h5>Acme Mağaza — ödeme sayfası erişilemiyor</h5><p>Art arda 3 kontrol başarısız oldu. İlk hata 14:28:04'te görüldü ve sayfa hâlâ yanıt vermiyor.</p></div>
+            <div class="kv"><div class="k">Adres</div><div class="v">https://acmetekstil.com.tr/odeme</div><div class="k">Yanıt</div><div class="v">HTTP 503 Service Unavailable</div><div class="k">Başlangıç</div><div class="v">16 Eylül 2026, 14:28 (TSİ)</div><div class="k">Müşteri</div><div class="v">Acme Tekstil</div></div>
+            <div class="ticks" data-t="u27 d3" role="img" aria-label="Son 30 kontrol: 27 başarılı, son 3 başarısız"></div>
+            <span class="btn btn-primary" style="justify-self:start;height:38px;padding:0 16px;font-size:14px;">Olayı görüntüle</span>
+            <p class="foot">Bu e-postayı “Ops ekibi” bildirim kanalına bağlı olduğun için aldın. <u>Bildirim ayarları</u></p>
+          </div></div>
+        </div></div>
+      </div>
+
+      <div class="screen">
+        <div class="screen-cap"><h4>Olaylar</h4><p>Sayılı filtre grubu ve tarihe göre sıralı liste. Açık olaylarda kırmızı “Açık” etiketi, çözülenlerde nötr “Çözüldü” etiketi kullanılıyor — renk yalnızca hâlâ süren bir soruna ayrılmış.</p></div>
+        <div class="scroll"><div class="frame">
+          <div class="frame-bar"><span class="url">upvane.app/incidents</span></div>
+          <div class="app">
+            <div class="topbar">
+              <span class="lockup"><svg><use href="#g"/></svg>upvane</span>
+              <nav class="tabs"><a>Monitörler</a><a class="on">Olaylar <span class="count">1</span></a><a>Ayarlar</a></nav>
+              <div class="tb-right"><span class="org"><span class="sq">N</span>Nokta Dijital</span><span class="loc">TR</span><span class="avatar">EK</span></div>
+            </div>
+            <div class="app-body">
+              <div class="summary"><div><div class="statement">1 açık olay</div><div class="meta">Son 90 günde <b>14</b> olay kaydedildi</div></div></div>
+              <div class="fseg"><span class="on">Açık <b>1</b></span><span>Çözüldü <b>13</b></span><span>Tümü <b>14</b></span></div>
+              <div class="tablebox">
+                <table class="tbl">
+                  <thead><tr><th>Monitör</th><th>Durum</th><th>Neden</th><th>Başlangıç</th><th>Süre</th></tr></thead>
+                  <tbody>
+                    <tr class="row-issue">
+                      <td><div class="mname">Acme Mağaza — ödeme sayfası</div><div class="msub">Acme Tekstil</div></td>
+                      <td><div class="stat-cell"><span class="pill down"><i></i>Açık</span></div></td>
+                      <td class="r">HTTP 503</td>
+                      <td class="m">16 Eyl 2026 14:28</td>
+                      <td class="m">04:12</td>
+                    </tr>
+                    <tr>
+                      <td><div class="mname">Kuzey Lojistik — müşteri paneli</div><div class="msub">Kuzey Lojistik <span class="pill" style="height:18px;margin-left:4px;"><i></i>Flapping</span></div></td>
+                      <td><span class="pill"><i style="background:var(--idle)"></i>Çözüldü</span></td>
+                      <td class="r">Zaman aşımı</td>
+                      <td class="m">15 Eyl 2026 09:03</td>
+                      <td class="r">6 dk sürdü</td>
+                    </tr>
+                    <tr>
+                      <td><div class="mname">Bosphorus Dental — randevu formu</div><div class="msub">Bosphorus Dental</div></td>
+                      <td><span class="pill"><i style="background:var(--idle)"></i>Çözüldü</span></td>
+                      <td class="r">DNS çözümlenemedi</td>
+                      <td class="m">12 Eyl 2026 03:41</td>
+                      <td class="r">18 dk sürdü</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="screen">
+        <div class="screen-cap"><h4>Olay detayı</h4><p>Açık bir olayın üstünde canlı süre sayaçlı olay şeridi duruyor. Zaman çizelgesi ve bildirim geçmişi ayrı panellerde.</p></div>
+        <div class="scroll"><div class="frame">
+          <div class="frame-bar"><span class="url">upvane.app/incidents/241</span></div>
+          <div class="app">
+            <div class="topbar">
+              <span class="lockup"><svg><use href="#g"/></svg>upvane</span>
+              <nav class="tabs"><a>Monitörler</a><a class="on">Olaylar <span class="count">1</span></a><a>Ayarlar</a></nav>
+              <div class="tb-right"><span class="org"><span class="sq">N</span>Nokta Dijital</span><span class="loc">TR</span><span class="avatar">EK</span></div>
+            </div>
+            <div class="app-body">
+              <div class="crumb">Olaylar / Acme Mağaza — ödeme sayfası</div>
+              <div class="incident">
+                <span class="live" aria-hidden="true"></span>
+                <div class="inc-main"><strong>Kesinti</strong><span class="nm">Acme Mağaza — ödeme sayfası</span><span class="mono">HTTP 503 · Ops ekibine bildirildi</span></div>
+                <span class="inc-timer">04:12</span>
+                <span class="btn btn-secondary btn-sm"><svg><use href="#i-check"/></svg>Onayla</span>
+              </div>
+              <div class="figs">
+                <div class="fig"><span class="lbl">Neden</span><span class="val" style="font-size:16px;">HTTP 503</span></div>
+                <div class="fig"><span class="lbl">Detay</span><span class="val" style="font-size:16px;">Service Unavailable</span></div>
+                <div class="fig"><span class="lbl">Başlangıç</span><span class="val" style="font-size:16px;">14:28:04</span></div>
+                <div class="fig"><span class="lbl">Süren süre</span><span class="val warn">04:12</span></div>
+              </div>
+              <div class="dgrid">
+                <div class="panel">
+                  <div class="panel-h"><h6>Zaman çizelgesi</h6></div>
+                  <table class="tbl"><tbody>
+                    <tr><td style="color:var(--ink-2)">Tetiklendi</td><td class="num m">14:28:04</td></tr>
+                  </tbody></table>
+                </div>
+                <div class="panel">
+                  <div class="panel-h"><h6>Bildirimler</h6></div>
+                  <table class="tbl"><tbody>
+                    <tr><td>Ops ekibi</td><td style="color:var(--ink-2)">Tetiklendi</td><td><span class="pill up"><i></i>Gönderildi</span></td><td class="num m">1/3</td></tr>
+                  </tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="screen">
+        <div class="screen-cap"><h4>Ayarlar</h4><p>Solda bölümün adı ve tek cümlelik açıklaması, sağda o bölümün paneli — sayfa artık dar bir sütunda yarım kalmıyor, tam genişliği kullanıyor. Kaydet/Değiştir butonları panelin alt şeridinde, sağa hizalı. Tehlikeli işlem (hesabı sil) aynı düzende ama kırmızı başlıklı.</p></div>
+        <div class="scroll"><div class="frame">
+          <div class="frame-bar"><span class="url">upvane.app/settings</span></div>
+          <div class="app">
+            <div class="topbar">
+              <span class="lockup"><svg><use href="#g"/></svg>upvane</span>
+              <nav class="tabs"><a>Monitörler</a><a>Olaylar <span class="count">1</span></a><a class="on">Ayarlar</a></nav>
+              <div class="tb-right"><span class="org"><span class="sq">N</span>Nokta Dijital</span><span class="loc">TR</span><span class="avatar">EK</span></div>
+            </div>
+            <div class="app-body">
+              <div class="summary"><div><div class="statement" style="font-size:22px;">Ayarlar</div><div class="meta">Hesabınızı, bildirim kanallarınızı ve yayın sayfalarınızı yönetin.</div></div></div>
+              <div class="seg" role="tablist" aria-label="Ayarlar sekmesi" style="justify-self:start;">
+                <button type="button" data-settings-tab="account" aria-pressed="true">Hesap</button>
+                <button type="button" data-settings-tab="channels" aria-pressed="false">Bildirim kanalları</button>
+                <button type="button" data-settings-tab="clients" aria-pressed="false">Müşteriler</button>
+                <button type="button" data-settings-tab="maintenance" aria-pressed="false">Bakım pencereleri</button>
+                <button type="button" data-settings-tab="status" aria-pressed="false">Durum sayfaları</button>
+              </div>
+
+              <div data-settings-panel="account">
+                <div class="fsection">
+                  <div><h5>Profil</h5><p class="fdesc">Adın ve panel dilin.</p></div>
+                  <div class="fpanel">
+                    <div class="fbody" style="max-width:420px;">
+                      <label style="display:grid;gap:5px;font-size:13px;color:var(--muted);">Ad Soyad<span class="field" style="color:var(--ink);">Elif Kaya</span></label>
+                      <label style="display:grid;gap:5px;font-size:13px;color:var(--muted);">Panel dili<span class="field select" style="color:var(--ink);">Türkçe<svg style="width:12px;height:12px;"><use href="#i-chev"/></svg></span></label>
+                    </div>
+                    <div class="factions"><span class="btn btn-primary btn-sm">Kaydet</span></div>
+                  </div>
+                </div>
+
+                <div class="fsection">
+                  <div><h5>E-posta adresi</h5><p class="fdesc">Bildirimler bu adrese gider.</p></div>
+                  <div class="fpanel">
+                    <div class="fbody" style="max-width:420px;">
+                      <div style="font-size:13px;color:var(--ink-2);">Mevcut: <b style="color:var(--ink);">elif@nokta.dijital</b></div>
+                      <label style="display:grid;gap:5px;font-size:13px;color:var(--muted);">Yeni e-posta<span class="field" style="color:var(--muted);">yeni@nokta.dijital</span></label>
+                    </div>
+                    <div class="factions"><span class="btn btn-secondary btn-sm">Değiştir</span></div>
+                  </div>
+                </div>
+
+                <div class="fsection">
+                  <div><h5>Aktif oturumlar</h5><p class="fdesc">Bu cihaz ve giriş yapılmış diğer cihazlar.</p></div>
+                  <div class="fpanel">
+                    <table class="tbl"><tbody>
+                      <tr><td>88.230.14.2 <span class="pill up" style="height:18px;margin-left:4px;"><i></i>bu oturum</span><div class="msub">Chrome · Windows</div></td><td class="num r">az önce</td></tr>
+                    </tbody></table>
+                    <div class="factions"><span class="btn btn-secondary btn-sm">Diğer tüm oturumları kapat</span></div>
+                  </div>
+                </div>
+
+                <div class="fsection danger">
+                  <div><h5>Hesabı sil</h5><p class="fdesc">Bu işlem geri alınamaz. Tüm monitörler, olaylar, bildirim kanalları ve müşteriler kalıcı olarak silinir.</p></div>
+                  <div class="fpanel">
+                    <div class="fbody" style="max-width:420px;">
+                      <label style="display:grid;gap:5px;font-size:13px;color:var(--muted);">Onaylamak için organizasyon adını yaz: <b style="color:var(--ink);">Nokta Dijital</b><span class="field" style="color:var(--muted);"></span></label>
+                      <label style="display:grid;gap:5px;font-size:13px;color:var(--muted);">Parolan<span class="field" style="color:var(--muted);"></span></label>
+                    </div>
+                    <div class="factions"><span class="btn btn-danger btn-sm">Hesabı kalıcı olarak sil</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div data-settings-panel="channels" style="display:none;">
+                <div class="fsection">
+                  <div><h5>Yeni e-posta kanalı</h5><p class="fdesc">Bildirimlerin gideceği ekip veya kişi.</p></div>
+                  <div class="fpanel">
+                    <div class="fbody" style="grid-template-columns:1fr 1fr;display:grid;">
+                      <span class="field" style="color:var(--muted);">Ops ekibi</span><span class="field" style="color:var(--muted);margin-left:10px;">ops@acme.com</span>
+                    </div>
+                    <div class="factions"><span class="btn btn-primary btn-sm">Ekle</span></div>
+                  </div>
+                </div>
+                <table class="tbl" style="background:var(--surface);border:1px solid var(--line);border-radius:10px;"><tbody>
+                  <tr><td>Ops ekibi<div class="msub">ops@acme.com</div></td><td><span class="pill up"><i></i>Doğrulandı</span></td><td class="num r">Test gönder · Pasifleştir · Sil</td></tr>
+                  <tr><td>Satış ekibi<div class="msub">sales@acme.com</div></td><td><span class="pill warn"><i></i>Doğrulanmadı</span></td><td class="num r">Tekrar gönder · Sil</td></tr>
+                </tbody></table>
+              </div>
+
+              <div data-settings-panel="clients" style="display:none;">
+                <table class="tbl" style="background:var(--surface);border:1px solid var(--line);border-radius:10px;"><tbody>
+                  <tr><td class="mname">Acme Tekstil</td><td class="r">4 monitör</td><td class="num r">Düzenle · Sil</td></tr>
+                  <tr><td class="mname">Kuzey Lojistik</td><td class="r">2 monitör</td><td class="num r">Düzenle · Sil</td></tr>
+                  <tr><td class="mname">Bosphorus Dental</td><td class="r">1 monitör</td><td class="num r">Düzenle · Sil</td></tr>
+                </tbody></table>
+              </div>
+
+              <div data-settings-panel="maintenance" style="display:none;">
+                <table class="tbl" style="background:var(--surface);border:1px solid var(--line);border-radius:10px;"><tbody>
+                  <tr><td class="mname">Sunucu bakımı <span class="pill warn" style="height:18px;margin-left:4px;"><i></i>Aktif</span></td><td class="r">Tüm organizasyon</td><td class="num m">16 Eyl 02:00 - 04:00</td></tr>
+                </tbody></table>
+              </div>
+
+              <div data-settings-panel="status" style="display:none;">
+                <table class="tbl" style="background:var(--surface);border:1px solid var(--line);border-radius:10px;"><tbody>
+                  <tr><td class="mname">Bosphorus Dental<div class="msub mono">/durum/bosphorus-dental</div></td><td class="r">3 monitör</td><td><span class="pill up"><i></i>Yayında</span></td><td class="num r">Yayından kaldır · Sil</td></tr>
+                </tbody></table>
+              </div>
+            </div>
+          </div>
+        </div></div>
+        <span class="cap" style="text-align:left;">Bildirim kanalları, Müşteriler, Bakım pencereleri ve Durum sayfaları sekmelerinde "yeni" butonu sayfa başlığına taşınıyor; form açıldığında aynı <span class="mono">.fsection</span> düzenini kullanıyor, kapalıyken sadece liste görünüyor.</span>
+      </div>
+
+      <div class="screen">
+        <div class="screen-cap"><h4>Giriş, kayıt ve parola</h4><p>Kart her zaman aynı: işaret ve yazı üstte, form altta. Hata mesajı alanın hemen altında, kırmızı.</p></div>
+        <div class="grid-cells" style="grid-template-columns:repeat(auto-fit,minmax(230px,1fr));">
+          <div class="cell" style="padding:0;background:var(--bg);border:none;">
+            <div class="frame" style="width:100%;">
+              <div class="frame-bar"><span class="url">upvane.app/login</span></div>
+              <div style="padding:28px 24px;background:var(--bg);display:grid;gap:16px;justify-items:center;">
+                <span class="lockup"><svg><use href="#g"/></svg>upvane</span>
+                <div class="panel" style="width:100%;padding:18px;display:grid;gap:10px;">
+                  <span style="font-weight:700;font-size:16px;">Giriş yap</span>
+                  <span class="field" style="color:var(--muted);">E-posta</span>
+                  <span class="field" style="color:var(--muted);">Parola</span>
+                  <span class="btn btn-primary" style="width:100%;">Giriş yap</span>
+                  <span class="r" style="font-size:12.5px;text-align:center;">Hesabın yok mu? <b style="color:var(--ink);">Kayıt ol</b></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="cell" style="padding:0;background:var(--bg);border:none;">
+            <div class="frame" style="width:100%;">
+              <div class="frame-bar"><span class="url">upvane.app/signup</span></div>
+              <div style="padding:28px 24px;background:var(--bg);display:grid;gap:16px;justify-items:center;">
+                <span class="lockup"><svg><use href="#g"/></svg>upvane</span>
+                <div class="panel" style="width:100%;padding:18px;display:grid;gap:10px;">
+                  <span style="font-weight:700;font-size:16px;">Hesap oluştur</span>
+                  <span class="field" style="color:var(--muted);">Ad Soyad</span>
+                  <span class="field" style="color:var(--muted);">Şirket / ajans adı</span>
+                  <span class="field" style="color:var(--muted);">E-posta</span>
+                  <span class="field" style="color:var(--muted);">Parola</span>
+                  <span class="btn btn-primary" style="width:100%;">Hesap oluştur</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="cell" style="padding:0;background:var(--bg);border:none;">
+            <div class="frame" style="width:100%;">
+              <div class="frame-bar"><span class="url">upvane.app/parola-sifirla</span></div>
+              <div style="padding:28px 24px;background:var(--bg);display:grid;gap:16px;justify-items:center;">
+                <span class="lockup"><svg><use href="#g"/></svg>upvane</span>
+                <div class="panel" style="width:100%;padding:18px;display:grid;gap:10px;">
+                  <span style="font-weight:700;font-size:16px;">Parolamı unuttum</span>
+                  <span class="field" style="color:var(--muted);">E-posta</span>
+                  <span class="btn btn-primary" style="width:100%;">Sıfırlama bağlantısı gönder</span>
+                  <span class="r" style="font-size:12.5px;text-align:center;">Girişe dön</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="cell" style="padding:0;background:var(--bg);border:none;">
+            <div class="frame" style="width:100%;">
+              <div class="frame-bar"><span class="url">upvane.app/dogrula/...</span></div>
+              <div style="padding:28px 24px;background:var(--bg);display:grid;gap:16px;justify-items:center;">
+                <span class="lockup"><svg><use href="#g"/></svg>upvane</span>
+                <div class="panel" style="width:100%;padding:24px;display:grid;gap:8px;justify-items:center;text-align:center;">
+                  <span class="pill up" style="height:26px;padding:0 12px;"><i></i>Doğrulandı</span>
+                  <span style="font-weight:600;font-size:15px;">E-posta adresiniz doğrulandı.</span>
+                  <span class="r" style="font-size:12.5px;">Devam et</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="screen">
+        <div class="screen-cap"><h4>Yeni monitör formu</h4><p>Dört bölüm: Temel bilgiler, Hedef (türe göre değişir — burada anahtar kelime seçili), Kontrol, Gelişmiş (kapalı başlar). Oluştur/Vazgeç son panelin alt şeridinde.</p></div>
+        <div class="scroll"><div class="frame">
+          <div class="frame-bar"><span class="url">upvane.app/monitors/new</span></div>
+          <div class="app">
+            <div class="topbar">
+              <span class="lockup"><svg><use href="#g"/></svg>upvane</span>
+              <nav class="tabs"><a class="on">Monitörler</a><a>Olaylar <span class="count">1</span></a><a>Ayarlar</a></nav>
+              <div class="tb-right"><span class="org"><span class="sq">N</span>Nokta Dijital</span><span class="loc">TR</span><span class="avatar">EK</span></div>
+            </div>
+            <div class="app-body">
+              <div class="crumb">Monitörler / Yeni monitör</div>
+              <div class="statement" style="font-size:22px;margin-bottom:8px;">Yeni monitör</div>
+
+              <div class="fsection">
+                <div><h5>Temel bilgiler</h5><p class="fdesc">Panelde göründüğü ad ve varsa bağlı olduğu müşteri.</p></div>
+                <div class="fpanel"><div class="fbody" style="max-width:440px;">
+                  <label style="display:grid;gap:5px;font-size:13px;color:var(--muted);">Ad<span class="field" style="color:var(--ink);">Kuzey Lojistik — müşteri paneli</span></label>
+                  <label style="display:grid;gap:5px;font-size:13px;color:var(--muted);">Müşteri (opsiyonel)<span class="field select" style="color:var(--ink);">Kuzey Lojistik<svg style="width:12px;height:12px;"><use href="#i-chev"/></svg></span></label>
+                </div></div>
+              </div>
+
+              <div class="fsection">
+                <div><h5>Hedef</h5><p class="fdesc">Ne izleneceği. Tür seçimi altındaki alanları belirler.</p></div>
+                <div class="fpanel"><div class="fbody" style="max-width:440px;">
+                  <label style="display:grid;gap:5px;font-size:13px;color:var(--muted);">Tür<span class="field select" style="color:var(--ink);">Anahtar kelime (Keyword)<svg style="width:12px;height:12px;"><use href="#i-chev"/></svg></span></label>
+                  <label style="display:grid;gap:5px;font-size:13px;color:var(--muted);">URL<span class="field mono" style="color:var(--ink);">https://panel.kuzeylojistik.com/giris</span></label>
+                  <div class="row" style="gap:10px;align-items:end;">
+                    <label style="display:grid;gap:5px;font-size:13px;color:var(--muted);flex:1;">Anahtar kelime<span class="field mono" style="color:var(--ink);">Siparişlerim</span></label>
+                    <label style="display:grid;gap:5px;font-size:13px;color:var(--muted);width:140px;">Mod<span class="field select" style="color:var(--ink);">Bulunmalı</span></label>
+                  </div>
+                </div></div>
+              </div>
+
+              <div class="fsection">
+                <div><h5>Kontrol</h5><p class="fdesc">Ne sıklıkla kontrol edilsin.</p></div>
+                <div class="fpanel"><div class="fbody" style="max-width:200px;">
+                  <label style="display:grid;gap:5px;font-size:13px;color:var(--muted);">Kontrol aralığı (sn)<span class="field mono" style="color:var(--ink);">60</span></label>
+                </div></div>
+              </div>
+
+              <div class="fsection">
+                <div><h5>Gelişmiş</h5><p class="fdesc">Sık değişmeyen ayarlar. Varsayılan olarak kapalı.</p></div>
+                <div class="fpanel">
+                  <details>
+                    <summary style="cursor:pointer;list-style:none;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--ink-2);">Gelişmiş ayarları göster<svg style="width:14px;height:14px;color:var(--faint);"><use href="#i-chev"/></svg></summary>
+                    <div class="fbody" style="border-top:1px solid var(--line);grid-template-columns:1fr 1fr;display:grid;">
+                      <label style="display:grid;gap:5px;font-size:13px;color:var(--muted);">Onay eşiği<span class="field mono" style="color:var(--ink);">2</span></label>
+                      <label style="display:grid;gap:5px;font-size:13px;color:var(--muted);margin-left:10px;">Kurtarma eşiği<span class="field mono" style="color:var(--ink);">2</span></label>
+                    </div>
+                  </details>
+                  <div class="factions"><span class="btn btn-primary btn-sm">Monitörü oluştur</span><span class="btn btn-ghost btn-sm">Vazgeç</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="screen">
+        <div class="screen-cap"><h4>Boş durumlar ve mobil üst menü</h4><p>Liste boşken ikon + tek cümle + varsa bir eylem. 1024 px altında sekmeler bir menü düğmesinin altına toplanıyor, logo ve durum simgesi her zaman görünür kalıyor.</p></div>
+        <div class="grid-cells">
+          <div class="cell" style="background:var(--surface);">
+            <div style="display:grid;place-items:center;gap:10px;padding:20px 0;text-align:center;">
+              <div class="appicon" style="--s:44px;--c:var(--muted);background:var(--surface-2);"><svg style="color:var(--faint)"><use href="#g"/></svg></div>
+              <span style="font-weight:500;font-size:14px;">Henüz monitör yok</span>
+              <span class="r" style="max-width:26ch;">İlk monitörünü ekleyerek izlemeye başla.</span>
+              <span class="btn btn-secondary btn-sm"><svg><use href="#i-plus"/></svg>İlk monitörünü ekle</span>
+            </div>
+          </div>
+          <div class="cell" style="padding:0;background:var(--bg);border:none;">
+            <div class="frame" style="width:100%;max-width:340px;">
+              <div class="topbar" style="height:48px;padding:0 14px;gap:0;">
+                <span class="btn btn-ghost" style="width:32px;padding:0;">☰</span>
+                <span class="lockup" style="font-size:16px;margin-left:10px;"><svg><use href="#g"/></svg>upvane</span>
+                <div class="tb-right"><span class="avatar" style="width:26px;height:26px;">EK</span></div>
+              </div>
+              <div style="padding:14px;background:var(--bg);">
+                <div class="statement" style="font-size:18px;">2 monitörde sorun var</div>
+              </div>
+            </div>
+            <span class="cap" style="text-align:left;margin-top:4px;">400 px genişlik. Sekmeler menü düğmesinin arkasında; sağda sadece avatar kalıyor.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 08 KOD ============ -->
+    <section class="chapter" id="kod">
+      <div class="ch-head">
+        <span class="ch-num">08</span>
+        <h2>Kod ve varlıklar</h2>
+        <p>Kimlik uygulamaya anlamsal token'lar üzerinden geçiriliyor. Görünümlerde renk adı yerine rol adı kullanılıyor (<span class="mono">text-ink</span>, <span class="mono">bg-surface</span>, <span class="mono">bg-down-soft</span>). Koyu tema bu token'ların değerlerini <span class="mono">.dark</span> sınıfıyla değiştiriyor, bu yüzden görünümlerde <span class="mono">dark:</span> sınıfı yazılmıyor.</p>
+      </div>
+
+      <div class="sub">
+        <h3>resources/css/app.css</h3>
+        <pre class="code"><span class="c">/* Açık tema: Tailwind utility'lerini üretir (bg-surface, text-ink, bg-up, ...) */</span>
+@theme {
+  --font-sans: 'Schibsted Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  --color-canvas: #f6f6f7;      --color-surface: #ffffff;    --color-surface-2: #f1f1f3;
+  --color-line: #e4e4e8;        --color-line-strong: #d2d3d8;
+  --color-ink: #0d0e12;         --color-ink-2: #3b3d45;      --color-muted: #6a6d76;
+  --color-faint: #9a9ca4;       --color-on-ink: #ffffff;
+
+  --color-up: #12a05c;          --color-up-text: #0a7a44;    --color-up-soft: #e6f6ee;
+  --color-warn: #e5a00d;        --color-warn-text: #8f5a00;  --color-warn-soft: #fdf3dc;
+  --color-down: #e03a2f;        --color-down-text: #b4231a;  --color-down-soft: #fde9e7;
+  --color-idle: #a3a5ad;        --color-idle-soft: #efeff2;  --color-nodata: #e7e7eb;
+  --color-badge: #b4231a;       --color-on-badge: #ffffff;
+
+  --radius-tag: 5px;  --radius-control: 6px;  --radius-panel: 10px;  --radius-frame: 12px;
+  --shadow-popover: 0 12px 32px rgb(13 14 18 / .12);
+}
+
+<span class="c">/* Koyu tema: sadece değerler değişir, sınıflar aynı kalır */</span>
+@layer base {
+  .dark {
+    --color-canvas: #0a0b0d;    --color-surface: #121317;    --color-surface-2: #1a1b20;
+    --color-line: #24262c;      --color-line-strong: #30323a;
+    --color-ink: #edeef1;       --color-ink-2: #c3c5cc;      --color-muted: #8f929b;
+    --color-faint: #62656e;     --color-on-ink: #0a0b0d;
+    --color-up: #2bc47a;        --color-up-text: #4fd894;    --color-up-soft: rgb(43 196 122 / .12);
+    --color-warn: #f2b53a;      --color-warn-text: #f5c45e;  --color-warn-soft: rgb(242 181 58 / .12);
+    --color-down: #ff5b4e;      --color-down-text: #ff7a70;  --color-down-soft: rgb(255 91 78 / .13);
+    --color-idle: #5e6169;      --color-idle-soft: #1e2025;  --color-nodata: #23252b;
+    --color-badge: #ff5b4e;     --color-on-badge: #0a0b0d;
+    --shadow-popover: 0 12px 32px rgb(0 0 0 / .5);
+  }
+}</pre>
+      </div>
+
+      <div class="sub">
+        <h3>Logo SVG</h3>
+        <pre class="code"><span class="c">&lt;!-- public/brand/upvane-mark.svg · currentColor ile boyanır --&gt;</span>
+&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+     stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"&gt;
+  &lt;path d="M3.5 12.5 9 18 20.5 6.5"/&gt;
+  &lt;path d="M13.5 6.5h7v7"/&gt;
+&lt;/svg&gt;
+
+<span class="c">&lt;!-- favicon: zemin #0D0E12, köşe 24 birimin %24'ü, işaret durum renginde --&gt;</span>
+&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"&gt;
+  &lt;rect width="32" height="32" rx="7.7" fill="#0d0e12"/&gt;
+  &lt;g transform="translate(6.08 6.08) scale(.827)" fill="none" stroke="#2bc47a"
+     stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"&gt;
+    &lt;path d="M3.5 12.5 9 18 20.5 6.5"/&gt;&lt;path d="M13.5 6.5h7v7"/&gt;
+  &lt;/g&gt;
+&lt;/svg&gt;</pre>
+      </div>
+
+      <div class="sub">
+        <h3>Varlık listesi</h3>
+        <div class="tbl-wrap">
+          <table class="spec">
+            <thead><tr><th>Dosya</th><th>İçerik</th></tr></thead>
+            <tbody>
+              <tr><td class="m">docs/brand/upvane-brand-guidelines.html</td><td class="r">Bu rehber</td></tr>
+              <tr><td class="m">public/brand/upvane-mark.svg</td><td class="r">İşaret, currentColor</td></tr>
+              <tr><td class="m">public/brand/upvane-logo.svg</td><td class="r">İşaret ve yazı, mürekkep</td></tr>
+              <tr><td class="m">public/brand/upvane-logo-inverse.svg</td><td class="r">İşaret ve yazı, kâğıt</td></tr>
+              <tr><td class="m">public/favicon-{up,warn,down}.svg</td><td class="r">Durum favicon'ları</td></tr>
+              <tr><td class="m">resources/views/components/ui/logo.blade.php</td><td class="r">Uygulama içi logo bileşeni (durum rengini parametre olarak alır)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span class="lockup"><svg><use href="#g"/></svg>upvane</span>
+      <span>Marka Rehberi 1.0 · Eylül 2026 · Değişiklikler bu dosyada tutuluyor.</span>
+    </footer>
+  </main>
+</div>
+
+<script>
+  document.querySelectorAll('[data-t]').forEach(function (el) {
+    el.dataset.t.split(' ').forEach(function (tok) {
+      var kind = tok.charAt(0), n = parseInt(tok.slice(1), 10) || 1;
+      for (var i = 0; i < n; i++) {
+        var s = document.createElement('span');
+        if (kind !== 'u') s.className = kind;
+        el.appendChild(s);
+      }
+    });
+  });
+  (function () {
+    var root = document.documentElement;
+    var buttons = document.querySelectorAll('[data-t-theme]');
+    function apply(mode) {
+      if (mode === 'system') root.removeAttribute('data-theme');
+      else root.setAttribute('data-theme', mode);
+      buttons.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.tTheme === mode)); });
+    }
+    buttons.forEach(function (b) { b.addEventListener('click', function () { apply(b.dataset.tTheme); }); });
+  })();
+  (function () {
+    document.querySelectorAll('[data-settings-tab]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var group = b.closest('.app-body');
+        group.querySelectorAll('[data-settings-tab]').forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); });
+        group.querySelectorAll('[data-settings-panel]').forEach(function (p) { p.style.display = p.dataset.settingsPanel === b.dataset.settingsTab ? 'grid' : 'none'; });
+      });
+    });
+  })();
+</script>

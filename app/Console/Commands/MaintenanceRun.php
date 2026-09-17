@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\DB;
  *
  * check_results is never partitioned here (no native MySQL partitioning management without
  * SSH access to the server) — retention is a plain DELETE instead, and it's kept aggressive
- * (config('uptik.check_retention_hours')) because the dashboard reads only the rollup tables.
+ * (config('upvane.check_retention_hours')) because the dashboard reads only the rollup tables.
  */
 class MaintenanceRun extends Command
 {
@@ -199,7 +199,7 @@ class MaintenanceRun extends Command
 
     private function pruneOldData(): void
     {
-        $retentionHours = config('uptik.check_retention_hours');
+        $retentionHours = config('upvane.check_retention_hours');
         $deleted = CheckResult::where('ts', '<', now()->subHours($retentionHours))->delete();
 
         DB::table('check_rollups_1m')->where('bucket', '<', now()->subDays(2))->delete();

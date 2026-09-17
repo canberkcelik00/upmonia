@@ -21,7 +21,7 @@ class AlertChannel extends Model
         return [
             // e.g. {"email": "ops@acme.example"}. Encrypted at rest via Laravel's `encrypted`
             // cast (APP_KEY-backed), the Laravel-native equivalent of the source app's
-            // hand-rolled AES-256-GCM envelope over UPTIK_SECRET_KEY.
+            // hand-rolled AES-256-GCM envelope over APP_KEY.
             'config' => 'encrypted:array',
             'verified_at' => 'datetime',
             'enabled' => 'boolean',
