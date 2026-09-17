@@ -9,54 +9,87 @@
    the theme-toggle component decide when that class is present. */
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Upvane identity tokens — see docs/brand/upvane-brand-guidelines.html (section 08) for the
+   rationale and the exact values. "Renk yalnızca bir şey olduğunda gelir": the neutral scale
+   (canvas/surface/line/ink/muted) is the whole UI; up/warn/down/idle are the only colours and
+   exist purely to mean a status, never as decoration or a brand accent. Component views should
+   reach for these role names (bg-surface, text-ink, bg-down-soft) — never a raw Tailwind
+   palette colour (emerald-500, red-600, ...) — so the whole product re-tones from this block
+   alone, the same way the previous neutral-scale re-tone worked without touching a view file. */
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
-    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+    --font-sans: 'Schibsted Grotesk', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
 
-    /* Brand accent: teal, kept a distinct hue from the emerald "up" status colour
-       (teal ~195deg vs emerald ~160deg) so links and active states never read as a status.
-       Chroma is deliberate rather than washed out: brand-700 clears 4.5:1 on white and
-       brand-400 clears 9:1 on the dark surface, so both can carry text. */
-    --color-brand-50: oklch(0.975 0.02 195);
-    --color-brand-100: oklch(0.94 0.045 195);
-    --color-brand-200: oklch(0.88 0.07 195);
-    --color-brand-300: oklch(0.8 0.095 195);
-    --color-brand-400: oklch(0.73 0.115 195);
-    --color-brand-500: oklch(0.65 0.125 195);
-    --color-brand-600: oklch(0.56 0.115 196);
-    --color-brand-700: oklch(0.45 0.095 197);
-    --color-brand-800: oklch(0.37 0.075 198);
-    --color-brand-900: oklch(0.3 0.06 199);
+    --color-canvas: #f6f6f7;
+    --color-surface: #ffffff;
+    --color-surface-2: #f1f1f3;
+    --color-line: #e4e4e8;
+    --color-line-strong: #d2d3d8;
+    --color-ink: #0d0e12;
+    --color-ink-2: #3b3d45;
+    --color-muted: #6a6d76;
+    --color-faint: #9a9ca4;
+    --color-on-ink: #ffffff;
 
-    /* Neutrals re-toned from dead grey to a cool slate. Lightness values are kept identical
-       to Tailwind's stock neutral scale on purpose, so every contrast ratio already verified
-       across the app still holds; only a low blue chroma is added. This single block re-tones
-       every surface, border and text colour in the product without touching a view file. */
-    --color-neutral-50: oklch(0.985 0.002 250);
-    --color-neutral-100: oklch(0.97 0.004 250);
-    --color-neutral-200: oklch(0.922 0.006 250);
-    --color-neutral-300: oklch(0.87 0.009 251);
-    --color-neutral-400: oklch(0.708 0.013 252);
-    --color-neutral-500: oklch(0.556 0.015 253);
-    --color-neutral-600: oklch(0.439 0.017 254);
-    --color-neutral-700: oklch(0.371 0.019 255);
-    --color-neutral-800: oklch(0.269 0.021 256);
-    --color-neutral-900: oklch(0.205 0.023 257);
-    --color-neutral-950: oklch(0.145 0.025 258);
+    --color-up: #12a05c;
+    --color-up-text: #0a7a44;
+    --color-up-soft: #e6f6ee;
+    --color-warn: #e5a00d;
+    --color-warn-text: #8f5a00;
+    --color-warn-soft: #fdf3dc;
+    --color-down: #e03a2f;
+    --color-down-text: #b4231a;
+    --color-down-soft: #fde9e7;
+    --color-idle: #a3a5ad;
+    --color-idle-soft: #efeff2;
+    --color-nodata: #e7e7eb;
+    --color-badge: #b4231a;
+    --color-on-badge: #ffffff;
 
-    /* Shape Consistency Lock: one radius scale, applied via the existing rounded-sm/md/lg/full
-       utilities already used across every view (small controls / buttons+inputs / cards / pills). */
-    --radius-sm: 0.375rem;
-    --radius-md: 0.5rem;
-    --radius-lg: 0.75rem;
-    --radius-xl: 1rem;
+    /* tag: status pill. control: input/button. panel: card/table. frame: modal/popover shell. */
+    --radius-tag: 0.3125rem;
+    --radius-control: 0.375rem;
+    --radius-panel: 0.625rem;
+    --radius-frame: 0.75rem;
 
-    /* Tinted shadows (never pure black). Previously so faint they read as no elevation
-       at all, which is what made every surface look like a flat rectangle. */
-    --shadow-card: 0 1px 3px oklch(0.25 0.03 250 / 0.08), 0 1px 2px oklch(0.25 0.03 250 / 0.05);
-    --shadow-card-hover: 0 8px 24px oklch(0.25 0.03 250 / 0.1), 0 2px 8px oklch(0.25 0.03 250 / 0.06);
-    --shadow-popover: 0 16px 40px oklch(0.25 0.03 250 / 0.16), 0 4px 12px oklch(0.25 0.03 250 / 0.08);
+    /* The only shadow in the system — reserved for things that float above the page
+       (dropdowns, popovers). Panels, cards and tables sit flush, separated by borders only. */
+    --shadow-popover: 0 12px 32px rgb(13 14 18 / 0.12);
+}
+
+/* Dark tema: aynı token adları, sadece değerleri değişiyor — görünümlerde `dark:` yazmaya
+   gerek yok. `.dark` sınıfı <html>'e (gerçek tema) ya da tek bir kapsayıcıya (örn. her zaman
+   koyu bir panel) eklenebilir; @custom-variant tanımı her iki kullanımı da destekliyor. */
+@layer base {
+    .dark {
+        --color-canvas: #0a0b0d;
+        --color-surface: #121317;
+        --color-surface-2: #1a1b20;
+        --color-line: #24262c;
+        --color-line-strong: #30323a;
+        --color-ink: #edeef1;
+        --color-ink-2: #c3c5cc;
+        --color-muted: #8f929b;
+        --color-faint: #62656e;
+        --color-on-ink: #0a0b0d;
+
+        --color-up: #2bc47a;
+        --color-up-text: #4fd894;
+        --color-up-soft: rgb(43 196 122 / 0.12);
+        --color-warn: #f2b53a;
+        --color-warn-text: #f5c45e;
+        --color-warn-soft: rgb(242 181 58 / 0.12);
+        --color-down: #ff5b4e;
+        --color-down-text: #ff7a70;
+        --color-down-soft: rgb(255 91 78 / 0.13);
+        --color-idle: #5e6169;
+        --color-idle-soft: #1e2025;
+        --color-nodata: #23252b;
+        --color-badge: #ff5b4e;
+        --color-on-badge: #0a0b0d;
+
+        --shadow-popover: 0 12px 32px rgb(0 0 0 / 0.5);
+    }
 }
 
 [x-cloak] {
@@ -70,9 +103,9 @@
     button:focus-visible,
     summary:focus-visible,
     [role='button']:focus-visible {
-        outline: 2px solid var(--color-brand-600);
+        outline: 2px solid var(--color-ink);
         outline-offset: 2px;
-        border-radius: var(--radius-sm);
+        border-radius: var(--radius-tag);
     }
 }
 
