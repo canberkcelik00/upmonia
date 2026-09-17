@@ -194,7 +194,7 @@ new #[Layout('layouts.app')] class extends Component
 };
 ?>
 
-<div>
+<div wire:poll.30s>
     <x-ui.page-header :back="route('monitors.index')" :back-label="__('app.monitors_title')" title="{{ $monitor->name }}">
         <x-slot:titleMeta>
             <x-ui.status-pill :status="$monitor->state->status" :flapping="$monitor->state->flapping" />
@@ -297,7 +297,7 @@ new #[Layout('layouts.app')] class extends Component
                 <div class="divide-y divide-line">
                     @forelse ($recentChecks as $check)
                         <div class="flex items-center gap-3 px-5 py-2.5 text-[12.5px]">
-                            <span class="font-mono text-ink-2">{!! $check->ts->toDisplayHtml('time') !!}</span>
+                            <span class="font-mono text-ink-2">{!! $check->updated_at->toDisplayHtml('time') !!}</span>
                             <span class="font-mono text-[11.5px] font-semibold {{ $check->ok ? 'text-up-text' : 'text-down-text' }}">{{ $check->ok ? __('app.monitor_result_ok') : __('app.monitor_result_fail') }}</span>
                             <span class="min-w-0 flex-1 truncate text-ink-2">{{ $check->error_class ? \App\Checks\ErrorClassifier::label($check->error_class) : ($check->status_code ?? '—') }}</span>
                             <span class="shrink-0 font-mono text-muted">{{ Format::count($check->sample_count) }}</span>
