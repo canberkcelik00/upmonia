@@ -8,12 +8,13 @@ use Tests\TestCase;
 class ExampleTest extends TestCase
 {
     /**
-     * A basic test example.
+     * '/' has no page of its own by design — it redirects straight to wherever the visitor
+     * actually starts (see routes/web.php).
      */
-    public function test_the_application_returns_a_successful_response(): void
+    public function test_the_root_redirects_to_login_when_signed_out(): void
     {
         $response = $this->get('/');
 
-        $response->assertStatus(200);
+        $response->assertRedirect(route('login'));
     }
 }
