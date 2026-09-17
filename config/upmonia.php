@@ -6,7 +6,7 @@ return [
 
     'check_retention_hours' => (int) env('CHECK_RETENTION_HOURS', 48),
 
-    'allow_private_targets' => env('UPMONIA_ALLOW_PRIVATE_TARGETS', false) && ! app()->environment('production'),
+    'allow_private_targets' => env('UPMONIA_ALLOW_PRIVATE_TARGETS', false) && env('APP_ENV') !== 'production',
 
     // Guards /deploy — see App\Http\Controllers\DeployController. Leave unset to disable it
     // entirely (the controller 404s rather than falling back to "no token required").
