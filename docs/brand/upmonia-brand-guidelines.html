@@ -239,7 +239,7 @@
   .fpanel .factions{border-top:1px solid var(--line);background:var(--surface-2);padding:12px 20px;display:flex;justify-content:flex-end;gap:10px;}
   .fsection.danger h5{color:var(--down-text);}
   .fsection.danger .fpanel{border-color:color-mix(in oklab, var(--down) 30%, var(--line));}
-  @media (max-width:760px){.fsection{grid-template-columns:1fr;gap:10px;}}
+  @media (max-width:760px){.fsection{grid-template-columns:1fr;gap:10px;}.mk-trio{grid-template-columns:1fr;}}
   .count{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--badge-bg);color:var(--badge-fg);font-family:var(--mono);font-size:11px;font-weight:600;}
   .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
 
@@ -430,6 +430,46 @@
 
   .footer{margin-top:120px;padding-top:28px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;font-size:13px;color:var(--muted);}
   .footer .lockup{font-size:18px;}
+
+  /* ---------- marketing chapter (tanıtım sayfaları) ---------- */
+  .mk{background:var(--bg);}
+  .mk-nav{height:52px;display:flex;align-items:center;gap:26px;padding:0 28px;background:var(--surface);border-bottom:1px solid var(--line);}
+  .mk-nav .lockup{font-size:19px;}
+  .mk-nav .mklinks{display:flex;gap:20px;font-size:13.5px;color:var(--ink-2);}
+  .mk-nav .mkr{margin-left:auto;display:flex;align-items:center;gap:14px;}
+  .mk-nav .loc{padding:0;}
+  .mk-hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:44px;align-items:center;padding:60px 28px;}
+  .mk-hero h1{font-size:44px;font-weight:700;letter-spacing:-.03em;line-height:1.08;max-width:15ch;}
+  .mk-hero .lede{font-size:16px;color:var(--ink-2);max-width:42ch;margin-top:16px;}
+  .mk-hero .row{margin-top:24px;}
+  .mk-card{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .mk-card .statement{font-size:19px;padding:18px 20px 0;}
+  .mk-card .incident{margin:14px 20px 0;padding:8px 10px 8px 12px;}
+  .mk-card .mrow{display:grid;grid-template-columns:1fr 96px auto;gap:14px;align-items:center;padding:12px 20px;border-top:1px solid var(--line);}
+  .mk-card .mrow:first-of-type{border-top:1px solid var(--line);margin-top:16px;}
+  .mk-card .mname{font-size:13px;}
+  .mk-card .msub{font-size:11.5px;}
+  .mk-sec{padding:48px 28px;border-top:1px solid var(--line);}
+  .mk-sec .kicker{font-family:var(--mono);font-size:12px;color:var(--muted);margin-bottom:10px;}
+  .mk-sec h2{font-size:25px;font-weight:700;letter-spacing:-.02em;max-width:34ch;margin-bottom:8px;}
+  .mk-sec > p.lede{color:var(--ink-2);font-size:14.5px;max-width:60ch;margin-bottom:24px;}
+  .mk-types{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .mk-types > div{background:var(--surface);padding:16px 14px;display:grid;gap:6px;}
+  .mk-types b{font-size:13px;font-weight:600;}
+  .mk-types .mono{font-size:11px;color:var(--muted);}
+  .mk-cta{padding:56px 28px;border-top:1px solid var(--line);display:grid;justify-items:center;gap:16px;text-align:center;}
+  .mk-cta .statement{font-size:25px;max-width:28ch;}
+  .mk-foot{padding:22px 28px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-size:12.5px;color:var(--muted);}
+  .mk-foot .mklinks{display:flex;gap:16px;}
+  .mk-mobile{width:100%;max-width:375px;}
+  .mk-mobile .mk-nav{height:48px;padding:0 14px;gap:0;}
+  .mk-mobile .mk-nav .lockup{font-size:16px;margin-left:10px;}
+  .mk-mobile .mk-hero{grid-template-columns:1fr;padding:32px 20px;gap:28px;}
+  .mk-mobile .mk-hero h1{font-size:28px;max-width:none;}
+  .mk-mobile .mk-sec{padding:32px 20px;}
+  .mk-trio{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:start;}
+  .mk-trio .mk-card{height:100%;}
+  .mk-trio .mk-panel-h{padding:12px 16px;border-bottom:1px solid var(--line);font-size:11.5px;font-weight:600;color:var(--muted);}
 
   @media (max-width:640px){
     body{font-size:14.5px;}
@@ -743,10 +783,12 @@
               <tr><td class="m">text-panel</td><td class="m">17 / 24</td><td class="m">600</td><td class="m">−0,015em</td><td style="font-size:17px;font-weight:600;letter-spacing:-.015em">Panel ve bölüm başlığı</td></tr>
               <tr><td class="m">text-title</td><td class="m">24 / 28</td><td class="m">700</td><td class="m">−0,025em</td><td style="font-size:24px;font-weight:700;letter-spacing:-.025em;line-height:1.15">Monitör adı</td></tr>
               <tr><td class="m">text-statement</td><td class="m">27 / 30</td><td class="m">700</td><td class="m">−0,025em</td><td style="font-size:27px;font-weight:700;letter-spacing:-.025em;line-height:1.1">Durum cümlesi</td></tr>
+              <tr><td class="m">text-display</td><td class="m">44 / 48 (mobil 32 / 36)</td><td class="m">700</td><td class="m">−0,03em</td><td style="font-size:32px;font-weight:700;letter-spacing:-.03em;line-height:1.08">Müşteri sitelerinden biri çökünce ilk sen bil.</td></tr>
               <tr><td class="m">text-figure</td><td class="m">22 / 28 mono</td><td class="m">500</td><td class="m">−0,02em</td><td class="mono" style="font-size:22px;font-weight:500;letter-spacing:-.02em">%99,91</td></tr>
             </tbody>
           </table>
         </div>
+        <p class="muted" style="font-size:13.5px;">text-display sadece tanıtım sayfalarının hero başlığında kullanılıyor. Uygulama içinde hiçbir yerde çıkmıyor — en büyük uygulama içi ölçek text-statement olarak kalıyor.</p>
       </div>
 
       <div class="sub">
@@ -765,6 +807,13 @@
         <span class="ch-num">05</span>
         <h2>Dil ve veri</h2>
         <p>Metinler durumu önce söylüyor, ayrıntıyı sonra veriyor. Kullanıcıya uygulama içinde ve bildirimlerde “sen” diye hitap ediliyor. Herkese açık durum sayfalarında ise hitap kullanılmıyor, çünkü o sayfayı okuyan kişi ajansın müşterisinin müşterisi.</p>
+      </div>
+
+      <div class="sub">
+        <h3>Tanıtım sayfaları</h3>
+        <div class="prose">
+          <p>Tanıtım sayfaları da uygulama içi gibi okura “sen” diye hitap ediyor — burada da bir şeyi kuran, kullanan kişiyle konuşuluyor. Fiyat, deneme süresi ya da “satın al” dili yok; tek çağrı <b>Hesap oluştur</b>. İddia her zaman üründe gerçekten var olan bir şeye dayanıyor ve ekranla kanıtlanıyor: “en iyi”, “devrim niteliğinde”, kullanıcı sayısı ya da uydurma yorum kullanılmıyor. Ünlem işareti kullanılmıyor, kırmızı zaten yeterince yüksek sesle konuşuyor.</p>
+        </div>
       </div>
 
       <div class="sub">
@@ -1405,6 +1454,144 @@
               </div>
             </div>
             <span class="cap" style="text-align:left;margin-top:4px;">400 px genişlik. Sekmeler menü düğmesinin arkasında; sağda sadece avatar kalıyor.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="screen">
+        <div class="screen-cap"><h4>Tanıtım: ana sayfa</h4><p>İkinci sadeleştirme: kart ızgarası tamamen kalktı. Sayfa artık dört farklı görünen bloktan ibaret — hero, imza şeridi, numaralı üç ilke listesi (kutu yok, sadece bolca boşluk), kapanış. Eşik/kontrol türleri/ajanslar detayı Özellikler sayfasına taşındı; burada tekrar eden bir ızgara deseni kalmadığı için bloklar artık birbirine karışmıyor. Hero'daki önizleme ekran görüntüsü değil, aynı bileşenlerle çizilmiş canlı bir kart.</p></div>
+        <div class="scroll"><div class="frame">
+          <div class="frame-bar"><span class="url">upmonia.app</span></div>
+          <div class="mk" style="min-width:980px;">
+            <div class="mk-nav">
+              <span class="lockup"><svg><use href="#g"/></svg>upmonia</span>
+              <nav class="mklinks"><a>Özellikler</a></nav>
+              <div class="mkr"><span class="loc mono">TR</span><span class="btn btn-ghost btn-sm">Giriş yap</span><span class="btn btn-primary btn-sm">Hesap oluştur</span></div>
+            </div>
+            <div class="mk-hero">
+              <div>
+                <h1>Müşteri sitelerinden biri çökünce ilk sen bil.</h1>
+                <p class="lede">Upmonia HTTP, anahtar kelime, SSL, TCP ve heartbeat kontrolleriyle müşteri sitelerini izliyor; bir şey bozulduğunda sana ve ekibine haber veriyor — yanlış alarm olmadan.</p>
+                <div class="row"><span class="btn btn-primary">Hesap oluştur</span><span class="btn btn-ghost">Nasıl çalışır<svg><use href="#i-arrow"/></svg></span></div>
+              </div>
+              <div class="mk-card">
+                <div class="statement">1 monitörde sorun var</div>
+                <div class="incident">
+                  <span class="live" aria-hidden="true"></span>
+                  <div class="inc-main"><strong>Kesinti</strong><span class="nm">Acme Mağaza — ödeme sayfası</span></div>
+                  <span class="inc-timer">04:12</span>
+                </div>
+                <div class="mrow"><div><div class="mname">Acme Mağaza — ödeme sayfası</div><div class="msub muted">HTTP</div></div><div class="ticks" data-t="u27 d3" role="img" aria-label="Son 30 kontrol: 27 başarılı, son 3 başarısız"></div><span class="pill down"><i></i>Kesinti</span></div>
+                <div class="mrow"><div><div class="mname">Kuzey Lojistik — müşteri paneli</div><div class="msub muted">Anahtar kelime</div></div><div class="ticks" data-t="u30" role="img" aria-label="Son 30 kontrol kesintisiz"></div><span class="pill up"><i></i>Çalışıyor</span></div>
+                <div class="mrow"><div><div class="mname">Bosphorus Dental — randevu formu</div><div class="msub muted">HTTP</div></div><div class="ticks" data-t="u30" role="img" aria-label="Son 30 kontrol kesintisiz"></div><span class="pill up"><i></i>Çalışıyor</span></div>
+              </div>
+            </div>
+
+            <div class="mk-sec" style="padding-top:64px;padding-bottom:64px;">
+              <div style="display:grid;gap:36px;max-width:900px;">
+                <div style="display:grid;grid-template-columns:28px 1fr;gap:16px;align-items:baseline;">
+                  <span class="mono" style="font-size:12px;color:var(--faint);">01</span>
+                  <div><h4 style="font-size:17px;">Renk = durum</h4><p style="margin-top:4px;color:var(--muted);font-size:14.5px;max-width:56ch;">Yeşil, sarı ve kırmızı sadece durumu anlatıyor. Arayüzde başka hiçbir yerde renk yok.</p></div>
+                </div>
+                <div style="display:grid;grid-template-columns:28px 1fr;gap:16px;align-items:baseline;">
+                  <span class="mono" style="font-size:12px;color:var(--faint);">02</span>
+                  <div><h4 style="font-size:17px;">Önce cevap</h4><p style="margin-top:4px;color:var(--muted);font-size:14.5px;max-width:56ch;">Her ekran sana önce tek bir cümleyle cevap veriyor: kaç monitör sorunlu.</p></div>
+                </div>
+                <div style="display:grid;grid-template-columns:28px 1fr;gap:16px;align-items:baseline;">
+                  <span class="mono" style="font-size:12px;color:var(--faint);">03</span>
+                  <div><h4 style="font-size:17px;">Rakam veridir</h4><p style="margin-top:4px;color:var(--muted);font-size:14.5px;max-width:56ch;">Çalışma oranı, gecikme ve saat hiç yuvarlanmadan, gerçek biçiminde gösteriliyor.</p></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mk-cta">
+              <div class="statement">Bir sonraki kesintiyi müşterinden önce sen öğren.</div>
+              <span class="btn btn-primary">Hesap oluştur</span>
+            </div>
+
+            <div class="mk-foot">
+              <span class="lockup" style="font-size:14px;"><svg><use href="#g"/></svg>upmonia</span>
+              <div class="mklinks"><a>Özellikler</a><a>Giriş yap</a><span class="mono">upmonia.app</span></div>
+              <span>© 2026 Upmonia</span>
+            </div>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="screen">
+        <div class="screen-cap"><h4>Tanıtım: özellikler</h4><p>Sadeleştirilmiş sürüm: altı ayrı etiket+panel satırı yerine tek bir kart ızgarası — sayfa artık tek ekranda taranabiliyor, aşağı kaydırmak gerekmiyor.</p></div>
+        <div class="scroll"><div class="frame">
+          <div class="frame-bar"><span class="url">upmonia.app/ozellikler</span></div>
+          <div class="mk" style="min-width:980px;">
+            <div class="mk-nav">
+              <span class="lockup"><svg><use href="#g"/></svg>upmonia</span>
+              <nav class="mklinks"><a style="color:var(--ink);font-weight:500;">Özellikler</a></nav>
+              <div class="mkr"><span class="loc mono">TR</span><span class="btn btn-ghost btn-sm">Giriş yap</span><span class="btn btn-primary btn-sm">Hesap oluştur</span></div>
+            </div>
+            <div style="padding:40px 28px;">
+              <h1 style="font-size:32px;font-weight:700;letter-spacing:-.02em;max-width:16ch;margin-bottom:32px;">İzlemek için ihtiyacın olan her şey, ilk günden açık.</h1>
+              <div class="grid-cells" style="grid-template-columns:repeat(3,1fr);gap:14px;">
+                <div class="cell" style="align-items:stretch;justify-items:stretch;text-align:left;padding:18px;gap:8px;">
+                  <h5 style="font-size:14px;font-weight:600;">İzleme</h5>
+                  <p class="cap" style="text-align:left;margin:0;">HTTP, anahtar kelime, SSL, TCP ve heartbeat kontrolleri.</p>
+                </div>
+                <div class="cell" style="align-items:stretch;justify-items:stretch;text-align:left;padding:18px;gap:8px;">
+                  <h5 style="font-size:14px;font-weight:600;">Olaylar</h5>
+                  <p class="cap" style="text-align:left;margin:0;">Onay eşiği dolunca açılır, kurtarma eşiği dolunca kapanır.</p>
+                </div>
+                <div class="cell" style="align-items:stretch;justify-items:stretch;text-align:left;padding:18px;gap:8px;">
+                  <h5 style="font-size:14px;font-weight:600;">Bildirimler</h5>
+                  <p class="cap" style="text-align:left;margin:0;">Kesinti ve kurtarma e-postaları, son 30 kontrolle birlikte.</p>
+                </div>
+                <div class="cell" style="align-items:stretch;justify-items:stretch;text-align:left;padding:18px;gap:8px;">
+                  <h5 style="font-size:14px;font-weight:600;">Müşteriler</h5>
+                  <p class="cap" style="text-align:left;margin:0;">Monitörleri müşteri altında grupla, her birine markalı durum sayfası ver.</p>
+                </div>
+                <div class="cell" style="align-items:stretch;justify-items:stretch;text-align:left;padding:18px;gap:8px;">
+                  <h5 style="font-size:14px;font-weight:600;">Bakım pencereleri</h5>
+                  <p class="cap" style="text-align:left;margin:0;">Planlı bakımda bildirim gitmez, çalışma oranı bozulmaz.</p>
+                </div>
+                <div class="cell" style="align-items:stretch;justify-items:stretch;text-align:left;padding:18px;gap:8px;">
+                  <h5 style="font-size:14px;font-weight:600;">Hesap ve veri</h5>
+                  <p class="cap" style="text-align:left;margin:0;">Türkçe/İngilizce, açık/koyu tema, verini istediğin an dışa aktar.</p>
+                </div>
+              </div>
+            </div>
+            <div class="mk-cta">
+              <div class="statement">Tüm bu özellikler ilk gün açık.</div>
+              <span class="btn btn-primary">Hesap oluştur</span>
+            </div>
+            <div class="mk-foot">
+              <span class="lockup" style="font-size:14px;"><svg><use href="#g"/></svg>upmonia</span>
+              <div class="mklinks"><a>Özellikler</a><a>Giriş yap</a><span class="mono">upmonia.app</span></div>
+              <span>© 2026 Upmonia</span>
+            </div>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="screen">
+        <div class="screen-cap"><h4>Tanıtım: mobil</h4><p>1024 px altında üst menü sekmesiz, sadece Hesap oluştur kalıyor. Hero tek sütuna düşüyor, önizleme kartı altta.</p></div>
+        <div class="grid-cells">
+          <div class="cell" style="padding:0;background:var(--bg);border:none;">
+            <div class="frame mk-mobile">
+              <div class="mk-nav">
+                <span class="lockup"><svg><use href="#g"/></svg>upmonia</span>
+                <div class="mkr"><span class="btn btn-primary btn-sm">Hesap oluştur</span></div>
+              </div>
+              <div class="mk-hero">
+                <div>
+                  <h1>Müşteri sitelerinden biri çökünce ilk sen bil.</h1>
+                  <p class="lede" style="font-size:14px;">HTTP, SSL, TCP ve heartbeat kontrolleriyle izle; bir şey bozulunca haber al.</p>
+                  <div class="row"><span class="btn btn-primary">Hesap oluştur</span></div>
+                </div>
+                <div class="mk-card">
+                  <div class="statement" style="font-size:17px;">1 monitörde sorun var</div>
+                  <div class="mrow"><div><div class="mname">Acme Mağaza</div></div><div class="ticks" data-t="u27 d3" role="img" aria-label="Son 30 kontrol: 27 başarılı, son 3 başarısız" style="width:60px;"></div><span class="pill down"><i></i>Kesinti</span></div>
+                </div>
+              </div>
+            </div>
+            <span class="cap" style="text-align:left;margin-top:4px;">375 px genişlik. Nav menüsü sadeleşiyor, hero tek sütun.</span>
           </div>
         </div>
       </div>

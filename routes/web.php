@@ -6,11 +6,17 @@ use App\Http\Controllers\HeartbeatController;
 use App\Http\Controllers\StatusPageController;
 use Illuminate\Support\Facades\Route;
 
-// No marketing/landing page yet (deliberately out of scope — functional completeness first,
-// see project notes) — send visitors straight to where the product actually starts.
+// Signed-in visitors skip straight to where the product actually starts; everyone else
+// gets the marketing home page (see docs/brand/upmonia-brand-guidelines.html, "Uygulamalar").
 Route::get('/', function () {
-    return redirect()->to(auth()->check() ? route('monitors.index') : route('login'));
-});
+    return auth()->check()
+        ? redirect()->to(route('monitors.index'))
+        : view('marketing.home');
+})->name('home');
+
+Route::get('/ozellikler', function () {
+    return view('marketing.features');
+})->name('features');
 
 Route::middleware('guest')->group(function () {
     Route::livewire('/signup', 'auth.signup-form')->name('signup');

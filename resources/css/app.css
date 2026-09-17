@@ -4,7 +4,7 @@
    so the framework's own pagination views no longer need scanning. */
 @source '../../storage/framework/views/*.php';
 
-/* Manual light/dark/system toggle: dark: utilities respond to a `.dark` class on <html>
+/* Manual light/dark toggle: dark: utilities respond to a `.dark` class on <html>
    instead of only `prefers-color-scheme`. The inline head script (before first paint) and
    the theme-toggle component decide when that class is present. */
 @custom-variant dark (&:where(.dark, .dark *));
@@ -45,6 +45,13 @@
     --color-nodata: #e7e7eb;
     --color-badge: #b4231a;
     --color-on-badge: #ffffff;
+
+    /* Hero-only: the marketing pages' single headline. Never used inside the app itself —
+       text-statement (27/30, see below via Tailwind's text-3xl equivalents) stays the largest
+       in-app size. See docs/brand/upmonia-brand-guidelines.html, "Tipografi". */
+    --text-display: clamp(2rem, 1.35rem + 2.6vw, 2.75rem);
+    --text-display--line-height: 1.09;
+    --text-display--letter-spacing: -0.03em;
 
     /* tag: status pill. control: input/button. panel: card/table. frame: modal/popover shell. */
     --radius-tag: 0.3125rem;

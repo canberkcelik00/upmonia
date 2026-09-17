@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Support\OrgHealth;
 use Carbon\Carbon;
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -39,6 +40,11 @@ class AppServiceProvider extends ServiceProvider
         }
 
         $this->registerRateLimiters();
+
+        // Lets plain (non-Livewire) full-page views use <x-layouts.marketing> as a component
+        // with a $slot, instead of duplicating the <head>/nav/footer per page. The app and
+        // guest shells stay Livewire #[Layout('layouts.app')]-style and don't need this.
+        Blade::anonymousComponentPath(resource_path('views/layouts'), 'layouts');
 
         // Shared with layouts.app: drives the nav logo's mark colour and the browser tab's
         // favicon/title. Only resolves for authenticated requests that actually render the
