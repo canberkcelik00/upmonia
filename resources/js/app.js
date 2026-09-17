@@ -8,28 +8,14 @@
 // script, or prefers-reduced-motion, instead of depending on the animation to reveal it.
 (function () {
     var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var fadeTargets = document.querySelectorAll('[data-reveal]');
+    var barTargets = document.querySelectorAll('[data-reveal-stagger]');
 
-    // The strip's own pop-in animation is a real CSS @keyframes rule (resources/css/
-    // app.css, `tick-pop`), but it only runs once the .is-revealing class is present — the
-    // delay has to be set on each bar *before* that class is added, or the browser restarts
-    // an already-playing (or already-finished) animation the moment animation-delay changes,
-    // which is exactly what made the whole strip visibly play its entrance twice.
-    if (! reduceMotion) {
-        document.querySelectorAll('[data-reveal-stagger]').forEach(function (el) {
-            Array.from(el.children).forEach(function (bar, i) {
-                bar.style.animationDelay = Math.min(i * 9, 350) + 'ms';
-            });
-            el.classList.add('is-revealing');
-        });
-    }
-
-    var targets = document.querySelectorAll('[data-reveal]');
-
-    if (! targets.length || reduceMotion || ! ('IntersectionObserver' in window)) {
+    if (reduceMotion || ! ('IntersectionObserver' in window) || (! fadeTargets.length && ! barTargets.length)) {
         return;
     }
 
-    targets.forEach(function (el) {
+    fadeTargets.forEach(function (el) {
         el.style.opacity = '0';
         el.style.transform = 'translateY(30px)';
         el.style.transition = 'opacity .8s ease-out, transform .8s cubic-bezier(.16,.8,.24,1)';
@@ -38,19 +24,40 @@
         }
     });
 
+    // The strip's own pop-in animation is a real CSS @keyframes rule (resources/css/
+    // app.css, `tick-pop`), but it only runs once the .is-revealing class is present — the
+    // delay has to be set on each bar *before* that class is added, or the browser restarts
+    // an already-playing (or already-finished) animation the moment animation-delay changes,
+    // which is exactly what made the whole strip visibly play its entrance twice. Gating this
+    // on the same IntersectionObserver as the fades (rather than firing on load) also matters
+    // for a strip nested inside a card that's still fading in itself: it only pops once its
+    // own row is actually visible, instead of finishing off-screen before anyone sees it.
     var observer = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
             if (! entry.isIntersecting) {
                 return;
             }
 
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
-            observer.unobserve(entry.target);
+            var el = entry.target;
+
+            if (el.hasAttribute('data-reveal-stagger')) {
+                Array.from(el.children).forEach(function (bar, i) {
+                    bar.style.animationDelay = Math.min(i * 9, 350) + 'ms';
+                });
+                el.classList.add('is-revealing');
+            } else {
+                el.style.opacity = '1';
+                el.style.transform = 'translateY(0)';
+            }
+
+            observer.unobserve(el);
         });
     }, {threshold: 0.15, rootMargin: '0px 0px -40px 0px'});
 
-    targets.forEach(function (el) {
+    fadeTargets.forEach(function (el) {
+        observer.observe(el);
+    });
+    barTargets.forEach(function (el) {
         observer.observe(el);
     });
 })();
