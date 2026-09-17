@@ -7,85 +7,95 @@
         <meta name="robots" content="noindex, nofollow">
     @endunless
     <title>{{ $page->title }} - {{ __('app.status_page_title_suffix') }}</title>
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon-'.match ($overallStatus) { 'operational' => 'up', 'degraded' => 'down', default => 'warn' }.'.svg') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
     @include('partials.theme-init')
 </head>
-<body class="min-h-screen bg-neutral-50 text-neutral-900 antialiased dark:bg-neutral-950 dark:text-neutral-100">
-    {{-- A customer's brand colour gets a single, restrained touch point (a top accent
-         bar) rather than re-theming the page — status semantics (up/down colours) and
-         the product's own accent stay untouched. --}}
-    @if ($page->brand_color)
-        <div class="h-1" style="background-color: {{ $page->brand_color }}"></div>
-    @endif
-
-    <main class="mx-auto max-w-2xl px-4 py-12">
-        <div class="mb-8 flex items-center justify-between gap-3">
-            <div class="flex items-center gap-3">
+<body class="min-h-screen bg-canvas text-ink antialiased">
+    <main class="mx-auto max-w-2xl px-4 py-10 sm:py-12">
+        <div class="mb-7 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-2.5 font-bold tracking-[-0.02em]">
                 @if ($page->logo_url)
-                    <img src="{{ $page->logo_url }}" alt="" class="h-8 w-8 rounded-md" loading="lazy">
+                    <img src="{{ $page->logo_url }}" alt="" class="size-[30px] rounded-[7px]" loading="lazy">
+                @elseif ($page->brand_color)
+                    <span class="flex size-[30px] items-center justify-center rounded-[7px] text-[15px] font-bold text-white" style="background-color: {{ $page->brand_color }}">{{ mb_strtoupper(mb_substr($page->title, 0, 1)) }}</span>
                 @endif
-                <h1 class="text-2xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-50">{{ $page->title }}</h1>
+                <span class="text-lg">{{ $page->title }}</span>
             </div>
-            <x-ui.theme-toggle />
+            <div class="flex items-center gap-1">
+                <span class="hidden text-[13px] text-muted sm:inline">{{ __('app.status_page_service_status') }}</span>
+                <x-ui.theme-toggle />
+            </div>
         </div>
 
-        <x-ui.alert :variant="match ($overallStatus) { 'operational' => 'success', 'pending' => 'info', default => 'warning' }" class="mb-8">
-            {{ match ($overallStatus) {
-                'operational' => __('app.status_page_all_operational'),
-                'pending' => __('app.status_page_pending'),
-                default => __('app.status_page_degraded'),
-            } }}
-        </x-ui.alert>
+        <div class="mb-7 flex items-center gap-3.5 rounded-panel border border-line bg-surface px-5 py-4">
+            @php
+                $stateIcon = match ($overallStatus) {
+                    'operational' => ['check', 'up', 'bg-up'],
+                    'degraded' => ['warning', 'down', 'bg-down'],
+                    default => ['clock', 'idle', 'bg-idle'],
+                };
+            @endphp
+            <span class="flex size-[34px] shrink-0 items-center justify-center rounded-full {{ $stateIcon[2] }}">
+                <x-dynamic-component :component="'phosphor-'.$stateIcon[0]" class="size-[18px] text-white" />
+            </span>
+            <h1 class="flex-1 text-xl font-bold tracking-[-0.02em] text-ink">
+                {{ match ($overallStatus) {
+                    'operational' => __('app.status_page_all_operational'),
+                    'pending' => __('app.status_page_pending'),
+                    default => __('app.status_page_degraded'),
+                } }}
+            </h1>
+            <span class="hidden font-mono text-xs text-muted sm:inline">{{ __('app.status_page_last_checked', ['time' => now()->toDisplayTime()]) }}</span>
+        </div>
 
-        <x-ui.card padding="p-0" class="mb-8 overflow-hidden">
-            <ul class="divide-y divide-neutral-100 dark:divide-neutral-800">
-                @forelse ($monitors as $monitor)
-                    <li class="px-5 py-4">
-                        <div class="flex items-center justify-between gap-3">
-                            <span class="font-medium">{{ $monitor['name'] }}</span>
-                            <x-ui.status-pill :status="$monitor['status']" />
-                        </div>
-                        <div class="mt-3 flex items-end justify-between gap-3">
-                            <x-ui.uptime-bar :days="$monitor['days']" :slots="45" />
-                        </div>
-                        @if ($monitor['last_checked_at'])
-                            <p class="mt-2 text-xs text-neutral-400 dark:text-neutral-600">
-                                {{ __('app.status_page_last_checked', ['time' => $monitor['last_checked_at']->diffForHumans()]) }}
-                            </p>
-                        @endif
-                    </li>
-                @empty
-                    <li>
-                        <x-ui.empty-state icon="pulse" :title="__('app.status_page_empty')" />
-                    </li>
-                @endforelse
-            </ul>
-        </x-ui.card>
+        <div class="mb-7 rounded-panel border border-line bg-surface">
+            @forelse ($monitors as $monitor)
+                <div class="border-t border-line px-5 py-4 first:border-t-0">
+                    <div class="mb-2.5 flex items-center justify-between gap-3">
+                        <span class="font-medium">{{ $monitor['name'] }}</span>
+                        <span class="font-mono text-xs text-muted">{{ $monitor['percent'] ?? '—' }}</span>
+                    </div>
+                    <x-ui.tick-strip :tones="$monitor['tones']" :label="__('app.chart_uptime_aria')" class="h-7 gap-px" />
+                    @if ($monitor['last_checked_at'])
+                        <p class="mt-2 text-xs text-faint">
+                            {{ __('app.status_page_last_checked', ['time' => $monitor['last_checked_at']->diffForHumans()]) }}
+                        </p>
+                    @endif
+                </div>
+            @empty
+                <x-ui.empty-state icon="pulse" :title="__('app.status_page_empty')" />
+            @endforelse
+        </div>
 
         @if ($page->show_history && $incidents->isNotEmpty())
-            <h2 class="mb-3 text-sm font-semibold text-neutral-700 dark:text-neutral-300">{{ __('app.status_page_history') }}</h2>
-            <x-ui.card padding="p-0" class="mb-8 overflow-hidden">
-                <ul class="divide-y divide-neutral-100 text-sm dark:divide-neutral-800">
-                    @foreach ($incidents as $incident)
-                        <li class="px-5 py-3.5">
-                            <div class="flex items-center justify-between">
-                                <span class="font-medium">{{ $incident->monitor->name }}</span>
-                                <span class="font-mono text-xs text-neutral-500 dark:text-neutral-400">{{ $incident->started_at->toDisplay() }}</span>
-                            </div>
-                            <div class="mt-1 text-xs text-neutral-500 dark:text-neutral-400">
-                                {{ $incident->state === 'resolved' ? __('app.incident_state_resolved') : __('app.incident_state_open') }}
-                                @if ($incident->resolved_at)
-                                    {{ __('app.status_page_incident_duration', ['duration' => $incident->started_at->diffForHumans($incident->resolved_at, true)]) }}
-                                @endif
-                            </div>
-                        </li>
-                    @endforeach
-                </ul>
-            </x-ui.card>
+            <h2 class="mb-3 text-sm font-semibold text-ink-2">{{ __('app.status_page_history') }}</h2>
+            <div class="mb-7 rounded-panel border border-line bg-surface">
+                @foreach ($incidents as $incident)
+                    <div class="border-t border-line px-5 py-3 text-sm first:border-t-0">
+                        <div class="flex items-center justify-between gap-3">
+                            <span class="font-medium">{{ $incident->monitor->name }}</span>
+                            <span class="font-mono text-xs text-muted">{{ $incident->started_at->toDisplayDate() }}</span>
+                        </div>
+                        <div class="mt-0.5 text-xs text-muted">
+                            {{ $incident->state === 'resolved' ? __('app.incident_state_resolved') : __('app.incident_state_open') }}
+                            @if ($incident->resolved_at)
+                                — {{ __('app.status_page_incident_duration', ['duration' => \App\Support\Format::shortDuration($incident->started_at->diffInSeconds($incident->resolved_at))]) }}
+                            @endif
+                        </div>
+                    </div>
+                @endforeach
+            </div>
         @endif
 
-        <p class="mt-8 text-center text-xs text-neutral-400 dark:text-neutral-600">{{ __('app.status_page_footer') }}</p>
+        <p class="mt-8 flex items-center justify-center gap-1.5 text-xs font-medium text-muted">
+            <svg viewBox="0 0 24 24" fill="none" class="size-[13px] text-ink-2" aria-hidden="true">
+                <path d="M3.5 12.5 9 18 20.5 6.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M13.5 6.5h7v7" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            {{ __('app.status_page_footer') }}
+        </p>
     </main>
 
     @livewireScripts

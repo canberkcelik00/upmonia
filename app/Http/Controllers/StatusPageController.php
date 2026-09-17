@@ -9,7 +9,7 @@ use Illuminate\View\View;
 
 class StatusPageController extends Controller
 {
-    private const HISTORY_DAYS = 45;
+    private const HISTORY_DAYS = 90;
 
     /**
      * Deliberately narrow: only ever selects fields safe to expose publicly (name, status,
@@ -34,12 +34,25 @@ class StatusPageController extends Controller
 
         $dailyByMonitor = $this->dailyUptimeByMonitor($monitorIds);
 
-        $monitors = $monitorRows->map(fn ($m) => [
-            'name' => $m->pivot->display_name ?: $m->name,
-            'status' => $m->state->status,
-            'last_checked_at' => $m->state->last_checked_at,
-            'days' => $dailyByMonitor->get($m->id, collect()),
-        ]);
+        $monitors = $monitorRows->map(function ($m) use ($dailyByMonitor) {
+            $days = $dailyByMonitor->get($m->id, collect());
+            $okN = $days->sum(fn ($d) => $d['total'] - $d['failed']);
+            $failN = $days->sum('failed');
+
+            return [
+                'name' => $m->pivot->display_name ?: $m->name,
+                'status' => $m->state->status,
+                'last_checked_at' => $m->state->last_checked_at,
+                'days' => $days,
+                'percent' => \App\Support\Format::percent($okN, $failN),
+                'tones' => $days->map(fn ($d) => match (true) {
+                    $d['total'] === 0 => 'nodata',
+                    $d['failed'] === 0 => 'up',
+                    $d['failed'] / $d['total'] < 0.5 => 'warn',
+                    default => 'down',
+                })->values()->all(),
+            ];
+        });
 
         $hasDegraded = $monitors->contains(fn ($m) => in_array($m['status'], ['down', 'suspect'], true));
         $hasPending = $monitors->contains(fn ($m) => $m['status'] === 'pending');
