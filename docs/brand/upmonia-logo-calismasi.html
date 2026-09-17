@@ -1,0 +1,449 @@
+<title>Upmonia Logo Çalışması</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --bg:#f6f6f7;--surface:#ffffff;--surface-2:#f1f1f3;--line:#e4e4e8;--line-strong:#d2d3d8;
+    --ink:#0d0e12;--ink-2:#3b3d45;--muted:#6a6d76;--faint:#9a9ca4;--on-ink:#ffffff;
+    --up:#12a05c;--up-text:#0a7a44;--up-soft:#e6f6ee;
+    --warn:#e5a00d;--warn-text:#8f5a00;--warn-soft:#fdf3dc;
+    --down:#e03a2f;--down-text:#b4231a;--down-soft:#fde9e7;
+    --badge-bg:#b4231a;--badge-fg:#ffffff;--icon-bg:#0d0e12;
+    --sans:'Schibsted Grotesk', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --mono:'Geist Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0a0b0d;--surface:#121317;--surface-2:#1a1b20;--line:#24262c;--line-strong:#30323a;
+      --ink:#edeef1;--ink-2:#c3c5cc;--muted:#8f929b;--faint:#62656e;--on-ink:#0a0b0d;
+      --up:#2bc47a;--up-text:#4fd894;--up-soft:rgba(43,196,122,.12);
+      --warn:#f2b53a;--warn-text:#f5c45e;--warn-soft:rgba(242,181,58,.12);
+      --down:#ff5b4e;--down-text:#ff7a70;--down-soft:rgba(255,91,78,.13);
+      --badge-bg:#ff5b4e;--badge-fg:#0a0b0d;--icon-bg:#0d0e12;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0a0b0d;--surface:#121317;--surface-2:#1a1b20;--line:#24262c;--line-strong:#30323a;
+    --ink:#edeef1;--ink-2:#c3c5cc;--muted:#8f929b;--faint:#62656e;--on-ink:#0a0b0d;
+    --up:#2bc47a;--up-text:#4fd894;--up-soft:rgba(43,196,122,.12);
+    --warn:#f2b53a;--warn-text:#f5c45e;--warn-soft:rgba(242,181,58,.12);
+    --down:#ff5b4e;--down-text:#ff7a70;--down-soft:rgba(255,91,78,.13);
+    --badge-bg:#ff5b4e;--badge-fg:#0a0b0d;--icon-bg:#0d0e12;
+  }
+
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;padding-inline:20px;}
+  .wrap{max-width:1120px;margin:0 auto;padding-block:48px 80px;display:grid;gap:64px;}
+  h1,h2,h3{margin:0;line-height:1.12;text-wrap:balance;letter-spacing:-.02em;}
+  h1{font-size:clamp(32px,4.8vw,48px);font-weight:700;letter-spacing:-.035em;}
+  h2{font-size:24px;font-weight:700;}
+  h3{font-size:22px;font-weight:700;letter-spacing:-.025em;}
+  p{margin:0;}
+  .mono{font-family:var(--mono);font-variant-numeric:tabular-nums;}
+  .eyebrow{font-family:var(--mono);font-size:12px;color:var(--muted);}
+  .lede{font-size:17px;color:var(--ink-2);max-width:62ch;}
+  .muted{color:var(--muted);}
+
+  /* lockups */
+  .lockup{display:inline-flex;align-items:center;gap:.28em;font-weight:700;letter-spacing:-.035em;color:var(--ink);line-height:1;white-space:nowrap;}
+  .lockup > svg{width:.95em;height:.95em;flex:none;transform:translateY(.02em);}
+  .lockup.wm{gap:0;align-items:baseline;}
+  .idot{position:relative;display:inline-block;}
+  .idot i{position:absolute;left:50%;top:-.2em;width:.28em;height:.28em;border-radius:50%;transform:translateX(-50%);}
+  .oring{display:inline-block;width:.52em;height:.52em;margin:0 .02em 0 .03em;vertical-align:-.01em;overflow:visible;}
+
+  .intro{display:grid;gap:16px;}
+  .name-parts{display:flex;flex-wrap:wrap;gap:10px;align-items:baseline;margin-top:4px;}
+  .part{display:grid;gap:2px;padding:10px 14px;background:var(--surface);border:1px solid var(--line);border-radius:8px;}
+  .part b{font-size:20px;letter-spacing:-.02em;}
+  .part span{font-size:12.5px;color:var(--muted);}
+  .plus{font-family:var(--mono);color:var(--faint);}
+
+  /* concept boards */
+  .boards{display:grid;gap:18px;}
+  .board{background:var(--surface);border:1px solid var(--line);border-radius:14px;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);overflow:hidden;}
+  .board.on{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink);}
+  .b-stage{display:grid;place-items:center;padding:64px 20px;border-right:1px solid var(--line);position:relative;min-height:260px;}
+  .b-stage .lockup{font-size:clamp(44px,6.4vw,72px);}
+  .b-tag{position:absolute;top:14px;left:16px;font-family:var(--mono);font-size:11.5px;color:var(--muted);}
+  .b-body{padding:26px 26px 24px;display:grid;gap:14px;align-content:start;}
+  .story{font-size:15.5px;color:var(--ink-2);max-width:52ch;}
+  .live{display:grid;gap:8px;}
+  .live-lbl{font-family:var(--mono);font-size:11.5px;color:var(--muted);}
+  .favs{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+  .fav{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--ink-2);background:var(--surface-2);border:1px solid var(--line);border-radius:6px;padding:5px 9px 5px 6px;}
+  .rule{font-size:13px;color:var(--ink-2);border-top:1px solid var(--line);padding-top:12px;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;}
+  .rule dt{font-family:var(--mono);font-size:11.5px;color:var(--muted);padding-top:1px;}
+  .rule dd{margin:0;}
+  .b-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:2px;}
+  .pick{appearance:none;font:inherit;font-size:13.5px;font-weight:600;height:34px;padding:0 14px;border-radius:7px;border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);cursor:pointer;}
+  .pick:hover{background:var(--surface-2);}
+  .pick:focus-visible{outline:2px solid var(--ink);outline-offset:2px;}
+  .board.on .pick{background:var(--ink);color:var(--on-ink);border-color:var(--ink);}
+  .rec{font-family:var(--mono);font-size:11.5px;color:var(--ink-2);}
+
+  .appicon{width:var(--s);height:var(--s);border-radius:calc(var(--s) * .24);background:var(--icon-bg);display:grid;place-items:center;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);flex:none;}
+  .appicon svg{width:62%;height:62%;}
+
+  /* screens */
+  .section{display:grid;gap:20px;}
+  .section-head{display:grid;gap:8px;max-width:70ch;}
+  .section-head p{color:var(--ink-2);}
+  .showing{font-family:var(--mono);font-size:12px;color:var(--muted);}
+  .showing b{color:var(--ink);font-weight:600;}
+  .frame{border:1px solid var(--line-strong);border-radius:12px;overflow:hidden;background:var(--bg);}
+  .frame-bar{height:34px;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--line);background:var(--surface);}
+  .url{font-family:var(--mono);font-size:11.5px;color:var(--muted);background:var(--surface-2);padding:3px 12px;border-radius:5px;}
+  .scroll{overflow-x:auto;}
+  .app{min-width:760px;background:var(--bg);font-size:13.5px;}
+  .topbar{height:52px;display:flex;align-items:center;gap:28px;padding:0 24px;background:var(--surface);border-bottom:1px solid var(--line);}
+  .topbar .lockup{font-size:19px;}
+  .tabs{display:flex;gap:20px;height:100%;}
+  .tabs a{display:flex;align-items:center;color:var(--muted);text-decoration:none;border-bottom:2px solid transparent;font-weight:500;}
+  .tabs a.on{color:var(--ink);border-bottom-color:var(--ink);}
+  .count{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 5px;margin-left:6px;border-radius:9px;background:var(--badge-bg);color:var(--badge-fg);font-family:var(--mono);font-size:11px;font-weight:600;}
+  .tb-right{margin-left:auto;display:flex;align-items:center;gap:14px;}
+  .org{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500;}
+  .org .sq{width:18px;height:18px;border-radius:4px;background:var(--ink);color:var(--on-ink);font-size:10.5px;font-weight:700;display:grid;place-items:center;}
+  .avatar{width:30px;height:30px;border-radius:50%;background:var(--surface-2);border:1px solid var(--line);display:grid;place-items:center;font-size:11.5px;font-weight:600;color:var(--ink-2);}
+  .app-body{padding:22px 24px 24px;display:grid;gap:14px;}
+  .answer{font-size:22px;font-weight:700;letter-spacing:-.02em;}
+  .answer-meta{font-family:var(--mono);font-size:12px;color:var(--muted);}
+  .rows{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .row{display:grid;grid-template-columns:1.4fr auto 1fr auto;gap:18px;align-items:center;padding:11px 16px;border-top:1px solid var(--line);}
+  .row:first-child{border-top:0;}
+  .row .nm{font-weight:500;}
+  .row .sub{font-size:12px;color:var(--muted);}
+  .pill{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px 0 7px;border-radius:5px;font-size:12.5px;font-weight:500;white-space:nowrap;}
+  .pill i{width:7px;height:7px;border-radius:50%;}
+  .pill.down{background:var(--down-soft);color:var(--down-text);} .pill.down i{background:var(--down);}
+  .pill.warn{background:var(--warn-soft);color:var(--warn-text);} .pill.warn i{background:var(--warn);}
+  .pill.up{background:var(--up-soft);color:var(--up-text);} .pill.up i{background:var(--up);}
+  .ticks{display:grid;grid-template-columns:repeat(30,4px);gap:2px;height:18px;}
+  .ticks b{border-radius:1.5px;background:var(--up);}
+  .ticks b.s{background:var(--warn);} .ticks b.d{background:var(--down);}
+  .num{font-family:var(--mono);font-size:12.5px;color:var(--ink-2);text-align:right;font-variant-numeric:tabular-nums;}
+
+  .screens-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;}
+  .cell{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px;display:grid;gap:14px;align-content:start;}
+  .cap{font-size:13px;color:var(--muted);}
+  .tabstrip{background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:10px 10px 0;}
+  .tabchips{display:flex;gap:4px;flex-wrap:wrap;}
+  .tabchip{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-bottom:0;border-radius:8px 8px 0 0;padding:8px 12px;font-size:12.5px;color:var(--ink-2);white-space:nowrap;}
+  .icons{display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap;}
+
+  .sp{background:var(--surface);padding:26px 24px 18px;display:grid;gap:16px;}
+  .sp-head{display:flex;align-items:center;gap:10px;}
+  .sp-logo{width:28px;height:28px;border-radius:7px;background:#0e7c86;color:#fff;font-weight:700;font-size:13px;display:grid;place-items:center;}
+  .sp-name{font-weight:600;}
+  .sp-banner{display:flex;align-items:center;gap:10px;background:var(--up-soft);color:var(--up-text);padding:12px 14px;border-radius:8px;font-weight:600;}
+  .sp-banner i{width:9px;height:9px;border-radius:50%;background:var(--up);}
+  .sp-list{display:grid;gap:10px;}
+  .sp-item{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:13.5px;}
+  .sp-foot{border-top:1px solid var(--line);padding-top:14px;display:flex;justify-content:center;align-items:center;gap:7px;font-size:12.5px;color:var(--muted);}
+  .sp-foot svg{width:13px;height:13px;}
+  .sp-foot b{font-weight:600;}
+
+  .mail{background:var(--surface);padding:24px;display:grid;gap:14px;}
+  .mail .lockup{font-size:17px;}
+  .mail-subj{font-size:18px;font-weight:700;letter-spacing:-.015em;}
+  .mail p{font-size:13.5px;color:var(--ink-2);}
+  .figs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;border-top:1px solid var(--line);padding-top:12px;}
+  .fig{display:grid;gap:2px;}
+  .fig .lbl{font-size:11.5px;color:var(--muted);}
+  .fig .val{font-family:var(--mono);font-size:14px;font-weight:500;}
+  .fig .val.down{color:var(--down-text);}
+  .btn{display:inline-flex;align-items:center;justify-content:center;height:36px;padding:0 14px;border-radius:7px;font-size:13.5px;font-weight:600;background:var(--ink);color:var(--on-ink);justify-self:start;}
+
+  .login{background:var(--bg);padding:36px 20px;display:grid;place-items:center;}
+  .login-card{width:100%;max-width:340px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:28px 24px 24px;display:grid;gap:14px;}
+  .login-card .lockup{font-size:24px;justify-self:center;margin-bottom:6px;}
+  .login-card .ttl{text-align:center;font-size:17px;font-weight:700;letter-spacing:-.015em;}
+  .field{display:grid;gap:5px;font-size:12.5px;font-weight:500;color:var(--ink-2);}
+  .field span{height:36px;border:1px solid var(--line-strong);border-radius:7px;background:var(--surface);display:flex;align-items:center;padding:0 10px;font-size:13.5px;font-weight:400;color:var(--ink);}
+  .login-card .btn{justify-self:stretch;}
+
+  .variants{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .variant{border-radius:8px;padding:26px 10px;display:grid;place-items:center;}
+  .variant .lockup{font-size:26px;}
+  .v-paper{background:#ffffff;border:1px solid #e4e4e8;} .v-paper .lockup{color:#0d0e12;}
+  .v-ink{background:#0d0e12;border:1px solid #24262c;} .v-ink .lockup{color:#edeef1;}
+  .small-row{display:flex;align-items:center;justify-content:center;gap:22px;flex-wrap:wrap;padding:8px 0;}
+  .small-row .lockup{font-size:18px;}
+
+  @media (max-width:760px){
+    .board{grid-template-columns:1fr;}
+    .b-stage{border-right:0;border-bottom:1px solid var(--line);padding:48px 16px;min-height:0;}
+  }
+  @media (max-width:520px){ .figs{grid-template-columns:1fr 1fr;} }
+</style>
+
+<main class="wrap">
+
+  <header class="intro">
+    <span class="eyebrow">Upmonia · logo çalışması · 17 Eylül 2026</span>
+    <h1>İsmin içinden dört işaret</h1>
+    <p class="lede">Hiçbiri eski tik işaretinden türemiyor. Her biri Upmonia'nın bir parçasından ya da ürünün kendi dilinden çıkıyor ve ürünün içinde farklı bir şekilde canlanıyor. Renkler, yazı ve kurallar aynen kalıyor.</p>
+    <div class="name-parts" aria-label="İsmin parçaları">
+      <div class="part"><b>up</b><span>ayakta, çalışıyor</span></div>
+      <span class="plus">+</span>
+      <div class="part"><b>mon</b><span>monitor, izlemek</span></div>
+      <span class="plus">+</span>
+      <div class="part"><b>ia</b><span>harmonia: her şeyin uyumu</span></div>
+    </div>
+  </header>
+
+  <section class="section" aria-labelledby="h-oneriler">
+    <div class="section-head">
+      <h2 id="h-oneriler">Öneriler</h2>
+      <p>Soldaki büyük logo tek renk, mürekkep. Sağdaki sekmeler aynı işaretin ürün içinde nasıl canlandığını gösteriyor.</p>
+    </div>
+    <div class="boards" id="boards"></div>
+  </section>
+
+  <section class="section" aria-labelledby="h-ekran">
+    <div class="section-head">
+      <h2 id="h-ekran">Ekranlarda</h2>
+      <p>Bir öneride “Ekranlarda göster”e basınca aşağıdaki bütün ekranlar o işarete geçiyor. Örnek organizasyonda bir kesinti açık, bu yüzden üst menüdeki işaret kırmızı.</p>
+      <span class="showing" id="showing"></span>
+    </div>
+
+    <div class="frame">
+      <div class="frame-bar"><span class="url">upmonia.app/monitors</span></div>
+      <div class="scroll">
+        <div class="app">
+          <div class="topbar">
+            <span data-lk="down"></span>
+            <nav class="tabs" aria-label="Örnek gezinme">
+              <a class="on" href="#h-ekran">Monitörler</a>
+              <a href="#h-ekran">Olaylar<span class="count">1</span></a>
+              <a href="#h-ekran">Durum sayfaları</a>
+              <a href="#h-ekran">Ayarlar</a>
+            </nav>
+            <div class="tb-right">
+              <span class="org"><span class="sq">A</span>Acme Ajans</span>
+              <span class="avatar">CÇ</span>
+            </div>
+          </div>
+          <div class="app-body">
+            <div>
+              <div class="answer">2 monitörde sorun var</div>
+              <div class="answer-meta">34 monitör · son kontrol 14:28:04</div>
+            </div>
+            <div class="rows">
+              <div class="row">
+                <div><div class="nm">Acme Mağaza — ödeme sayfası</div><div class="sub">HTTP 503 · 3 kontroldür</div></div>
+                <span class="pill down"><i></i>Kesinti</span>
+                <div class="ticks" data-t="u27 d3"></div>
+                <span class="num">—</span>
+              </div>
+              <div class="row">
+                <div><div class="nm">Bosphorus Dental — randevu API</div><div class="sub">1/3 ardışık hata</div></div>
+                <span class="pill warn"><i></i>Şüpheli</span>
+                <div class="ticks" data-t="u29 s1"></div>
+                <span class="num">1.500 ms</span>
+              </div>
+              <div class="row">
+                <div><div class="nm">Kuzey Lojistik — ana sayfa</div><div class="sub">32 monitör daha, hepsi çalışıyor.</div></div>
+                <span class="pill up"><i></i>Çalışıyor</span>
+                <div class="ticks" data-t="u30"></div>
+                <span class="num">312 ms</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="screens-2">
+      <div class="cell">
+        <div class="tabstrip" aria-label="Tarayıcı sekmesi örnekleri">
+          <div class="tabchips">
+            <span class="tabchip"><span data-fav="up" data-size="16"></span>Monitörler · Upmonia</span>
+            <span class="tabchip"><span data-fav="warn" data-size="16"></span>Monitörler · Upmonia</span>
+            <span class="tabchip"><span data-fav="down" data-size="16"></span>(1) Monitörler · Upmonia</span>
+          </div>
+        </div>
+        <span class="cap">Canlı favicon: çalışıyor, şüpheli, kesinti.</span>
+        <div class="icons">
+          <span data-fav="brand" data-size="72"></span>
+          <span data-fav="brand" data-size="40"></span>
+          <span data-fav="brand" data-size="24"></span>
+          <span data-fav="brand" data-size="16"></span>
+        </div>
+        <span class="cap">Uygulama ikonu. Pazarlama malzemelerinde her zaman “çalışıyor” hali.</span>
+      </div>
+
+      <div class="frame">
+        <div class="frame-bar"><span class="url">upmonia.app/durum/bosphorus-dental</span></div>
+        <div class="sp">
+          <div class="sp-head"><span class="sp-logo">BD</span><span class="sp-name">Bosphorus Dental</span></div>
+          <div class="sp-banner"><i></i>Tüm sistemler çalışıyor</div>
+          <div class="sp-list">
+            <div class="sp-item"><span>Web sitesi</span><span class="mono muted">%99,98</span></div>
+            <div class="sp-item"><span>Online randevu</span><span class="mono muted">%99,91</span></div>
+          </div>
+          <div class="sp-foot"><span data-mark="muted"></span><span><b>Upmonia</b> ile desteklenmektedir</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="screens-2">
+      <div class="frame">
+        <div class="frame-bar"><span class="url">E-posta · uyari@upmonia.app</span></div>
+        <div class="mail">
+          <span data-lk="down"></span>
+          <div class="mail-subj">Kesinti — Acme Mağaza — ödeme sayfası</div>
+          <p>Monitör 3 ardışık kontrolde yanıt vermedi. Olay 14:28:04'te açıldı.</p>
+          <div class="figs">
+            <div class="fig"><span class="lbl">Neden</span><span class="val down">HTTP 503</span></div>
+            <div class="fig"><span class="lbl">Başlangıç</span><span class="val">14:28:04</span></div>
+            <div class="fig"><span class="lbl">Süre</span><span class="val">4 dk 12 sn</span></div>
+          </div>
+          <span class="btn">Olayı aç</span>
+        </div>
+      </div>
+
+      <div class="frame">
+        <div class="frame-bar"><span class="url">upmonia.app/login</span></div>
+        <div class="login">
+          <div class="login-card">
+            <span data-lk="ink"></span>
+            <div class="ttl">Upmonia'ya giriş yap</div>
+            <div class="field">E-posta<span>canberk@acmeajans.com</span></div>
+            <div class="field">Parola<span>••••••••••</span></div>
+            <span class="btn">Giriş yap</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="screens-2">
+      <div class="cell">
+        <div class="variants">
+          <div class="variant v-paper"><span data-lk="ink"></span></div>
+          <div class="variant v-ink"><span data-lk="ink"></span></div>
+        </div>
+        <span class="cap">Logo tek renk: açık zeminde mürekkep, koyu zeminde kâğıt.</span>
+      </div>
+      <div class="cell">
+        <div class="small-row"><span data-lk="ink"></span><span data-mark="ink16"></span></div>
+        <span class="cap">En küçük boyutlar: logo 18 px yazı boyu, işaret tek başına 16 px.</span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+(function(){
+  var S = {up:'#2bc47a', warn:'#f2b53a', down:'#ff5b4e'};
+  var CSSV = {up:'var(--up)', warn:'var(--warn)', down:'var(--down)', ink:'currentColor', muted:'var(--muted)', ink16:'var(--ink)'};
+
+  var ring = function(c, sw){ return '<path d="M18.13 6.86A8 8 0 1 1 13.39 4.12" fill="none" stroke="'+c+'" stroke-width="'+(sw||2.6)+'" stroke-linecap="round"/>'; };
+  var stripHist = {brand:['u','u','u','u','u'], up:['u','u','u','u','u'], warn:['u','u','u','u','s'], down:['u','u','d','d','d']};
+
+  var K = {
+    serit: {
+      name:'Şerit', tag:'son beş kontrol',
+      story:'Ürünün imzası olan kontrol şeridinden beş çubuk. Her çubuk bir kontrol; en sağdaki “şu an” ve bir boy yukarıda duruyor: up.',
+      live:'Favicon gerçekten son beş kontrolü gösteriyor. Sekmeye bakan kullanıcı sorunun ne zaman başladığını bile görüyor.',
+      rule:[['yeni kural','Favicon organizasyonun son beş kontrol sonucunu çubuk çubuk boyuyor.'],['risk','Uygulama ikonunda dört renk birden görünebiliyor; kesinti anında kalabalık.']],
+      rec:true,
+      mark:function(c, hist){
+        var xs=[2.5,7,11.5,16,20.5], out='';
+        for(var i=0;i<5;i++){
+          var col = hist ? S[{u:'up',s:'warn',d:'down'}[hist[i]]] : c;
+          var y = i===4 ? 3.5 : 8, h = i===4 ? 16 : 11.5;
+          out+='<rect x="'+(xs[i]-0.001)+'" y="'+y+'" width="3" height="'+h+'" rx="1.2" fill="'+col+'"/>';
+        }
+        return out;
+      },
+      fav:function(state){ return this.mark(null, stripHist[state]); },
+      lockup:function(c){ return '<span class="lockup"><svg viewBox="0 0 24 24" aria-hidden="true">'+this.mark(c)+'</svg>upmonia</span>'; }
+    },
+    nokta: {
+      name:'Nokta', tag:'i\'nin noktası',
+      story:'İşaret yok; logo yalnızca yazı. Tek fark “i”nin noktası: biraz büyük, tam yuvarlak. “Renk yalnızca bir şey olduğunda gelir” kuralının kendisi.',
+      live:'Ürünün içinde renk alabilen tek şey bu nokta. Favicon da sadece bir nokta: yeşil, sarı ya da kırmızı.',
+      rule:[['yeni kural','Logoda durum rengini yalnızca nokta alabiliyor, harfler her zaman mürekkep.'],['risk','Tek başına bir nokta, başka markalardan ayırt edilmesi en zor işaret.']],
+      mark:function(c){ return '<circle cx="12" cy="12" r="6.2" fill="'+c+'"/>'; },
+      fav:function(state){ return this.mark(S[state==='brand'?'up':state]); },
+      lockup:function(c){ return '<span class="lockup wm">upmon<span class="idot">ı<i style="background:'+c+'"></i></span>a</span>'; }
+    },
+    halka: {
+      name:'Halka', tag:'uptime halkası',
+      story:'Yazıdaki “o” harfi bir uptime halkasına dönüşüyor. Halkadaki küçük açıklık, yıl boyunca yaşanan birkaç dakikalık kesinti: %99,98 bir halkadır.',
+      live:'Ürünün içinde halka durum rengini alıyor. Favicon ve ikon halkanın kendisi; kelimenin tam ortasından çıkan işaret.',
+      rule:[['yeni kural','“o” harfi hiçbir yerde normal harfle yazılmıyor; logoda her zaman halka.'],['risk','Halka ve açıklık 16 px\'te seçilebiliyor ama açıklık çok küçük kalıyor.']],
+      mark:function(c){ return ring(c); },
+      fav:function(state){ return this.mark(S[state==='brand'?'up':state]); },
+      lockup:function(c){ return '<span class="lockup wm">upm<svg class="oring" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.43 4.34A10 10 0 1 1 15.42 2.60" fill="none" stroke="'+c+'" stroke-width="4" stroke-linecap="butt"/></svg>nia</span>'; }
+    },
+    diyapazon: {
+      name:'Diyapazon', tag:'akort çatalı',
+      story:'“-monia” harmonia\'dan geliyor. Akort çatalı tek, doğru bir frekansta titreşir; müzisyen her şeyin tonda olup olmadığını onunla anlar. Çatalın gövdesi aynı zamanda bir “u”: up.',
+      live:'Ürünün içinde çatal durum rengini alıyor. Sistem tondayken yeşil, bir şey detone olduğunda kırmızı.',
+      rule:[['yeni kural','Çatal her zaman dik duruyor, sap aşağıda.'],['risk','Monitoring ile bağı ilk bakışta değil, hikaye anlatılınca kuruluyor.']],
+      mark:function(c){ return '<path d="M7.5 2.5V10.5a4.5 4.5 0 0 0 9 0V2.5" fill="none" stroke="'+c+'" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 15v6.5" fill="none" stroke="'+c+'" stroke-width="2.6" stroke-linecap="round"/>'; },
+      fav:function(state){ return this.mark(S[state==='brand'?'up':state]); },
+      lockup:function(c){ return '<span class="lockup"><svg viewBox="0 0 24 24" aria-hidden="true">'+this.mark(c)+'</svg>upmonia</span>'; }
+    }
+  };
+  var order=['serit','nokta','halka','diyapazon'];
+
+  function icon(k, state, size){
+    return '<span class="appicon" style="--s:'+size+'px"><svg viewBox="0 0 24 24" aria-hidden="true">'+K[k].fav(state)+'</svg></span>';
+  }
+
+  var boards=document.getElementById('boards');
+  boards.innerHTML = order.map(function(k){
+    var c=K[k];
+    return '<article class="board" id="board-'+k+'" data-k="'+k+'">'+
+      '<div class="b-stage"><span class="b-tag">'+c.tag+'</span>'+c.lockup('currentColor')+'</div>'+
+      '<div class="b-body">'+
+        '<h3>'+c.name+'</h3>'+
+        '<p class="story">'+c.story+'</p>'+
+        '<div class="live"><span class="live-lbl">ürünün içinde</span><p class="cap">'+c.live+'</p>'+
+          '<div class="favs">'+
+            '<span class="fav">'+icon(k,'up',18)+'çalışıyor</span>'+
+            '<span class="fav">'+icon(k,'warn',18)+'şüpheli</span>'+
+            '<span class="fav">'+icon(k,'down',18)+'kesinti</span>'+
+          '</div></div>'+
+        '<dl class="rule">'+c.rule.map(function(r){return '<dt>'+r[0]+'</dt><dd>'+r[1]+'</dd>';}).join('')+'</dl>'+
+        '<div class="b-foot"><button class="pick" type="button" id="pick-'+k+'" data-k="'+k+'" aria-pressed="false">Ekranlarda göster</button>'+(c.rec?'<span class="rec">önerim bu</span>':'')+'</div>'+
+      '</div></article>';
+  }).join('');
+
+  function apply(k){
+    var c=K[k];
+    document.querySelectorAll('[data-lk]').forEach(function(el){ el.innerHTML=c.lockup(CSSV[el.dataset.lk]); });
+    document.querySelectorAll('[data-mark]').forEach(function(el){
+      var v=el.dataset.mark, sz = v==='ink16' ? 16 : 13;
+      el.innerHTML='<svg viewBox="0 0 24 24" width="'+sz+'" height="'+sz+'" aria-hidden="true" style="display:block">'+c.mark(CSSV[v])+'</svg>';
+    });
+    document.querySelectorAll('[data-fav]').forEach(function(el){ el.innerHTML=icon(k, el.dataset.fav, +el.dataset.size); });
+    document.querySelectorAll('.board').forEach(function(b){
+      var on=b.dataset.k===k; b.classList.toggle('on',on);
+      var btn=b.querySelector('.pick'); btn.setAttribute('aria-pressed', on?'true':'false'); btn.textContent = on ? 'Ekranlarda gösteriliyor' : 'Ekranlarda göster';
+    });
+    document.getElementById('showing').innerHTML='Şu an ekranlarda: <b>'+c.name+'</b>';
+    try{localStorage.setItem('upmonia-mk2',k);}catch(e){}
+  }
+  boards.addEventListener('click',function(e){
+    var b=e.target.closest('.pick'); if(!b) return;
+    apply(b.dataset.k);
+    document.getElementById('h-ekran').scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto':'smooth', block:'start'});
+  });
+
+  document.querySelectorAll('.ticks').forEach(function(el){
+    el.dataset.t.split(' ').forEach(function(seg){
+      var cls={u:'',s:'s',d:'d'}[seg[0]], n=parseInt(seg.slice(1),10);
+      for(var i=0;i<n;i++){var b=document.createElement('b'); if(cls) b.className=cls; el.appendChild(b);}
+    });
+  });
+
+  var start='serit'; try{var s=localStorage.getItem('upmonia-mk2'); if(s&&K[s]) start=s;}catch(e){}
+  apply(start);
+})();
+</script>
