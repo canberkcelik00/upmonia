@@ -81,7 +81,7 @@ new #[Layout('layouts.app')] class extends Component
             'confirm_threshold' => $this->confirm_threshold,
             'recover_threshold' => $this->recover_threshold,
             'enabled' => $this->enabled,
-            'region' => config('uptik.default_region'),
+            'region' => config('upvane.default_region'),
         ]);
 
         $this->redirect(route('monitors.show', $monitor), navigate: true);
@@ -94,19 +94,10 @@ new #[Layout('layouts.app')] class extends Component
 };
 ?>
 
-<div class="max-w-2xl">
-    <x-ui.page-header :title="__('app.monitors_new')" />
+<div>
+    <x-ui.page-header :back="route('monitors.index')" :back-label="__('app.monitors_title')" :title="__('app.monitors_new')" />
 
     <form wire:submit="save">
-        <x-ui.card>
-            @include('components.monitors.form-fields')
-
-            <div class="mt-6 flex items-center gap-3">
-                <x-ui.button type="submit" variant="primary" wire:loading.attr="disabled">
-                    {{ __('app.monitor_create_submit') }}
-                </x-ui.button>
-                <x-ui.button variant="ghost" href="{{ route('monitors.index') }}" wire:navigate>{{ __('app.cancel') }}</x-ui.button>
-            </div>
-        </x-ui.card>
+        @include('components.monitors.form-fields')
     </form>
 </div>
