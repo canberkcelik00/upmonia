@@ -3,9 +3,9 @@
 return [
 
     'welcome' => [
-        'subject' => 'Uptik\'e hoş geldiniz',
+        'subject' => 'Upvane\'e hoş geldiniz',
         'greeting' => 'Merhaba :name,',
-        'body' => 'Uptik hesabınız oluşturuldu. Şimdi ilk monitörünüzü ekleyerek başlayabilirsiniz.',
+        'body' => 'Upvane hesabınız oluşturuldu. Şimdi ilk monitörünüzü ekleyerek başlayabilirsiniz.',
         'cta' => 'Panele git',
     ],
 
@@ -32,8 +32,10 @@ return [
         'ignore' => 'Bu isteği siz başlatmadıysanız bu e-postayı görmezden gelebilirsiniz.',
     ],
 
+    'client_label' => 'Müşteri',
+
     'incident_triggered' => [
-        'subject' => ':monitor artık DOWN',
+        'subject' => 'Kesinti — :monitor',
         'body' => ':monitor için bir kesinti tespit edildi.',
         'cause' => 'Neden',
         'started_at' => 'Başlangıç',
@@ -42,12 +44,12 @@ return [
     ],
 
     'test_email' => [
-        'subject' => 'Uptik test e-postası',
+        'subject' => 'Upvane test e-postası',
         'body' => 'Bu, ":channel" bildirim kanalı için gönderilen bir test e-postasıdır. Bunu görüyorsanız kanal doğru çalışıyor demektir.',
     ],
 
     'incident_resolved' => [
-        'subject' => ':monitor tekrar UP',
+        'subject' => 'Düzeldi — :monitor',
         'body' => ':monitor için kesinti sona erdi.',
         'duration' => 'Süre',
         'cta' => 'Panelde görüntüle',

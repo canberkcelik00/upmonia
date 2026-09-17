@@ -2,10 +2,12 @@
 
 return [
 
+    'client_label' => 'Client',
+
     'welcome' => [
-        'subject' => 'Welcome to Uptik',
+        'subject' => 'Welcome to Upvane',
         'greeting' => 'Hi :name,',
-        'body' => 'Your Uptik account is ready. You can start by adding your first monitor.',
+        'body' => 'Your Upvane account is ready. You can start by adding your first monitor.',
         'cta' => 'Go to dashboard',
     ],
 
@@ -33,7 +35,7 @@ return [
     ],
 
     'incident_triggered' => [
-        'subject' => ':monitor is now DOWN',
+        'subject' => 'Down — :monitor',
         'body' => 'An outage was detected for :monitor.',
         'cause' => 'Cause',
         'started_at' => 'Started at',
@@ -42,12 +44,12 @@ return [
     ],
 
     'test_email' => [
-        'subject' => 'Uptik test email',
+        'subject' => 'Upvane test email',
         'body' => 'This is a test email for the ":channel" notification channel. If you can see this, the channel is working correctly.',
     ],
 
     'incident_resolved' => [
-        'subject' => ':monitor is back UP',
+        'subject' => 'Resolved — :monitor',
         'body' => 'The outage for :monitor has ended.',
         'duration' => 'Duration',
         'cta' => 'View in dashboard',
