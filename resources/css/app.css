@@ -103,36 +103,34 @@
     display: none !important;
 }
 
-/* Signature tick-strip entrance (marketing home page banner): each bar grows up from its
-   baseline, staggered by resources/js/app.js setting animation-delay per bar. Bars start
-   fully visible with NO animation by default — the [data-reveal-stagger] selector alone
-   doesn't apply one. resources/js/app.js sets each bar's animation-delay first, then adds
-   the .is-revealing class, which is what actually starts the animation. That order matters:
-   the bare selector used to start the animation itself (with every delay still at its 0ms
-   default) the instant the stylesheet parsed, which finished before the deferred script had
-   even run; the script then set animation-delay on an already-finished animation, which
-   restarts it from scratch — the whole strip visibly played its entrance twice. Gating the
-   animation behind a class JS adds only after the delays are set means it starts once,
-   correctly staggered, exactly when JS says to. With no JS, bars simply render in their
-   normal, fully-visible state — see docs/brand/upmonia-brand-guidelines.html, "Arayüz" →
-   "Hareket". The reduced-motion media query below (existing, global) collapses it to ~instant. */
-@keyframes tick-grow {
+/* Signature tick-strip entrance (marketing home page banner): bars pop in one by one,
+   left to right — a plain scale-from-centre + fade, not a grow-from-the-bottom, so the
+   left-to-right stagger (resources/js/app.js setting animation-delay per bar) reads as the
+   whole effect instead of competing with a vertical motion. Bars start fully visible with NO
+   animation by default — the [data-reveal-stagger] selector alone doesn't apply one.
+   resources/js/app.js sets each bar's animation-delay first, then adds the .is-revealing
+   class, which is what actually starts the animation. That order matters: the bare selector
+   used to start the animation itself (with every delay still at its 0ms default) the instant
+   the stylesheet parsed, which finished before the deferred script had even run; the script
+   then set animation-delay on an already-finished animation, which restarts it from scratch
+   — the whole strip visibly played its entrance twice. Gating the animation behind a class
+   JS adds only after the delays are set means it starts once, correctly staggered, exactly
+   when JS says to. With no JS, bars simply render in their normal, fully-visible state — see
+   docs/brand/upmonia-brand-guidelines.html, "Arayüz" → "Hareket". The reduced-motion media
+   query below (existing, global) collapses it to ~instant. */
+@keyframes tick-pop {
     from {
         opacity: 0;
-        transform: scaleY(0.1);
+        transform: scale(0.4);
     }
     to {
         opacity: 1;
-        transform: scaleY(1);
+        transform: scale(1);
     }
 }
 
-[data-reveal-stagger] > * {
-    transform-origin: bottom;
-}
-
 [data-reveal-stagger].is-revealing > * {
-    animation: tick-grow 0.32s cubic-bezier(0.16, 0.9, 0.28, 1.05) both;
+    animation: tick-pop 0.26s cubic-bezier(0.16, 0.9, 0.28, 1.05) both;
 }
 
 @layer base {

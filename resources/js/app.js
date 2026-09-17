@@ -9,8 +9,8 @@
 (function () {
     var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // The strip's own growing-in animation is a real CSS @keyframes rule (resources/css/
-    // app.css, `tick-grow`), but it only runs once the .is-revealing class is present — the
+    // The strip's own pop-in animation is a real CSS @keyframes rule (resources/css/
+    // app.css, `tick-pop`), but it only runs once the .is-revealing class is present — the
     // delay has to be set on each bar *before* that class is added, or the browser restarts
     // an already-playing (or already-finished) animation the moment animation-delay changes,
     // which is exactly what made the whole strip visibly play its entrance twice.
