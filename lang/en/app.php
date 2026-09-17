@@ -11,10 +11,8 @@ return [
     'nav_close_menu' => 'Close menu',
     'nav_account' => 'Account menu',
     'nav_more' => 'More',
-    'theme_switch' => 'Switch theme',
-    'theme_light' => 'Light',
-    'theme_dark' => 'Dark',
-    'theme_system' => 'System',
+    'theme_to_dark' => 'Switch to dark theme',
+    'theme_to_light' => 'Switch to light theme',
     'language_switch' => 'Switch language',
 
     // Common actions

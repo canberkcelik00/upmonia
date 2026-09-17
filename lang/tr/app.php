@@ -11,10 +11,8 @@ return [
     'nav_close_menu' => 'Menüyü kapat',
     'nav_account' => 'Hesap menüsü',
     'nav_more' => 'Daha fazla',
-    'theme_switch' => 'Temayı değiştir',
-    'theme_light' => 'Açık',
-    'theme_dark' => 'Koyu',
-    'theme_system' => 'Sistem',
+    'theme_to_dark' => 'Koyu temaya geç',
+    'theme_to_light' => 'Açık temaya geç',
     'language_switch' => 'Dili değiştir',
 
     // Common actions

@@ -6,29 +6,22 @@
      applies the new document's <html> attributes. --}}
 <script>
     (function () {
+        // Only light and dark are choosable. Dark is the default until the user picks light
+        // (a stale 'system' value from older builds also falls back to dark).
         function resolve() {
-            var stored = localStorage.getItem('theme');
-            return stored === 'light' || stored === 'dark' ? stored : 'system';
+            return localStorage.getItem('theme') === 'light' ? 'light' : 'dark';
         }
 
         function apply() {
             var theme = resolve();
-            var isDark = theme === 'dark'
-                || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-            document.documentElement.classList.toggle('dark', isDark);
+            document.documentElement.classList.toggle('dark', theme === 'dark');
             return theme;
         }
 
+        window.resolveTheme = resolve;
         window.applyTheme = apply;
         apply();
 
         document.addEventListener('livewire:navigated', apply);
-
-        // Follow the OS while the page is open, but only when the user chose "system".
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () {
-            if (resolve() === 'system') {
-                apply();
-            }
-        });
     })();
 </script>
