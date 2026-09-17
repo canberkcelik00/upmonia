@@ -81,7 +81,7 @@ new #[Layout('layouts.app')] class extends Component
 };
 ?>
 
-<div class="max-w-2xl">
+<div>
     <x-ui.page-header :title="__('app.settings_title')" :description="__('app.settings_description')" class="mb-6" />
     <x-settings.tabs />
 
@@ -89,20 +89,21 @@ new #[Layout('layouts.app')] class extends Component
         <x-ui.alert variant="success" class="mb-4">{{ session('channels-status') }}</x-ui.alert>
     @endif
 
-    <x-ui.card class="mb-6">
-        <h2 class="mb-4 text-sm font-semibold text-neutral-700 dark:text-neutral-300">{{ __('app.channels_new') }}</h2>
-        <form wire:submit="create" class="flex items-end gap-3">
-            <x-ui.field :label="__('app.field_name')" error="name" class="w-40 shrink-0">
+    <x-ui.form-section :title="__('app.channels_new')" :description="__('app.channels_new_description')">
+        <x-slot:actions>
+            <x-ui.button type="submit" form="channel-form" variant="primary">{{ __('app.add') }}</x-ui.button>
+        </x-slot:actions>
+        <form id="channel-form" wire:submit="create" class="grid max-w-[420px] gap-3.5">
+            <x-ui.field :label="__('app.field_name')" error="name">
                 <x-ui.input wire:model="name" type="text" placeholder="{{ __('app.channels_name_placeholder') }}" :invalid="$errors->has('name')" />
             </x-ui.field>
-            <x-ui.field :label="__('auth.field_email')" error="email" class="flex-1">
+            <x-ui.field :label="__('auth.field_email')" error="email">
                 <x-ui.input wire:model="email" type="email" :invalid="$errors->has('email')" />
             </x-ui.field>
-            <x-ui.button type="submit" variant="primary">{{ __('app.add') }}</x-ui.button>
         </form>
-    </x-ui.card>
+    </x-ui.form-section>
 
-    <x-ui.table>
+    <x-ui.table class="mt-8">
         <x-slot:head>
             <th>{{ __('app.field_name') }}</th>
             <th>{{ __('app.monitors_col_status') }}</th>
@@ -113,7 +114,7 @@ new #[Layout('layouts.app')] class extends Component
             <tr wire:key="channel-{{ $channel->id }}">
                 <td>
                     <div class="font-medium">{{ $channel->name }}</div>
-                    <div class="text-xs text-neutral-500 dark:text-neutral-400">{{ $channel->config['email'] ?? '' }}</div>
+                    <div class="text-xs text-muted">{{ $channel->config['email'] ?? '' }}</div>
                 </td>
                 <td>
                     <x-ui.badge :color="$channel->isVerified() ? 'emerald' : 'amber'">{{ $channel->isVerified() ? __('app.channel_verified') : __('app.channel_unverified') }}</x-ui.badge>
@@ -124,14 +125,14 @@ new #[Layout('layouts.app')] class extends Component
                 <td class="text-right text-xs">
                     <div class="flex justify-end gap-3">
                         @unless ($channel->isVerified())
-                            <button wire:click="resendVerification({{ $channel->id }})" class="font-medium text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100">{{ __('app.channel_resend') }}</button>
+                            <button wire:click="resendVerification({{ $channel->id }})" class="font-medium text-ink-2 hover:text-ink">{{ __('app.channel_resend') }}</button>
                         @else
-                            <button wire:click="sendTest({{ $channel->id }})" class="font-medium text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100">{{ __('app.channel_send_test') }}</button>
+                            <button wire:click="sendTest({{ $channel->id }})" class="font-medium text-ink-2 hover:text-ink">{{ __('app.channel_send_test') }}</button>
                         @endunless
-                        <button wire:click="toggleEnabled({{ $channel->id }})" class="font-medium text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100">
+                        <button wire:click="toggleEnabled({{ $channel->id }})" class="font-medium text-ink-2 hover:text-ink">
                             {{ $channel->enabled ? __('app.channel_deactivate') : __('app.channel_activate') }}
                         </button>
-                        <button wire:click="delete({{ $channel->id }})" wire:confirm="{{ __('app.channel_delete_confirm') }}" class="font-medium text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300">{{ __('app.delete') }}</button>
+                        <button wire:click="delete({{ $channel->id }})" wire:confirm="{{ __('app.channel_delete_confirm') }}" class="font-medium text-down-text hover:underline">{{ __('app.delete') }}</button>
                     </div>
                 </td>
             </tr>

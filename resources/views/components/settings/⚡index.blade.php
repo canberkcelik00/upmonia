@@ -117,17 +117,20 @@ new #[Layout('layouts.app')] class extends Component
 };
 ?>
 
-<div class="max-w-2xl">
+<div>
     <x-ui.page-header :title="__('app.settings_title')" :description="__('app.settings_description')" class="mb-6" />
     <x-settings.tabs />
 
-    <div class="space-y-6">
-        <x-ui.card>
-            <h2 class="mb-4 text-sm font-semibold text-neutral-700 dark:text-neutral-300">{{ __('app.settings_profile') }}</h2>
+    <div>
+        <x-ui.form-section :title="__('app.settings_profile')" :description="__('app.settings_profile_description')">
+            <x-slot:actions>
+                <x-ui.button type="submit" form="profile-form" variant="primary">{{ __('app.save') }}</x-ui.button>
+            </x-slot:actions>
+
             @if (session('profile-status'))
-                <x-ui.alert variant="success" class="mb-4">{{ session('profile-status') }}</x-ui.alert>
+                <x-ui.alert variant="success">{{ session('profile-status') }}</x-ui.alert>
             @endif
-            <form wire:submit="updateProfile" class="space-y-4">
+            <form id="profile-form" wire:submit="updateProfile" class="grid max-w-[420px] gap-3.5">
                 <x-ui.field :label="__('app.settings_full_name')" error="name">
                     <x-ui.input wire:model="name" type="text" :invalid="$errors->has('name')" />
                 </x-ui.field>
@@ -137,34 +140,38 @@ new #[Layout('layouts.app')] class extends Component
                         <option value="en">English</option>
                     </x-ui.select>
                 </x-ui.field>
-                <x-ui.button type="submit" variant="primary">{{ __('app.save') }}</x-ui.button>
             </form>
-        </x-ui.card>
+        </x-ui.form-section>
 
-        <x-ui.card>
-            <h2 class="mb-4 text-sm font-semibold text-neutral-700 dark:text-neutral-300">{{ __('app.settings_email') }}</h2>
-            <p class="mb-3 text-sm text-neutral-600 dark:text-neutral-400">{{ __('app.settings_email_current') }}: <strong class="text-neutral-900 dark:text-neutral-100">{{ auth()->user()->email }}</strong>
+        <x-ui.form-section :title="__('app.settings_email')" :description="__('app.settings_email_description')">
+            <x-slot:actions>
+                <x-ui.button type="submit" form="email-form" variant="secondary">{{ __('app.settings_change') }}</x-ui.button>
+            </x-slot:actions>
+
+            <p class="text-[13px] text-ink-2">{{ __('app.settings_email_current') }}: <strong class="text-ink">{{ auth()->user()->email }}</strong>
                 @if (auth()->user()->pending_email)
-                    <span class="text-amber-600 dark:text-amber-400">({{ __('app.settings_email_pending', ['email' => auth()->user()->pending_email]) }})</span>
+                    <span class="text-warn-text">({{ __('app.settings_email_pending', ['email' => auth()->user()->pending_email]) }})</span>
                 @endif
             </p>
             @if (session('email-status'))
-                <x-ui.alert variant="success" class="mb-4">{{ session('email-status') }}</x-ui.alert>
+                <x-ui.alert variant="success">{{ session('email-status') }}</x-ui.alert>
             @endif
-            <form wire:submit="requestEmailChange" class="flex items-end gap-3">
-                <x-ui.field :label="__('app.settings_new_email')" error="new_email" class="flex-1">
+            <form id="email-form" wire:submit="requestEmailChange" class="max-w-[420px]">
+                <x-ui.field :label="__('app.settings_new_email')" error="new_email">
                     <x-ui.input wire:model="new_email" type="email" :invalid="$errors->has('new_email')" />
                 </x-ui.field>
-                <x-ui.button type="submit" variant="secondary">{{ __('app.settings_change') }}</x-ui.button>
             </form>
-        </x-ui.card>
+        </x-ui.form-section>
 
-        <x-ui.card>
-            <h2 class="mb-4 text-sm font-semibold text-neutral-700 dark:text-neutral-300">{{ __('app.settings_password') }}</h2>
+        <x-ui.form-section :title="__('app.settings_password')" :description="__('app.settings_password_description')">
+            <x-slot:actions>
+                <x-ui.button type="submit" form="password-form" variant="primary">{{ __('app.settings_password_update') }}</x-ui.button>
+            </x-slot:actions>
+
             @if (session('password-status'))
-                <x-ui.alert variant="success" class="mb-4">{{ session('password-status') }}</x-ui.alert>
+                <x-ui.alert variant="success">{{ session('password-status') }}</x-ui.alert>
             @endif
-            <form wire:submit="updatePassword" class="space-y-4">
+            <form id="password-form" wire:submit="updatePassword" class="grid max-w-[420px] gap-3.5">
                 <x-ui.field :label="__('app.settings_current_password')" error="current_password">
                     <x-ui.input wire:model="current_password" type="password" :invalid="$errors->has('current_password')" />
                 </x-ui.field>
@@ -174,16 +181,18 @@ new #[Layout('layouts.app')] class extends Component
                 <x-ui.field :label="__('app.settings_new_password_confirm')">
                     <x-ui.input wire:model="new_password_confirmation" type="password" />
                 </x-ui.field>
-                <x-ui.button type="submit" variant="primary">{{ __('app.settings_password_update') }}</x-ui.button>
             </form>
-        </x-ui.card>
+        </x-ui.form-section>
 
-        <x-ui.card>
-            <h2 class="mb-4 text-sm font-semibold text-neutral-700 dark:text-neutral-300">{{ __('app.settings_sessions') }}</h2>
+        <x-ui.form-section :title="__('app.settings_sessions')" :description="__('app.settings_sessions_description')">
+            <x-slot:actions>
+                <x-ui.button variant="secondary" wire:click="revokeOtherSessions">{{ __('app.settings_revoke_sessions') }}</x-ui.button>
+            </x-slot:actions>
+
             @if (session('sessions-status'))
-                <x-ui.alert variant="success" class="mb-4">{{ session('sessions-status') }}</x-ui.alert>
+                <x-ui.alert variant="success">{{ session('sessions-status') }}</x-ui.alert>
             @endif
-            <ul class="mb-4 divide-y divide-neutral-100 text-sm dark:divide-neutral-800">
+            <ul class="divide-y divide-line text-sm">
                 @foreach ($sessions as $s)
                     <li class="flex items-center justify-between py-2">
                         <div>
@@ -191,47 +200,39 @@ new #[Layout('layouts.app')] class extends Component
                             @if ($s->id === $currentSessionId)
                                 <x-ui.badge color="emerald" class="ml-2">{{ __('app.settings_session_current') }}</x-ui.badge>
                             @endif
-                            <div class="text-xs text-neutral-500 dark:text-neutral-400">{{ \Illuminate\Support\Str::limit($s->user_agent ?? '', 60) }}</div>
+                            <div class="text-xs text-muted">{{ \Illuminate\Support\Str::limit($s->user_agent ?? '', 60) }}</div>
                         </div>
-                        <span class="text-xs text-neutral-500 dark:text-neutral-400">{{ \Carbon\Carbon::createFromTimestamp($s->last_activity)->diffForHumans() }}</span>
+                        <span class="text-xs text-muted">{{ \Carbon\Carbon::createFromTimestamp($s->last_activity)->diffForHumans() }}</span>
                     </li>
                 @endforeach
             </ul>
-            <x-ui.button variant="secondary" wire:click="revokeOtherSessions">
-                {{ __('app.settings_revoke_sessions') }}
-            </x-ui.button>
-        </x-ui.card>
+        </x-ui.form-section>
 
-        <x-ui.card>
-            <h2 class="mb-2 text-sm font-semibold text-neutral-700 dark:text-neutral-300">{{ __('app.settings_export_title') }}</h2>
-            <p class="mb-4 text-sm text-neutral-600 dark:text-neutral-400">{{ __('app.settings_export_description') }}</p>
-            <x-ui.button variant="secondary" href="{{ route('settings.export') }}">
-                <x-phosphor-download-simple class="size-4" />
-                {{ __('app.settings_export_cta') }}
-            </x-ui.button>
-        </x-ui.card>
+        <x-ui.form-section :title="__('app.settings_export_title')" :description="__('app.settings_export_description')">
+            <x-slot:actions>
+                <x-ui.button variant="secondary" href="{{ route('settings.export') }}">
+                    <x-phosphor-download-simple class="size-4" />
+                    {{ __('app.settings_export_cta') }}
+                </x-ui.button>
+            </x-slot:actions>
+        </x-ui.form-section>
 
-        <details class="group rounded-xl border border-red-200 bg-white shadow-[var(--shadow-card)] dark:border-red-900/50 dark:bg-neutral-900">
-            <summary class="flex cursor-pointer list-none items-center justify-between p-6 select-none">
-                <div>
-                    <h2 class="text-sm font-semibold text-red-700 dark:text-red-400">{{ __('app.settings_delete_account') }}</h2>
-                    <p class="mt-1 text-sm text-neutral-600 dark:text-neutral-400">{{ __('app.settings_delete_account_warning') }}</p>
-                </div>
-                <x-phosphor-caret-down class="size-4 shrink-0 text-neutral-400 transition-transform duration-150 group-open:rotate-180" />
-            </summary>
+        <x-ui.form-section :title="__('app.settings_delete_account')" :description="__('app.settings_delete_account_warning')" danger>
+            <x-slot:actions>
+                <button type="submit" form="delete-account-form" wire:confirm="{{ __('app.settings_delete_confirm_dialog') }}"
+                        class="inline-flex h-8 items-center justify-center gap-2 rounded-control bg-down px-3 text-sm font-medium text-on-badge transition-colors duration-150 hover:opacity-90 active:scale-[0.98]">
+                    {{ __('app.settings_delete_submit') }}
+                </button>
+            </x-slot:actions>
 
-            <form wire:submit="deleteAccount" class="space-y-4 border-t border-red-100 p-6 dark:border-red-900/40">
+            <form id="delete-account-form" wire:submit="deleteAccount" class="grid max-w-[420px] gap-3.5">
                 <x-ui.field :label="__('app.settings_delete_confirm_org', ['org' => auth()->user()->currentOrganization()?->name])" error="delete_org_name">
                     <x-ui.input wire:model="delete_org_name" type="text" :invalid="$errors->has('delete_org_name')" />
                 </x-ui.field>
                 <x-ui.field :label="__('app.settings_delete_password')" error="delete_password">
                     <x-ui.input wire:model="delete_password" type="password" :invalid="$errors->has('delete_password')" />
                 </x-ui.field>
-                <button type="submit" wire:confirm="{{ __('app.settings_delete_confirm_dialog') }}"
-                        class="inline-flex items-center justify-center gap-2 rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white transition-colors duration-150 hover:bg-red-700 active:scale-[0.98]">
-                    {{ __('app.settings_delete_submit') }}
-                </button>
             </form>
-        </details>
+        </x-ui.form-section>
     </div>
 </div>
