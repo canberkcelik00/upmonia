@@ -1,44 +1,25 @@
-// Marketing pages: a one-shot fade-and-rise as a section first enters the viewport, plus a
-// staggered "bars growing in" for the signature tick-strip banner — the only motion beyond
-// the system's 150ms colour/opacity transitions (see docs/brand/upmonia-brand-guidelines.html,
-// "Arayüz" → "Hareket", whose one *continuous* animation stays the open-incident pulse; these
-// are one-shot entrances, not loops). The hidden starting state is only ever set here, in JS,
-// never in CSS — so content stays visible by default with no script, a failed script, or
-// prefers-reduced-motion, instead of depending on the animation to reveal it.
+// Marketing pages: a one-shot fade-and-rise as a section first enters the viewport (the
+// signature tick-strip's own "bars growing in" is a CSS @keyframes rule in resources/css/
+// app.css instead — see its comment for why). The only motion beyond the system's 150ms
+// colour/opacity transitions (see docs/brand/upmonia-brand-guidelines.html, "Arayüz" →
+// "Hareket", whose one *continuous* animation stays the open-incident pulse; this is a
+// one-shot entrance, not a loop). The hidden starting state is only ever set here, in JS,
+// never in CSS — so [data-reveal] content stays visible by default with no script, a failed
+// script, or prefers-reduced-motion, instead of depending on the animation to reveal it.
 (function () {
     var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // The signature strip sits right under the hero, so on most screens it's already inside
-    // the viewport on load — an IntersectionObserver fires for it almost immediately, too
-    // close to first paint to read as a visible entrance. It plays once on load instead,
-    // guaranteed and regardless of scroll position.
-    document.querySelectorAll('[data-reveal-stagger]').forEach(function (el) {
-        if (reduceMotion) {
-            return;
-        }
-
-        var bars = Array.from(el.children);
-
-        bars.forEach(function (bar, i) {
-            bar.style.opacity = '0';
-            bar.style.transform = 'scaleY(0.1)';
-            bar.style.transformOrigin = 'bottom';
-            bar.style.transition = 'opacity .6s ease-out, transform .6s cubic-bezier(.16,.9,.28,1.05)';
-            bar.style.transitionDelay = Math.min(i * 24, 650) + 'ms';
-        });
-
-        // Double rAF: the first frame commits the hidden state above, the second flips it
-        // to visible — guarantees the browser paints "hidden" before it paints "revealed",
-        // so the transition actually plays instead of appearing already-finished.
-        requestAnimationFrame(function () {
-            requestAnimationFrame(function () {
-                bars.forEach(function (bar) {
-                    bar.style.opacity = '1';
-                    bar.style.transform = 'scaleY(1)';
-                });
+    // The strip's own growing-in animation is a real CSS @keyframes rule (resources/css/
+    // app.css, `tick-grow`) that plays on its own — this only staggers each bar ~24ms apart.
+    // Skipped under reduced motion, though the global reduced-motion rule already collapses
+    // the animation to ~instant even without this.
+    if (! reduceMotion) {
+        document.querySelectorAll('[data-reveal-stagger]').forEach(function (el) {
+            Array.from(el.children).forEach(function (bar, i) {
+                bar.style.animationDelay = Math.min(i * 24, 650) + 'ms';
             });
         });
-    });
+    }
 
     var targets = document.querySelectorAll('[data-reveal]');
 

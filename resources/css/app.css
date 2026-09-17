@@ -103,6 +103,30 @@
     display: none !important;
 }
 
+/* Signature tick-strip entrance (marketing home page banner): each bar grows up from its
+   baseline, staggered by resources/js/app.js setting animation-delay per bar. A real CSS
+   @keyframes animation, not a JS-driven transition — it starts and plays on its own once the
+   element exists, so it isn't at the mercy of forced-reflow/rAF timing (which was silently
+   losing the very first paint when the strip sat inside the initial viewport). It also still
+   plays with no JS at all: with no per-bar delay set, every bar just animates together and
+   ends fully visible — see docs/brand/upmonia-brand-guidelines.html, "Arayüz" → "Hareket".
+   The reduced-motion media query below (existing, global) already collapses this to ~instant. */
+@keyframes tick-grow {
+    from {
+        opacity: 0;
+        transform: scaleY(0.1);
+    }
+    to {
+        opacity: 1;
+        transform: scaleY(1);
+    }
+}
+
+[data-reveal-stagger] > * {
+    transform-origin: bottom;
+    animation: tick-grow 0.6s cubic-bezier(0.16, 0.9, 0.28, 1.05) both;
+}
+
 @layer base {
     /* Keyboard-only focus indicator for every interactive element that does not
        define its own. Inputs are excluded: they carry a focus ring instead. */
