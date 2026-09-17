@@ -10,14 +10,16 @@
     var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     // The strip's own growing-in animation is a real CSS @keyframes rule (resources/css/
-    // app.css, `tick-grow`) that plays on its own — this only staggers each bar ~24ms apart.
-    // Skipped under reduced motion, though the global reduced-motion rule already collapses
-    // the animation to ~instant even without this.
+    // app.css, `tick-grow`), but it only runs once the .is-revealing class is present — the
+    // delay has to be set on each bar *before* that class is added, or the browser restarts
+    // an already-playing (or already-finished) animation the moment animation-delay changes,
+    // which is exactly what made the whole strip visibly play its entrance twice.
     if (! reduceMotion) {
         document.querySelectorAll('[data-reveal-stagger]').forEach(function (el) {
             Array.from(el.children).forEach(function (bar, i) {
                 bar.style.animationDelay = Math.min(i * 6, 220) + 'ms';
             });
+            el.classList.add('is-revealing');
         });
     }
 

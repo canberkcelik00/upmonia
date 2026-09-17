@@ -104,13 +104,18 @@
 }
 
 /* Signature tick-strip entrance (marketing home page banner): each bar grows up from its
-   baseline, staggered by resources/js/app.js setting animation-delay per bar. A real CSS
-   @keyframes animation, not a JS-driven transition — it starts and plays on its own once the
-   element exists, so it isn't at the mercy of forced-reflow/rAF timing (which was silently
-   losing the very first paint when the strip sat inside the initial viewport). It also still
-   plays with no JS at all: with no per-bar delay set, every bar just animates together and
-   ends fully visible — see docs/brand/upmonia-brand-guidelines.html, "Arayüz" → "Hareket".
-   The reduced-motion media query below (existing, global) already collapses this to ~instant. */
+   baseline, staggered by resources/js/app.js setting animation-delay per bar. Bars start
+   fully visible with NO animation by default — the [data-reveal-stagger] selector alone
+   doesn't apply one. resources/js/app.js sets each bar's animation-delay first, then adds
+   the .is-revealing class, which is what actually starts the animation. That order matters:
+   the bare selector used to start the animation itself (with every delay still at its 0ms
+   default) the instant the stylesheet parsed, which finished before the deferred script had
+   even run; the script then set animation-delay on an already-finished animation, which
+   restarts it from scratch — the whole strip visibly played its entrance twice. Gating the
+   animation behind a class JS adds only after the delays are set means it starts once,
+   correctly staggered, exactly when JS says to. With no JS, bars simply render in their
+   normal, fully-visible state — see docs/brand/upmonia-brand-guidelines.html, "Arayüz" →
+   "Hareket". The reduced-motion media query below (existing, global) collapses it to ~instant. */
 @keyframes tick-grow {
     from {
         opacity: 0;
@@ -124,6 +129,9 @@
 
 [data-reveal-stagger] > * {
     transform-origin: bottom;
+}
+
+[data-reveal-stagger].is-revealing > * {
     animation: tick-grow 0.32s cubic-bezier(0.16, 0.9, 0.28, 1.05) both;
 }
 
