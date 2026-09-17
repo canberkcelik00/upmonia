@@ -13,7 +13,7 @@
                 'clients', 'maintenance', 'account',
             ] as $i => $feature)
                 <div
-                    class="rounded-panel border border-line bg-surface p-5 transition-transform duration-150 hover:-translate-y-0.5"
+                    class="rounded-panel border border-line bg-surface p-5 transition-all duration-150 hover:-translate-y-1 hover:border-line-strong"
                     data-reveal
                     data-reveal-delay="{{ $i * 0.05 }}s"
                 >

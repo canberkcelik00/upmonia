@@ -22,7 +22,11 @@
 
     <ul class="divide-y divide-line">
         @foreach ($monitors as $monitor)
-            <li class="flex items-center gap-4 px-5 py-3.5">
+            <li
+                class="flex items-center gap-4 px-5 py-3.5"
+                data-reveal
+                data-reveal-delay="{{ 0.25 + $loop->index * 0.08 }}s"
+            >
                 <div class="min-w-0 flex-1">
                     <p class="truncate text-[13px] font-medium text-ink">{{ $monitor['name'] }}</p>
                     <p class="truncate text-[11.5px] text-muted">{{ $monitor['sub'] }}</p>

@@ -7,9 +7,9 @@
             <p class="mt-4 max-w-[42ch] text-[16px] text-ink-2">{{ __('marketing.hero_lede') }}</p>
             <div class="mt-6 flex flex-wrap items-center gap-3">
                 <x-ui.button variant="primary" :href="route('signup')">{{ __('marketing.nav_signup') }}</x-ui.button>
-                <x-ui.button variant="ghost" href="#nasil-calisir">
+                <x-ui.button variant="ghost" href="#nasil-calisir" class="group">
                     {{ __('marketing.hero_cta_secondary') }}
-                    <x-phosphor-arrow-right class="size-3.5" />
+                    <x-phosphor-arrow-right class="size-3.5 transition-transform duration-150 group-hover:translate-x-0.5" />
                 </x-ui.button>
             </div>
         </div>
@@ -44,21 +44,21 @@
          a grid of boxes side by side. --}}
     <section id="nasil-calisir" class="mx-auto max-w-[900px] px-4 py-16 sm:px-6 lg:px-7">
         <div class="grid gap-3">
-            <div class="grid grid-cols-[28px_1fr] items-baseline gap-4 rounded-panel border border-line bg-surface p-5 transition-transform duration-150 hover:-translate-y-0.5" data-reveal>
+            <div class="grid grid-cols-[28px_1fr] items-baseline gap-4 rounded-panel border border-line bg-surface p-5 transition-all duration-150 hover:-translate-y-1 hover:border-line-strong" data-reveal>
                 <span class="font-mono text-xs text-faint">01</span>
                 <div>
                     <h2 class="text-[17px] font-semibold tracking-[-0.01em] text-ink">{{ __('marketing.principle_color_title') }}</h2>
                     <p class="mt-1 max-w-[56ch] text-[14.5px] text-muted">{{ __('marketing.principle_color_body') }}</p>
                 </div>
             </div>
-            <div class="grid grid-cols-[28px_1fr] items-baseline gap-4 rounded-panel border border-line bg-surface p-5 transition-transform duration-150 hover:-translate-y-0.5" data-reveal data-reveal-delay=".08s">
+            <div class="grid grid-cols-[28px_1fr] items-baseline gap-4 rounded-panel border border-line bg-surface p-5 transition-all duration-150 hover:-translate-y-1 hover:border-line-strong" data-reveal data-reveal-delay=".08s">
                 <span class="font-mono text-xs text-faint">02</span>
                 <div>
                     <h2 class="text-[17px] font-semibold tracking-[-0.01em] text-ink">{{ __('marketing.principle_answer_title') }}</h2>
                     <p class="mt-1 max-w-[56ch] text-[14.5px] text-muted">{{ __('marketing.principle_answer_body') }}</p>
                 </div>
             </div>
-            <div class="grid grid-cols-[28px_1fr] items-baseline gap-4 rounded-panel border border-line bg-surface p-5 transition-transform duration-150 hover:-translate-y-0.5" data-reveal data-reveal-delay=".16s">
+            <div class="grid grid-cols-[28px_1fr] items-baseline gap-4 rounded-panel border border-line bg-surface p-5 transition-all duration-150 hover:-translate-y-1 hover:border-line-strong" data-reveal data-reveal-delay=".16s">
                 <span class="font-mono text-xs text-faint">03</span>
                 <div>
                     <h2 class="text-[17px] font-semibold tracking-[-0.01em] text-ink">{{ __('marketing.principle_number_title') }}</h2>

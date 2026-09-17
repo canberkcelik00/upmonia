@@ -14,22 +14,22 @@
 
     targets.forEach(function (el) {
         if (el.hasAttribute('data-reveal-stagger')) {
-            // Each bar rises from its own baseline and fades in, ~18ms apart — a nod to the
+            // Each bar rises from its own baseline and fades in, ~24ms apart — a nod to the
             // brand's "kontrol şeridi" as the one graphic that's allowed to feel alive.
             Array.from(el.children).forEach(function (bar, i) {
                 bar.style.opacity = '0';
-                bar.style.transform = 'scaleY(0.35)';
+                bar.style.transform = 'scaleY(0.1)';
                 bar.style.transformOrigin = 'bottom';
-                bar.style.transition = 'opacity .5s ease-out, transform .5s cubic-bezier(.22,.9,.32,1)';
-                bar.style.transitionDelay = Math.min(i * 18, 500) + 'ms';
+                bar.style.transition = 'opacity .6s ease-out, transform .6s cubic-bezier(.16,.9,.28,1.05)';
+                bar.style.transitionDelay = Math.min(i * 24, 650) + 'ms';
             });
 
             return;
         }
 
         el.style.opacity = '0';
-        el.style.transform = 'translateY(18px)';
-        el.style.transition = 'opacity .7s ease-out, transform .7s ease-out';
+        el.style.transform = 'translateY(30px)';
+        el.style.transition = 'opacity .8s ease-out, transform .8s cubic-bezier(.16,.8,.24,1)';
         if (el.dataset.revealDelay) {
             el.style.transitionDelay = el.dataset.revealDelay;
         }
