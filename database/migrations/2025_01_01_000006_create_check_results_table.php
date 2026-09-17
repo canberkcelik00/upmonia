@@ -10,7 +10,7 @@ return new class extends Migration
     {
         // Append-only raw check log. No native partitioning (unavailable/unmanageable on shared
         // hosting without SSH) — kept small by maintenance:run's retention DELETE
-        // (config('upvane.check_retention_hours')). Dashboards read the rollup tables, never this one.
+        // (config('upmonia.check_retention_hours')). Dashboards read the rollup tables, never this one.
         Schema::create('check_results', function (Blueprint $table) {
             $table->id();
             $table->foreignId('monitor_id')->constrained()->cascadeOnDelete();

@@ -25,14 +25,14 @@ class SsrfGuard
 
     public static function assertHttpPortAllowed(int $port): void
     {
-        if (! in_array($port, config('upvane.ssrf.http_ports'), true)) {
+        if (! in_array($port, config('upmonia.ssrf.http_ports'), true)) {
             throw new SsrfBlockedException('ssrf_blocked', "Port {$port} is not in the allowed HTTP port list.");
         }
     }
 
     public static function assertTcpPortAllowed(int $port): void
     {
-        if (! in_array($port, config('upvane.ssrf.tcp_ports'), true)) {
+        if (! in_array($port, config('upmonia.ssrf.tcp_ports'), true)) {
             throw new SsrfBlockedException('ssrf_blocked', "Port {$port} is not in the allowed TCP port list.");
         }
     }
@@ -82,7 +82,7 @@ class SsrfGuard
 
     public static function allowPrivateTargets(): bool
     {
-        return (bool) config('upvane.allow_private_targets');
+        return (bool) config('upmonia.allow_private_targets');
     }
 
     /**

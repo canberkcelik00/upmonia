@@ -17,7 +17,7 @@ class DeployController extends Controller
 {
     public function __invoke(Request $request): Response
     {
-        $configured = config('upvane.deploy_token');
+        $configured = config('upmonia.deploy_token');
 
         if (blank($configured) || ! hash_equals($configured, (string) $request->query('token'))) {
             abort(404);

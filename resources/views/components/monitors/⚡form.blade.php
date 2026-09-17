@@ -81,7 +81,7 @@ new #[Layout('layouts.app')] class extends Component
             'confirm_threshold' => $this->confirm_threshold,
             'recover_threshold' => $this->recover_threshold,
             'enabled' => $this->enabled,
-            'region' => config('upvane.default_region'),
+            'region' => config('upmonia.default_region'),
         ]);
 
         $this->redirect(route('monitors.show', $monitor), navigate: true);

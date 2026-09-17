@@ -56,8 +56,8 @@ class ProbeRun extends Command
 
     private function leaseDue(): \Illuminate\Support\Collection
     {
-        $batchSize = config('upvane.probe.batch_size');
-        $lockSeconds = config('upvane.probe.lock_seconds');
+        $batchSize = config('upmonia.probe.batch_size');
+        $lockSeconds = config('upmonia.probe.lock_seconds');
 
         $ids = DB::table('monitor_states')
             ->join('monitors', 'monitors.id', '=', 'monitor_states.monitor_id')
