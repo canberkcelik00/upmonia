@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Models\Incident;
+use App\Support\MonitorPulse;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
@@ -24,13 +25,17 @@ class IncidentResolvedEmail extends Mailable
 
     public function content(): Content
     {
+        $monitor = $this->incident->monitor;
+
         return new Content(
             view: 'emails.incident-resolved',
             with: [
                 'incident' => $this->incident,
-                'monitor' => $this->incident->monitor,
+                'monitor' => $monitor,
                 'locale' => $this->recipientLocale,
-                'dashboardUrl' => route('incidents.index'),
+                'clientName' => $monitor->client?->name,
+                'ticks' => MonitorPulse::ticks([$monitor->id], [$monitor->id => $monitor->state->status])[$monitor->id]['tones'] ?? [],
+                'dashboardUrl' => route('incidents.show', $this->incident),
             ],
         );
     }

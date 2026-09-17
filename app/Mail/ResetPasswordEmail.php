@@ -12,7 +12,7 @@ use Illuminate\Queue\SerializesModels;
 /**
  * Replaces Laravel's built-in Illuminate\Auth\Notifications\ResetPassword notification
  * (see User::sendPasswordResetNotification()) so the email renders in the recipient's
- * stored locale and matches the rest of Uptik's mail templates, instead of the
+ * stored locale and matches the rest of Upvane's mail templates, instead of the
  * notification's hardcoded English strings.
  */
 class ResetPasswordEmail extends Mailable
