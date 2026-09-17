@@ -302,6 +302,6 @@ return [
     'status_page_history' => 'Past incidents',
     'status_page_incident_duration' => 'Lasted :duration',
     'status_page_last_checked' => 'Last checked :time',
-    'status_page_footer' => 'Powered by Upvane',
+    'status_page_footer' => 'Powered by Upmonia',
 
 ];

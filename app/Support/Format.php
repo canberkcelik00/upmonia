@@ -4,7 +4,7 @@ namespace App\Support;
 
 /**
  * Locale-aware number/duration formatting for the brand's "rakam veridir" rule (see
- * docs/brand/upvane-brand-guidelines.html, section 05): every figure in the product goes
+ * docs/brand/upmonia-brand-guidelines.html, section 05): every figure in the product goes
  * through here so tr/en punctuation and rounding stay consistent in one place.
  */
 class Format

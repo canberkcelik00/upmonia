@@ -302,6 +302,6 @@ return [
     'status_page_history' => 'Geçmiş olaylar',
     'status_page_incident_duration' => ':duration sürdü',
     'status_page_last_checked' => 'Son kontrol :time',
-    'status_page_footer' => 'Upvane ile desteklenmektedir',
+    'status_page_footer' => 'Upmonia ile desteklenmektedir',
 
 ];

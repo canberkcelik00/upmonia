@@ -9,7 +9,7 @@
    the theme-toggle component decide when that class is present. */
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Upvane identity tokens — see docs/brand/upvane-brand-guidelines.html (section 08) for the
+/* Upmonia identity tokens — see docs/brand/upmonia-brand-guidelines.html (section 08) for the
    rationale and the exact values. "Renk yalnızca bir şey olduğunda gelir": the neutral scale
    (canvas/surface/line/ink/muted) is the whole UI; up/warn/down/idle are the only colours and
    exist purely to mean a status, never as decoration or a brand accent. Component views should

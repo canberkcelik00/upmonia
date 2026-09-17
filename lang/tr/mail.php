@@ -3,9 +3,9 @@
 return [
 
     'welcome' => [
-        'subject' => 'Upvane\'e hoş geldiniz',
+        'subject' => 'Upmonia\'ya hoş geldiniz',
         'greeting' => 'Merhaba :name,',
-        'body' => 'Upvane hesabınız oluşturuldu. Şimdi ilk monitörünüzü ekleyerek başlayabilirsiniz.',
+        'body' => 'Upmonia hesabınız oluşturuldu. Şimdi ilk monitörünüzü ekleyerek başlayabilirsiniz.',
         'cta' => 'Panele git',
     ],
 
@@ -44,7 +44,7 @@ return [
     ],
 
     'test_email' => [
-        'subject' => 'Upvane test e-postası',
+        'subject' => 'Upmonia test e-postası',
         'body' => 'Bu, ":channel" bildirim kanalı için gönderilen bir test e-postasıdır. Bunu görüyorsanız kanal doğru çalışıyor demektir.',
     ],
 

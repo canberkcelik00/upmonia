@@ -5,9 +5,9 @@ return [
     'client_label' => 'Client',
 
     'welcome' => [
-        'subject' => 'Welcome to Upvane',
+        'subject' => 'Welcome to Upmonia',
         'greeting' => 'Hi :name,',
-        'body' => 'Your Upvane account is ready. You can start by adding your first monitor.',
+        'body' => 'Your Upmonia account is ready. You can start by adding your first monitor.',
         'cta' => 'Go to dashboard',
     ],
 
@@ -44,7 +44,7 @@ return [
     ],
 
     'test_email' => [
-        'subject' => 'Upvane test email',
+        'subject' => 'Upmonia test email',
         'body' => 'This is a test email for the ":channel" notification channel. If you can see this, the channel is working correctly.',
     ],
 
