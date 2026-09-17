@@ -38,7 +38,7 @@
         @click="open = !open"
         :aria-expanded="open"
         aria-label="{{ __('app.theme_switch') }}"
-        class="flex size-9 items-center justify-center rounded-md text-neutral-600 transition-colors duration-150 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100"
+        class="flex size-8 items-center justify-center rounded-control text-ink-2 transition-colors duration-150 hover:bg-surface-2 hover:text-ink"
     >
         <template x-if="theme === 'light'"><x-phosphor-sun class="size-4" /></template>
         <template x-if="theme === 'dark'"><x-phosphor-moon class="size-4" /></template>
@@ -54,14 +54,14 @@
         x-transition:leave-start="opacity-100 scale-100"
         x-transition:leave-end="opacity-0 scale-95"
         x-cloak
-        class="absolute z-50 w-40 rounded-md border border-neutral-200 bg-white p-1 shadow-[var(--shadow-popover)] dark:border-neutral-800 dark:bg-neutral-900 {{ $panelPosition }}"
+        class="absolute z-50 w-40 rounded-control border border-line bg-surface p-1 shadow-[var(--shadow-popover)] {{ $panelPosition }}"
     >
         @foreach ($options as $value => $option)
             <button
                 type="button"
                 @click="apply('{{ $value }}')"
-                class="flex w-full items-center gap-2.5 rounded-md px-2.5 py-1.5 text-left text-sm text-neutral-700 transition-colors duration-150 hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800"
-                :class="theme === '{{ $value }}' && 'text-brand-700 dark:text-brand-400'"
+                class="flex w-full items-center gap-2.5 rounded-[4px] px-2.5 py-1.5 text-left text-sm text-ink-2 transition-colors duration-150 hover:bg-surface-2"
+                :class="theme === '{{ $value }}' && 'text-ink font-medium'"
             >
                 <x-dynamic-component :component="'phosphor-'.$option['icon']" class="size-4 shrink-0" />
                 <span class="truncate">{{ $option['label'] }}</span>

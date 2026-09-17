@@ -19,7 +19,7 @@
         @click="open = !open"
         :aria-expanded="open"
         aria-label="{{ __('app.language_switch') }}"
-        class="flex h-9 items-center gap-1.5 rounded-md px-2 text-sm font-medium text-neutral-600 transition-colors duration-150 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100"
+        class="flex h-8 items-center gap-1.5 rounded-control px-2 text-sm font-medium text-ink-2 transition-colors duration-150 hover:bg-surface-2 hover:text-ink"
     >
         <x-phosphor-translate class="size-4 shrink-0" />
         {{ strtoupper($current) }}
@@ -34,12 +34,12 @@
         x-transition:leave-start="opacity-100 scale-100"
         x-transition:leave-end="opacity-0 scale-95"
         x-cloak
-        class="absolute z-50 w-36 rounded-md border border-neutral-200 bg-white p-1 shadow-[var(--shadow-popover)] dark:border-neutral-800 dark:bg-neutral-900 {{ $panelPosition }}"
+        class="absolute z-50 w-36 rounded-control border border-line bg-surface p-1 shadow-[var(--shadow-popover)] {{ $panelPosition }}"
     >
         @foreach ($locales as $code => $label)
             <a
                 href="{{ route('locale.switch', $code) }}"
-                class="flex items-center gap-2.5 rounded-md px-2.5 py-1.5 text-sm transition-colors duration-150 hover:bg-neutral-100 dark:hover:bg-neutral-800 {{ $current === $code ? 'text-brand-700 dark:text-brand-400' : 'text-neutral-700 dark:text-neutral-300' }}"
+                class="flex items-center gap-2.5 rounded-[4px] px-2.5 py-1.5 text-sm transition-colors duration-150 hover:bg-surface-2 {{ $current === $code ? 'text-ink font-medium' : 'text-ink-2' }}"
             >
                 <span class="truncate">{{ $label }}</span>
                 @if ($current === $code)

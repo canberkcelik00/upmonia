@@ -9,10 +9,10 @@ $scrollIntoViewJsSnippet = ($scrollTo !== false)
     JS
     : '';
 
-$pageBtn = 'inline-flex h-8 min-w-8 items-center justify-center rounded-md px-2 text-sm font-medium transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600';
-$pageIdle = 'text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 active:scale-[0.98] dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100';
-$pageActive = 'bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-900';
-$pageDisabled = 'cursor-not-allowed text-neutral-300 dark:text-neutral-700';
+$pageBtn = 'inline-flex h-8 min-w-8 items-center justify-center rounded-md px-2 text-sm font-medium transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink';
+$pageIdle = 'text-ink-2 hover:bg-surface-2 hover:text-ink active:scale-[0.98]';
+$pageActive = 'bg-ink text-on-ink';
+$pageDisabled = 'cursor-not-allowed text-faint';
 @endphp
 
 <div>
@@ -43,11 +43,11 @@ $pageDisabled = 'cursor-not-allowed text-neutral-300 dark:text-neutral-700';
 
             {{-- Desktop: range summary + numbered pages --}}
             <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
-                <p class="text-sm text-neutral-500 dark:text-neutral-400">
+                <p class="text-sm text-muted">
                     {!! __('app.pagination_showing', [
-                        'first' => '<span class="font-mono font-medium text-neutral-700 dark:text-neutral-300">'.$paginator->firstItem().'</span>',
-                        'last' => '<span class="font-mono font-medium text-neutral-700 dark:text-neutral-300">'.$paginator->lastItem().'</span>',
-                        'total' => '<span class="font-mono font-medium text-neutral-700 dark:text-neutral-300">'.$paginator->total().'</span>',
+                        'first' => '<span class="font-mono font-medium text-ink-2">'.$paginator->firstItem().'</span>',
+                        'last' => '<span class="font-mono font-medium text-ink-2">'.$paginator->lastItem().'</span>',
+                        'total' => '<span class="font-mono font-medium text-ink-2">'.$paginator->total().'</span>',
                     ]) !!}
                 </p>
 
@@ -67,7 +67,7 @@ $pageDisabled = 'cursor-not-allowed text-neutral-300 dark:text-neutral-700';
                     @foreach ($elements as $element)
                         {{-- "Three Dots" Separator --}}
                         @if (is_string($element))
-                            <span aria-disabled="true" class="px-1 text-sm text-neutral-400 dark:text-neutral-600">{{ $element }}</span>
+                            <span aria-disabled="true" class="px-1 text-sm text-faint">{{ $element }}</span>
                         @endif
 
                         {{-- Array Of Links --}}

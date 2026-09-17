@@ -4,26 +4,10 @@
 
 @php
 $variants = [
-    'success' => [
-        'box' => 'border-emerald-200 bg-emerald-50 text-emerald-800 dark:border-emerald-900/50 dark:bg-emerald-950/40 dark:text-emerald-300',
-        'icon' => 'check-circle',
-        'iconColor' => 'text-emerald-600 dark:text-emerald-400',
-    ],
-    'error' => [
-        'box' => 'border-red-200 bg-red-50 text-red-800 dark:border-red-900/50 dark:bg-red-950/40 dark:text-red-300',
-        'icon' => 'warning-circle',
-        'iconColor' => 'text-red-600 dark:text-red-400',
-    ],
-    'warning' => [
-        'box' => 'border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-900/50 dark:bg-amber-950/40 dark:text-amber-300',
-        'icon' => 'warning',
-        'iconColor' => 'text-amber-600 dark:text-amber-400',
-    ],
-    'info' => [
-        'box' => 'border-neutral-200 bg-neutral-50 text-neutral-700 dark:border-neutral-800 dark:bg-neutral-800/50 dark:text-neutral-300',
-        'icon' => 'info',
-        'iconColor' => 'text-neutral-500 dark:text-neutral-400',
-    ],
+    'success' => ['box' => 'border-up/25 bg-up-soft text-up-text', 'icon' => 'check-circle', 'iconColor' => 'text-up'],
+    'error' => ['box' => 'border-down/25 bg-down-soft text-down-text', 'icon' => 'warning-circle', 'iconColor' => 'text-down'],
+    'warning' => ['box' => 'border-warn/25 bg-warn-soft text-warn-text', 'icon' => 'warning', 'iconColor' => 'text-warn'],
+    'info' => ['box' => 'border-line bg-surface-2 text-ink-2', 'icon' => 'info', 'iconColor' => 'text-muted'],
 ];
 
 $v = $variants[$variant] ?? $variants['info'];
@@ -31,7 +15,7 @@ $v = $variants[$variant] ?? $variants['info'];
 $role = $variant === 'error' ? 'alert' : 'status';
 @endphp
 
-<div role="{{ $role }}" {{ $attributes->merge(['class' => 'flex items-start gap-2.5 rounded-md border px-3 py-2.5 text-sm '.$v['box']]) }}>
+<div role="{{ $role }}" {{ $attributes->merge(['class' => 'flex items-start gap-2.5 rounded-control border px-3 py-2.5 text-sm '.$v['box']]) }}>
     <x-dynamic-component :component="'phosphor-'.$v['icon']" class="mt-0.5 size-4 shrink-0 {{ $v['iconColor'] }}" />
     <div class="min-w-0">{{ $slot }}</div>
 </div>
