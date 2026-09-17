@@ -11,6 +11,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
     @include('partials.theme-init')
+    @include('partials.time-init')
 </head>
 <body class="min-h-screen bg-canvas text-ink antialiased">
     <main class="mx-auto max-w-2xl px-4 py-10 sm:py-12">
@@ -47,7 +48,7 @@
                     default => __('app.status_page_degraded'),
                 } }}
             </h1>
-            <span class="hidden font-mono text-xs text-muted sm:inline">{{ __('app.status_page_last_checked', ['time' => now()->toDisplayTime()]) }}</span>
+            <span class="hidden font-mono text-xs text-muted sm:inline">{!! str_replace(':time', now()->toDisplayHtml('time'), e(__('app.status_page_last_checked', ['time' => ':time']))) !!}</span>
         </div>
 
         <div class="mb-7 rounded-panel border border-line bg-surface">
@@ -76,7 +77,7 @@
                     <div class="border-t border-line px-5 py-3 text-sm first:border-t-0">
                         <div class="flex items-center justify-between gap-3">
                             <span class="font-medium">{{ $incident->monitor->name }}</span>
-                            <span class="font-mono text-xs text-muted">{{ $incident->started_at->toDisplayDate() }}</span>
+                            <span class="font-mono text-xs text-muted">{!! $incident->started_at->toDisplayHtml('date') !!}</span>
                         </div>
                         <div class="mt-0.5 text-xs text-muted">
                             {{ $incident->state === 'resolved' ? __('app.incident_state_resolved') : __('app.incident_state_open') }}

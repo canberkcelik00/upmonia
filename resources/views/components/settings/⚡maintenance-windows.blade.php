@@ -132,7 +132,7 @@ new #[Layout('layouts.app')] class extends Component
                     @endif
                 </td>
                 <td class="text-ink-2">{{ $window->monitors->isEmpty() ? __('app.maintenance_scope_all') : __('app.maintenance_scope_count', ['count' => $window->monitors->count()]) }}</td>
-                <td class="font-mono text-xs text-ink-2">{{ $window->starts_at->toDisplay() }} - {{ $window->ends_at->toDisplay() }}</td>
+                <td class="font-mono text-xs text-ink-2">{!! $window->starts_at->toDisplayHtml() !!} - {!! $window->ends_at->toDisplayHtml() !!}</td>
                 <td class="text-right text-xs">
                     <button wire:click="delete({{ $window->id }})" wire:confirm="{{ __('app.maintenance_delete_confirm') }}" class="font-medium text-down-text hover:underline">{{ __('app.delete') }}</button>
                 </td>

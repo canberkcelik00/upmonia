@@ -44,7 +44,7 @@ new #[Layout('layouts.app')] class extends Component
                     {{ __('app.incident_acknowledge') }}
                 </x-ui.button>
             @elseif ($incident->acknowledged_at)
-                <span class="text-xs text-muted">{{ __('app.incident_acknowledged_by', ['name' => $incident->acknowledgedBy?->name, 'time' => $incident->acknowledged_at->toDisplay()]) }}</span>
+                <span class="text-xs text-muted">{!! str_replace(':time', $incident->acknowledged_at->toDisplayHtml(), e(__('app.incident_acknowledged_by', ['name' => $incident->acknowledgedBy?->name, 'time' => ':time']))) !!}</span>
             @endif
         </x-slot:actions>
     </x-ui.page-header>
@@ -56,12 +56,13 @@ new #[Layout('layouts.app')] class extends Component
     <div class="mb-6 grid grid-cols-2 divide-x divide-line rounded-panel border border-line bg-surface sm:grid-cols-4">
         <x-ui.figure class="px-4 py-3.5" :label="__('app.incidents_col_cause')" :value="\App\Checks\ErrorClassifier::label($incident->cause_class)" />
         <x-ui.figure class="px-4 py-3.5" :label="__('app.incident_detail')" :value="$incident->cause_detail ?? '—'" />
-        <x-ui.figure class="px-4 py-3.5" :label="__('app.incidents_col_started')" :value="$incident->started_at->toDisplayTime()" />
+        <x-ui.figure class="px-4 py-3.5" :label="__('app.incidents_col_started')" :value="$incident->started_at->toDisplayHtml('time')" raw />
         <x-ui.figure
             class="px-4 py-3.5"
             :label="$incident->state === 'open' ? __('app.incident_ongoing_duration') : __('app.incident_ended_at')"
-            :value="$incident->resolved_at ? $incident->resolved_at->toDisplayTime() : Format::liveDuration($incident->started_at->diffInSeconds(now()))"
+            :value="$incident->resolved_at ? $incident->resolved_at->toDisplayHtml('time') : e(Format::liveDuration($incident->started_at->diffInSeconds(now())))"
             :tone="$incident->state === 'open' ? 'down' : null"
+            raw
         />
     </div>
 
@@ -71,7 +72,7 @@ new #[Layout('layouts.app')] class extends Component
                 @forelse ($events as $event)
                     <div class="flex items-center justify-between py-2 text-[13px]">
                         <span class="text-ink-2">{{ $event->type === 'triggered' ? __('app.incident_event_triggered') : __('app.incident_event_resolved') }}</span>
-                        <span class="font-mono text-xs text-muted">{{ $event->ts->toDisplayTime() }}</span>
+                        <span class="font-mono text-xs text-muted">{!! $event->ts->toDisplayHtml('time') !!}</span>
                     </div>
                 @empty
                     <x-ui.empty-state icon="clock-counter-clockwise" :title="__('app.incident_no_events')" />

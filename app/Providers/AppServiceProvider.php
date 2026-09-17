@@ -32,6 +32,22 @@ class AppServiceProvider extends ServiceProvider
         Carbon::macro('toDisplayDate', fn () => $this->locale(app()->getLocale())->translatedFormat('d F Y'));
         Carbon::macro('toDisplayTime', fn () => $this->format('H:i:s'));
 
+        // Wraps a toDisplay* fallback in a span that partials/time-init.blade.php
+        // rewrites client-side into the viewer's own timezone (the server has no
+        // per-user/-country timezone to render against, so it renders app-timezone
+        // text first and JS localizes it after hydration). Use directly for a
+        // standalone time, or splice the returned HTML into a translated string
+        // (see the status-page/incident "last checked" lines) via str_replace.
+        Carbon::macro('toDisplayHtml', function (string $format = 'datetime') {
+            $fallback = match ($format) {
+                'date' => $this->toDisplayDate(),
+                'time' => $this->toDisplayTime(),
+                default => $this->toDisplay(),
+            };
+
+            return '<span data-x-time="'.$format.'" data-x-time-utc="'.$this->clone()->utc()->toIso8601String().'">'.e($fallback).'</span>';
+        });
+
         // Dev fallback: without a Resend key, log outbound mail instead of letting the
         // Resend SDK throw on every send. In production a missing key is left alone on
         // purpose — sends then fail loudly (fail closed) instead of silently no-op'ing.

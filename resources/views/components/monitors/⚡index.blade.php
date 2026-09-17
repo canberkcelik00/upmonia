@@ -167,7 +167,7 @@ new #[Layout('layouts.app')] class extends Component
                 · {{ $issueCount }} {{ __('app.stat_issues') }}
                 · {{ $pausedCount }} {{ __('app.stat_paused') }}
                 @if ($lastCheckedAt)
-                    · {{ __('app.monitors_last_checked', ['time' => \Illuminate\Support\Carbon::parse($lastCheckedAt)->toDisplayTime()]) }}
+                    · {!! str_replace(':time', \Illuminate\Support\Carbon::parse($lastCheckedAt)->toDisplayHtml('time'), e(__('app.monitors_last_checked', ['time' => ':time']))) !!}
                 @endif
             </div>
         </div>

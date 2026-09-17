@@ -297,7 +297,7 @@ new #[Layout('layouts.app')] class extends Component
                 <div class="divide-y divide-line">
                     @forelse ($recentChecks as $check)
                         <div class="flex items-center gap-3 px-5 py-2.5 text-[12.5px]">
-                            <span class="font-mono text-ink-2">{{ $check->ts->toDisplayTime() }}</span>
+                            <span class="font-mono text-ink-2">{!! $check->ts->toDisplayHtml('time') !!}</span>
                             <span class="font-mono text-[11.5px] font-semibold {{ $check->ok ? 'text-up-text' : 'text-down-text' }}">{{ $check->ok ? __('app.monitor_result_ok') : __('app.monitor_result_fail') }}</span>
                             <span class="min-w-0 flex-1 truncate text-ink-2">{{ $check->error_class ? \App\Checks\ErrorClassifier::label($check->error_class) : ($check->status_code ?? '—') }}</span>
                             <span class="shrink-0 font-mono text-muted">{{ Format::count($check->sample_count) }}</span>
@@ -319,7 +319,7 @@ new #[Layout('layouts.app')] class extends Component
                             <div class="flex justify-between py-2"><dt class="text-muted">{{ __('app.field_verify_ssl') }}</dt><dd class="text-ink">{{ $monitor->verify_ssl ? __('app.monitor_on') : __('app.monitor_off') }}</dd></div>
                         @endif
                         @if ($monitor->type === 'ssl' && $monitor->state->cert_expires_at)
-                            <div class="flex justify-between py-2"><dt class="text-muted">{{ __('app.monitor_cert_expiry') }}</dt><dd class="text-ink">{{ $monitor->state->cert_expires_at->toDisplayDate() }}</dd></div>
+                            <div class="flex justify-between py-2"><dt class="text-muted">{{ __('app.monitor_cert_expiry') }}</dt><dd class="text-ink">{!! $monitor->state->cert_expires_at->toDisplayHtml('date') !!}</dd></div>
                             @if ($monitor->state->cert_issuer)
                                 <div class="flex justify-between py-2"><dt class="text-muted">{{ __('app.monitor_cert_issuer') }}</dt><dd class="truncate text-ink">{{ $monitor->state->cert_issuer }}</dd></div>
                             @endif

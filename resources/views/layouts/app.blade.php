@@ -9,6 +9,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
     @include('partials.theme-init')
+    @include('partials.time-init')
 </head>
 <body class="min-h-screen bg-canvas text-ink antialiased">
 <div x-data="{ menuOpen: false }" @keydown.escape.window="menuOpen = false">

@@ -76,7 +76,7 @@ new #[Layout('layouts.app')] class extends Component
                     @endif
                 </td>
                 <td class="text-ink-2">{{ \App\Checks\ErrorClassifier::label($incident->cause_class) }}</td>
-                <td class="font-mono text-xs text-muted">{{ $incident->started_at->toDisplay() }}</td>
+                <td class="font-mono text-xs text-muted">{!! $incident->started_at->toDisplayHtml() !!}</td>
                 <td class="text-ink-2">
                     {{ $incident->duration_s ? Format::shortDuration($incident->duration_s) : '—' }}
                 </td>
