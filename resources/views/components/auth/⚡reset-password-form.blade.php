@@ -57,7 +57,7 @@ new #[Layout('layouts.guest')] class extends Component
 ?>
 
 <x-ui.card padding="p-6">
-    <h1 class="mb-6 text-xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-50">{{ __('auth.set_new_password') }}</h1>
+    <h1 class="mb-6 text-xl font-semibold tracking-tight text-ink">{{ __('auth.set_new_password') }}</h1>
 
     @error('form')
         <x-ui.alert variant="error" class="mb-4">{{ $message }}</x-ui.alert>

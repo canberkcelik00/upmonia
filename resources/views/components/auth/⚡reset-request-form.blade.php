@@ -34,7 +34,7 @@ new #[Layout('layouts.guest')] class extends Component
 ?>
 
 <x-ui.card padding="p-6">
-    <h1 class="mb-6 text-xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-50">{{ __('auth.forgot_password') }}</h1>
+    <h1 class="mb-6 text-xl font-semibold tracking-tight text-ink">{{ __('auth.forgot_password') }}</h1>
 
     @if ($sent)
         <x-ui.alert variant="success">{{ __('auth.password_reset_sent') }}</x-ui.alert>
@@ -54,7 +54,7 @@ new #[Layout('layouts.guest')] class extends Component
         </form>
     @endif
 
-    <p class="mt-4 text-center text-sm text-neutral-600 dark:text-neutral-400">
-        <a href="{{ route('login') }}" wire:navigate class="font-medium text-brand-700 hover:underline dark:text-brand-400">{{ __('auth.back_to_login') }}</a>
+    <p class="mt-4 text-center text-sm text-ink-2">
+        <a href="{{ route('login') }}" wire:navigate class="font-medium text-ink hover:underline">{{ __('auth.back_to_login') }}</a>
     </p>
 </x-ui.card>

@@ -47,7 +47,7 @@ new #[Layout('layouts.guest')] class extends Component
 ?>
 
 <x-ui.card padding="p-6">
-    <h1 class="mb-6 text-xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-50">{{ __('auth.login_title') }}</h1>
+    <h1 class="mb-6 text-xl font-semibold tracking-tight text-ink">{{ __('auth.login_title') }}</h1>
 
     @error('form')
         <x-ui.alert variant="error" class="mb-4">{{ $message }}</x-ui.alert>
@@ -64,7 +64,7 @@ new #[Layout('layouts.guest')] class extends Component
 
         <div class="flex items-center justify-between text-sm">
             <x-ui.checkbox wire:model="remember" :label="__('auth.remember_me')" />
-            <a href="{{ route('password.request') }}" wire:navigate class="text-brand-700 hover:underline dark:text-brand-400">{{ __('auth.forgot_password') }}</a>
+            <a href="{{ route('password.request') }}" wire:navigate class="text-ink hover:underline">{{ __('auth.forgot_password') }}</a>
         </div>
 
         <x-ui.button type="submit" variant="primary" class="w-full" wire:loading.attr="disabled">
@@ -72,7 +72,7 @@ new #[Layout('layouts.guest')] class extends Component
         </x-ui.button>
     </form>
 
-    <p class="mt-4 text-center text-sm text-neutral-600 dark:text-neutral-400">
-        {{ __('auth.no_account') }} <a href="{{ route('signup') }}" wire:navigate class="font-medium text-brand-700 hover:underline dark:text-brand-400">{{ __('auth.signup_title') }}</a>
+    <p class="mt-4 text-center text-sm text-ink-2">
+        {{ __('auth.no_account') }} <a href="{{ route('signup') }}" wire:navigate class="font-medium text-ink hover:underline">{{ __('auth.signup_title') }}</a>
     </p>
 </x-ui.card>
