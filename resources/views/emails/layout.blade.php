@@ -15,9 +15,9 @@
                                 <tr>
                                     <td style="padding-right:8px;">
                                         {{-- PNG, not inline SVG — Gmail and Outlook strip <svg> from HTML mail. --}}
-                                        <img src="{{ asset('brand/upvane-mark-'.($tone ?? 'ink').'@2x.png') }}" width="16" height="16" alt="">
+                                        <img src="{{ asset('brand/upmonia-mark-'.($tone ?? 'ink').'@2x.png') }}" width="16" height="16" alt="">
                                     </td>
-                                    <td style="font-size:16px;font-weight:700;letter-spacing:-.02em;">upvane</td>
+                                    <td style="font-size:16px;font-weight:700;letter-spacing:-.02em;">upmonia</td>
                                 </tr>
                             </table>
                         </td>

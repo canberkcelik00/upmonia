@@ -48,7 +48,7 @@ class IncidentMailTest extends TestCase
         $rendered = $mailable->render();
         $this->assertStringContainsString('Acme Tekstil', $rendered);
         $this->assertStringContainsString('acme.example/odeme', $rendered);
-        $this->assertStringContainsString('upvane-mark-down@2x.png', $rendered);
+        $this->assertStringContainsString('upmonia-mark-down@2x.png', $rendered);
     }
 
     public function test_resolved_subject_and_body(): void
@@ -75,6 +75,6 @@ class IncidentMailTest extends TestCase
 
         $rendered = $mailable->render();
         $this->assertStringContainsString('10 dk', $rendered);
-        $this->assertStringContainsString('upvane-mark-up@2x.png', $rendered);
+        $this->assertStringContainsString('upmonia-mark-up@2x.png', $rendered);
     }
 }

@@ -90,9 +90,12 @@
         @endif
 
         <p class="mt-8 flex items-center justify-center gap-1.5 text-xs font-medium text-muted">
-            <svg viewBox="0 0 24 24" fill="none" class="size-[13px] text-ink-2" aria-hidden="true">
-                <path d="M3.5 12.5 9 18 20.5 6.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M13.5 6.5h7v7" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+            <svg viewBox="0 0 24 24" fill="currentColor" class="size-[13px] text-ink-2" aria-hidden="true">
+                <rect x="1.5" y="8.5" width="3" height="11.5" rx="1.2" />
+                <rect x="6" y="8.5" width="3" height="11.5" rx="1.2" />
+                <rect x="10.5" y="8.5" width="3" height="11.5" rx="1.2" />
+                <rect x="15" y="8.5" width="3" height="11.5" rx="1.2" />
+                <rect x="19.5" y="4" width="3" height="16" rx="1.2" />
             </svg>
             {{ __('app.status_page_footer') }}
         </p>

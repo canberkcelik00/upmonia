@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 176 28">
+  <g fill="#edeef1">
+    <rect x="1.5" y="9.83" width="3" height="13.42" rx="1.2"/>
+    <rect x="6" y="9.83" width="3" height="13.42" rx="1.2"/>
+    <rect x="10.5" y="9.83" width="3" height="13.42" rx="1.2"/>
+    <rect x="15" y="9.83" width="3" height="13.42" rx="1.2"/>
+    <rect x="19.5" y="4.67" width="3" height="18.67" rx="1.2"/>
+  </g>
+  <text x="30" y="20.5" font-family="'Schibsted Grotesk', Arial, sans-serif" font-weight="700" font-size="19" letter-spacing="-0.5" fill="#edeef1">upmonia</text>
+</svg>
