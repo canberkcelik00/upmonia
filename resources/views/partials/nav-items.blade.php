@@ -1,27 +1,37 @@
 @php
     $items = [
-        ['route' => 'monitors.index', 'pattern' => 'monitors.*', 'icon' => 'pulse', 'label' => __('app.nav_monitors')],
-        ['route' => 'incidents.index', 'pattern' => 'incidents.*', 'icon' => 'warning', 'label' => __('app.nav_incidents')],
-        ['route' => 'settings.index', 'pattern' => 'settings.*', 'icon' => 'gear', 'label' => __('app.nav_settings')],
+        ['route' => 'monitors.index', 'pattern' => 'monitors.*', 'label' => __('app.nav_monitors')],
+        ['route' => 'incidents.index', 'pattern' => 'incidents.*', 'label' => __('app.nav_incidents'), 'count' => $orgHealth['openIncidents'] ?? 0],
+        ['route' => 'settings.index', 'pattern' => 'settings.*', 'label' => __('app.nav_settings')],
     ];
+    $vertical ??= false;
 @endphp
 
-<nav class="flex flex-col gap-1">
+<nav class="{{ $vertical ? 'flex flex-col gap-1' : 'flex h-full items-stretch gap-1' }}">
     @foreach ($items as $item)
         @php $active = request()->routeIs($item['pattern']); @endphp
         <a
             href="{{ route($item['route']) }}"
             wire:navigate
             @if ($active) aria-current="page" @endif
-            class="group flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-150 {{ $active
-                ? 'bg-brand-50 text-brand-700 dark:bg-brand-500/12 dark:text-brand-300'
-                : 'text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100' }}"
+            @class([
+                'flex items-center gap-1.5 font-medium transition-colors duration-150',
+                'rounded-control px-3 py-2 text-sm' => $vertical,
+                'bg-surface-2 text-ink' => $vertical && $active,
+                'text-ink-2 hover:bg-surface-2' => $vertical && ! $active,
+                '-mb-px border-b-2 px-1 text-[13.5px]' => ! $vertical,
+                'border-ink text-ink' => ! $vertical && $active,
+                'border-transparent text-muted hover:text-ink' => ! $vertical && ! $active,
+            ])
         >
-            <x-dynamic-component
-                :component="'phosphor-'.$item['icon']"
-                class="size-[1.125rem] shrink-0 {{ $active ? 'text-brand-600 dark:text-brand-400' : 'text-neutral-400 group-hover:text-neutral-500 dark:text-neutral-500 dark:group-hover:text-neutral-400' }}"
-            />
             {{ $item['label'] }}
+            @if (isset($item['count']))
+                <span
+                    data-open-incidents
+                    @if (empty($item['count'])) hidden @endif
+                    class="inline-flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-badge px-1 font-mono text-[11px] font-semibold text-on-badge"
+                >{{ $item['count'] }}</span>
+            @endif
         </a>
     @endforeach
 </nav>

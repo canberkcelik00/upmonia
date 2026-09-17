@@ -3,114 +3,74 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $title ?? config('app.name') }}</title>
+    <title>{{ $orgHealth['openIncidents'] > 0 ? '('.$orgHealth['openIncidents'].') ' : '' }}{{ $title ?? config('app.name') }}</title>
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon-'.$orgHealth['status'].'.svg') }}">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
     @include('partials.theme-init')
 </head>
-<body class="min-h-screen bg-neutral-50 text-neutral-900 antialiased dark:bg-neutral-950 dark:text-neutral-100">
-<div x-data="{ open: false }" @keydown.escape.window="open = false">
+<body class="min-h-screen bg-canvas text-ink antialiased">
+<div x-data="{ menuOpen: false }" @keydown.escape.window="menuOpen = false">
 
-    {{-- Mobile top bar: the sidebar collapses into a drawer below lg. --}}
-    <header class="sticky top-0 z-30 flex h-14 items-center gap-3 border-b border-neutral-200 bg-white/85 px-4 backdrop-blur-sm lg:hidden dark:border-neutral-800 dark:bg-neutral-900/85">
-        <button
-            type="button"
-            @click="open = true"
-            aria-label="{{ __('app.nav_open_menu') }}"
-            class="-ml-1 flex size-9 items-center justify-center rounded-lg text-neutral-600 transition-colors duration-150 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-800"
-        >
-            <x-phosphor-list class="size-5" />
-        </button>
+    <header class="sticky top-0 z-30 h-[52px] border-b border-line bg-surface px-4 lg:px-6">
+        <div class="mx-auto flex h-full max-w-[1200px] items-stretch gap-2">
+            <button
+                type="button"
+                @click="menuOpen = ! menuOpen"
+                aria-label="{{ __('app.nav_open_menu') }}"
+                :aria-expanded="menuOpen"
+                class="-ml-1 flex items-center justify-center rounded-control px-1 text-ink-2 hover:bg-surface-2 lg:hidden"
+            >
+                <x-phosphor-list class="size-5" />
+            </button>
 
-        <a href="{{ route('monitors.index') }}" wire:navigate class="flex items-center gap-2 font-semibold tracking-tight">
-            <span class="flex size-7 items-center justify-center rounded-lg bg-brand-600 text-white">
-                <x-phosphor-pulse class="size-4" />
-            </span>
-            Uptik
-        </a>
+            <a href="{{ route('monitors.index') }}" wire:navigate class="flex items-center">
+                <x-ui.logo :status="$orgHealth['status']" live class="text-[19px]" />
+            </a>
 
-        <div class="ml-auto flex items-center gap-1">
-            <x-ui.locale-switcher />
-            <x-ui.theme-toggle />
-        </div>
-    </header>
-
-    {{-- Mobile drawer --}}
-    <div x-show="open" x-cloak class="relative z-40 lg:hidden" role="dialog" aria-modal="true">
-        <div
-            x-show="open"
-            x-transition:enter="transition ease-out duration-200"
-            x-transition:enter-start="opacity-0"
-            x-transition:enter-end="opacity-100"
-            x-transition:leave="transition ease-in duration-150"
-            x-transition:leave-start="opacity-100"
-            x-transition:leave-end="opacity-0"
-            @click="open = false"
-            class="fixed inset-0 bg-neutral-950/40 backdrop-blur-[2px]"
-        ></div>
-
-        <aside
-            x-show="open"
-            x-transition:enter="transition ease-out duration-200"
-            x-transition:enter-start="-translate-x-full"
-            x-transition:enter-end="translate-x-0"
-            x-transition:leave="transition ease-in duration-150"
-            x-transition:leave-start="translate-x-0"
-            x-transition:leave-end="-translate-x-full"
-            class="fixed inset-y-0 left-0 flex w-[17rem] flex-col border-r border-neutral-200 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-900"
-        >
-            <div class="mb-6 flex items-center justify-between">
-                <a href="{{ route('monitors.index') }}" wire:navigate class="flex items-center gap-2 font-semibold tracking-tight">
-                    <span class="flex size-8 items-center justify-center rounded-lg bg-brand-600 text-white">
-                        <x-phosphor-pulse class="size-[1.125rem]" />
-                    </span>
-                    Uptik
-                </a>
-                <button
-                    type="button"
-                    @click="open = false"
-                    aria-label="{{ __('app.nav_close_menu') }}"
-                    class="flex size-8 items-center justify-center rounded-lg text-neutral-500 transition-colors duration-150 hover:bg-neutral-100 dark:hover:bg-neutral-800"
-                >
-                    <x-phosphor-x class="size-4" />
-                </button>
-            </div>
-
-            <div @click="open = false">
+            <div class="hidden lg:flex lg:h-full lg:items-stretch lg:pl-2">
                 @include('partials.nav-items')
             </div>
 
-            <div class="mt-auto border-t border-neutral-200 pt-4 dark:border-neutral-800">
-                @include('partials.nav-account')
+            <div class="ml-auto flex items-center gap-2">
+                <span class="hidden items-center gap-2 px-1 text-[13px] font-medium text-ink sm:flex">
+                    <span class="flex size-[18px] items-center justify-center rounded-[4px] bg-ink font-mono text-[10.5px] font-bold text-on-ink">{{ mb_strtoupper(mb_substr(auth()->user()->currentOrganization()?->name ?? '?', 0, 1)) }}</span>
+                    {{ auth()->user()->currentOrganization()?->name }}
+                </span>
+                <x-ui.locale-switcher class="hidden sm:block" />
+                <x-ui.theme-toggle />
+
+                <x-ui.dropdown>
+                    <x-slot:trigger>
+                        <button type="button" class="flex size-8 items-center justify-center rounded-full border border-line bg-surface-2 text-[11.5px] font-semibold text-ink-2" aria-label="{{ __('app.nav_account') }}">
+                            {{ collect(preg_split('/\s+/', trim((string) auth()->user()->name)))->filter()->take(2)->map(fn ($p) => mb_strtoupper(mb_substr($p, 0, 1)))->implode('') ?: '?' }}
+                        </button>
+                    </x-slot:trigger>
+                    @include('partials.nav-account')
+                </x-ui.dropdown>
             </div>
-        </aside>
+        </div>
+    </header>
+
+    {{-- Mobile tab panel: below 1024px the tabs collapse behind the menu button above. --}}
+    <div
+        x-show="menuOpen"
+        x-transition:enter="transition ease-out duration-150"
+        x-transition:enter-start="opacity-0 -translate-y-1"
+        x-transition:enter-end="opacity-100 translate-y-0"
+        x-transition:leave="transition ease-in duration-100"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0"
+        x-cloak
+        @click="menuOpen = false"
+        class="border-b border-line bg-surface px-4 py-3 lg:hidden"
+    >
+        @include('partials.nav-items', ['vertical' => true])
     </div>
 
-    {{-- Desktop sidebar --}}
-    <aside class="fixed inset-y-0 left-0 z-20 hidden w-64 flex-col border-r border-neutral-200 bg-white px-4 py-5 lg:flex dark:border-neutral-800 dark:bg-neutral-900">
-        <a href="{{ route('monitors.index') }}" wire:navigate class="mb-7 flex items-center gap-2.5 px-1 text-[0.95rem] font-semibold tracking-tight">
-            <span class="flex size-8 items-center justify-center rounded-lg bg-brand-600 text-white">
-                <x-phosphor-pulse class="size-[1.125rem]" />
-            </span>
-            Uptik
-        </a>
-
-        @include('partials.nav-items')
-
-        <div class="mt-auto flex flex-col gap-2 border-t border-neutral-200 pt-4 dark:border-neutral-800">
-            <div class="flex items-center gap-1 px-1">
-                {{-- Sitting at the bottom of the sidebar, so both menus open upward;
-                     a downward menu would cover the account row underneath. --}}
-                <x-ui.locale-switcher placement="top" />
-                <x-ui.theme-toggle placement="top" />
-            </div>
-            @include('partials.nav-account')
-        </div>
-    </aside>
-
-    <main class="lg:pl-64">
-        <div class="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
+    <main>
+        <div class="mx-auto max-w-[1200px] px-4 py-6 sm:px-6 lg:px-7 lg:py-[22px]">
             {{ $slot }}
         </div>
     </main>
