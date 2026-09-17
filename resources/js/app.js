@@ -17,7 +17,7 @@
     if (! reduceMotion) {
         document.querySelectorAll('[data-reveal-stagger]').forEach(function (el) {
             Array.from(el.children).forEach(function (bar, i) {
-                bar.style.animationDelay = Math.min(i * 6, 220) + 'ms';
+                bar.style.animationDelay = Math.min(i * 9, 350) + 'ms';
             });
             el.classList.add('is-revealing');
         });
