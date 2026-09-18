@@ -1,17 +1,19 @@
+name: upmonia
+
 services:
   mysql:
     image: mysql:8.0
-    container_name: upvane-laravel-mysql
+    container_name: upmonia-laravel-mysql
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: upvane
-      MYSQL_USER: upvane
-      MYSQL_PASSWORD: upvane
+      MYSQL_DATABASE: upmonia
+      MYSQL_USER: upmonia
+      MYSQL_PASSWORD: upmonia
     ports:
       - "3306:3306"
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uupvane", "-pupvane"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uupmonia", "-pupmonia"]
       interval: 3s
       timeout: 3s
       retries: 20
@@ -20,12 +22,12 @@ services:
 
   phpmyadmin:
     image: phpmyadmin:latest
-    container_name: upvane-laravel-phpmyadmin
+    container_name: upmonia-laravel-phpmyadmin
     restart: unless-stopped
     environment:
       PMA_HOST: mysql
-      PMA_USER: upvane
-      PMA_PASSWORD: upvane
+      PMA_USER: upmonia
+      PMA_PASSWORD: upmonia
     ports:
       - "8081:80"
     depends_on:
