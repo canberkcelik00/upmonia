@@ -1,24 +1,24 @@
 # Upmonia
 
-Upmonia, sitelerin ve servislerin kullanılabilirliğini izleyen bir uptime monitoring uygulamasıdır. HTTP, TCP ve diğer kontrol türleriyle periyodik sağlık kontrolleri yapar, kesintileri (incident) otomatik tespit eder ve tanımlı kanallar üzerinden uyarı gönderir.
+Upmonia is an uptime monitoring application for websites and services. It runs periodic health checks (HTTP, TCP, and other check types), automatically detects incidents, and sends alerts through configured channels.
 
-## Özellikler
+## Features
 
-- **Monitörler** — HTTP/TCP vb. hedeflerin periyodik olarak kontrol edilmesi
-- **Incident takibi** — kesinti başlangıç/bitişlerinin otomatik kaydı ve zaman çizelgesi
-- **Alert kanalları** — e-posta (Resend) gibi kanallar üzerinden bildirim
-- **Status page** — seçilen monitörlerin herkese açık durum sayfası
-- **Bakım pencereleri** — planlı bakımlarda uyarıları susturma
-- **Çoklu organizasyon** — organizasyon/üyelik tabanlı erişim
-- **Rollup'lar** — ham kontrol sonuçlarının 1 dakikalık/1 saatlik özetlere indirgenmesi ve saklama süresi sınırlı ham veri
+- **Monitors** — periodic checks against HTTP/TCP and other targets
+- **Incident tracking** — automatic recording of outage start/end times and a timeline
+- **Alert channels** — notifications via channels such as email (Resend)
+- **Status pages** — a public status page for selected monitors
+- **Maintenance windows** — silence alerts during planned maintenance
+- **Multi-tenant** — organization/membership-based access
+- **Rollups** — raw check results are downsampled into 1-minute/1-hour rollups, with raw data kept for a limited retention window
 
-## Teknoloji
+## Tech Stack
 
 - Laravel + Livewire
 - Tailwind CSS (Vite)
 - MySQL
 
-## Kurulum
+## Setup
 
 ```bash
 composer install
@@ -27,31 +27,31 @@ cp .env.example .env
 php artisan key:generate
 ```
 
-Yerel veritabanı için Docker kullanılıyor:
+Local database runs via Docker:
 
 ```bash
 docker compose up -d
 php artisan migrate
 ```
 
-Geliştirme sunucusunu başlat:
+Start the dev server:
 
 ```bash
 composer run dev
 ```
 
-Bu komut `php artisan serve`, kuyruk dinleyicisi ve Vite dev sunucusunu birlikte ayağa kaldırır.
+This runs `php artisan serve`, the queue listener, and the Vite dev server together.
 
-## Ortam Değişkenleri
+## Environment Variables
 
-Önemli `.env` ayarları için `config/upmonia.php` dosyasına bakın:
+See `config/upmonia.php` for the key `.env` settings:
 
-- `RESEND_API_KEY`, `RESEND_FROM` — giden e-posta (Resend)
-- `DEFAULT_MONITOR_REGION` — bu deployment'ın izleme bölgesi etiketi
-- `CHECK_RETENTION_HOURS` — ham kontrol sonuçlarının saklanma süresi
-- `UPMONIA_ALLOW_PRIVATE_TARGETS` — geliştirmede özel/iç ağ hedeflerine izin verir (production'da her zaman kapalı)
-- `DEPLOY_TOKEN` — SSH erişimi olmayan hosting ortamlarında `/deploy` endpoint'i üzerinden migration/optimize tetiklemek için
+- `RESEND_API_KEY`, `RESEND_FROM` — outbound email (Resend)
+- `DEFAULT_MONITOR_REGION` — the monitoring region label for this deployment
+- `CHECK_RETENTION_HOURS` — how long raw check results are retained
+- `UPMONIA_ALLOW_PRIVATE_TARGETS` — allow private/internal network targets in development (always disabled in production)
+- `DEPLOY_TOKEN` — enables triggering migrate/optimize via the `/deploy` endpoint on hosting without SSH access
 
-## Lisans
+## License
 
-Bu proje [Laravel](https://laravel.com) framework'ü üzerine inşa edilmiştir.
+This project is built on the [Laravel](https://laravel.com) framework.
