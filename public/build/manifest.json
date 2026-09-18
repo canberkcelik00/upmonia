@@ -1,0 +1,69 @@
+{
+  "_fonts-KbRFCQXN.css": {
+    "file": "assets/fonts-KbRFCQXN.css",
+    "src": "_fonts-KbRFCQXN.css"
+  },
+  "_geist-mono-400-normal-B2yvC1Cq.woff": {
+    "file": "assets/geist-mono-400-normal-B2yvC1Cq.woff",
+    "src": "_geist-mono-400-normal-B2yvC1Cq.woff"
+  },
+  "_geist-mono-400-normal-DTRLJnHl.woff2": {
+    "file": "assets/geist-mono-400-normal-DTRLJnHl.woff2",
+    "src": "_geist-mono-400-normal-DTRLJnHl.woff2"
+  },
+  "_geist-mono-500-normal-D-GG86Jb.woff": {
+    "file": "assets/geist-mono-500-normal-D-GG86Jb.woff",
+    "src": "_geist-mono-500-normal-D-GG86Jb.woff"
+  },
+  "_geist-mono-500-normal-YINYabwD.woff2": {
+    "file": "assets/geist-mono-500-normal-YINYabwD.woff2",
+    "src": "_geist-mono-500-normal-YINYabwD.woff2"
+  },
+  "_schibsted-grotesk-400-normal-BkiRe4WW.woff": {
+    "file": "assets/schibsted-grotesk-400-normal-BkiRe4WW.woff",
+    "src": "_schibsted-grotesk-400-normal-BkiRe4WW.woff"
+  },
+  "_schibsted-grotesk-400-normal-DPhJBilQ.woff2": {
+    "file": "assets/schibsted-grotesk-400-normal-DPhJBilQ.woff2",
+    "src": "_schibsted-grotesk-400-normal-DPhJBilQ.woff2"
+  },
+  "_schibsted-grotesk-500-normal-Ba39e-CX.woff": {
+    "file": "assets/schibsted-grotesk-500-normal-Ba39e-CX.woff",
+    "src": "_schibsted-grotesk-500-normal-Ba39e-CX.woff"
+  },
+  "_schibsted-grotesk-500-normal-rf9C4Thp.woff2": {
+    "file": "assets/schibsted-grotesk-500-normal-rf9C4Thp.woff2",
+    "src": "_schibsted-grotesk-500-normal-rf9C4Thp.woff2"
+  },
+  "_schibsted-grotesk-600-normal-BieE9YjJ.woff": {
+    "file": "assets/schibsted-grotesk-600-normal-BieE9YjJ.woff",
+    "src": "_schibsted-grotesk-600-normal-BieE9YjJ.woff"
+  },
+  "_schibsted-grotesk-600-normal-Czv9Obfv.woff2": {
+    "file": "assets/schibsted-grotesk-600-normal-Czv9Obfv.woff2",
+    "src": "_schibsted-grotesk-600-normal-Czv9Obfv.woff2"
+  },
+  "_schibsted-grotesk-700-normal-BkH0uJ1o.woff2": {
+    "file": "assets/schibsted-grotesk-700-normal-BkH0uJ1o.woff2",
+    "src": "_schibsted-grotesk-700-normal-BkH0uJ1o.woff2"
+  },
+  "_schibsted-grotesk-700-normal-Dz-okVa0.woff": {
+    "file": "assets/schibsted-grotesk-700-normal-Dz-okVa0.woff",
+    "src": "_schibsted-grotesk-700-normal-Dz-okVa0.woff"
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-BaZ_mzV2.css",
+    "name": "app",
+    "names": [
+      "app.css"
+    ],
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-C-RqyNIA.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  }
+}
