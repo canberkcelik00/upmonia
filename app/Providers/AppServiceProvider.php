@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -25,6 +26,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Some hosts still run MySQL/MariaDB without innodb_large_prefix, where a
+        // utf8mb4 varchar(255) unique index (1020 bytes) exceeds the 767/1000-byte
+        // index-prefix limit. Capping the default keeps every string() column
+        // migration-safe without touching each one individually.
+        Schema::defaultStringLength(191);
+
         // Single source of truth for user-facing date/time display, in the current
         // request's locale (see lang/{tr,en}/app.php and the brand guide's "Sayı, saat ve
         // süre" table): "16 Eyl 2026 14:28", "16 Eylül 2026", "14:28:04".
