@@ -40,7 +40,8 @@ class ChannelVerificationService
         }
 
         $channel = $token->channel;
-        $channel->update(['verified_at' => now()]);
+        $channel->verified_at = now();
+        $channel->save();
 
         $token->used_at = now();
         $token->save();
