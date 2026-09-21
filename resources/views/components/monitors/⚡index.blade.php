@@ -34,18 +34,6 @@ new #[Layout('layouts.app')] class extends Component
 
     private const SEVERITY_ORDER = "FIELD(monitor_states.status,'down','suspect','recovering','pending','up','paused')";
 
-    public function pause(int $monitorId): void
-    {
-        $monitor = Monitor::findOrFail($monitorId);
-        $monitor->state->update(['status' => 'paused']);
-    }
-
-    public function resume(int $monitorId): void
-    {
-        $monitor = Monitor::findOrFail($monitorId);
-        $monitor->state->update(['status' => 'pending', 'next_check_at' => now()]);
-    }
-
     public function acknowledge(int $incidentId): void
     {
         Incident::whereKey($incidentId)->update([
@@ -207,11 +195,16 @@ new #[Layout('layouts.app')] class extends Component
             <th>{{ __('app.monitors_col_status') }}</th>
             <th class="text-right">{{ __('app.monitors_col_latency') }}</th>
             <th class="text-right">{{ __('app.monitors_col_24h') }}</th>
-            <th></th>
         </x-slot:head>
 
         @forelse ($rows as $monitor)
-            <tr wire:key="monitor-{{ $monitor->id }}" @class(['transition-colors duration-150 hover:bg-surface-2', 'bg-down-soft/45' => in_array($monitor->state->status, ['down', 'suspect', 'recovering'])])>
+            {{-- The whole row opens the monitor; the name stays a real link so keyboard focus,
+                 middle-click and "open in new tab" keep working. --}}
+            <tr
+                wire:key="monitor-{{ $monitor->id }}"
+                x-on:click="if (! $event.target.closest('a, button')) { $event.ctrlKey || $event.metaKey ? window.open('{{ route('monitors.show', $monitor) }}', '_blank') : Livewire.navigate('{{ route('monitors.show', $monitor) }}') }"
+                @class(['cursor-pointer transition-colors duration-150 hover:bg-surface-2', 'bg-down-soft/45' => in_array($monitor->state->status, ['down', 'suspect', 'recovering'])])
+            >
                 <td>
                     <a href="{{ route('monitors.show', $monitor) }}" wire:navigate class="font-medium text-ink hover:underline">{{ $monitor->name }}</a>
                     <div class="mt-0.5 text-xs text-muted">
@@ -237,28 +230,10 @@ new #[Layout('layouts.app')] class extends Component
                 </td>
                 <td class="text-right font-mono text-xs text-muted">{{ Format::ms($monitor->state->last_latency_ms) }}</td>
                 <td class="text-right font-mono text-xs text-muted">{{ $uptime24h[$monitor->id] ?? '—' }}</td>
-                <td class="text-right">
-                    <x-ui.dropdown>
-                        <x-slot:trigger>
-                            <button type="button" class="flex size-7 items-center justify-center rounded-control text-faint hover:bg-surface-2 hover:text-ink" aria-label="{{ __('app.nav_more') }}">
-                                <x-phosphor-dots-three-bold class="size-4" />
-                            </button>
-                        </x-slot:trigger>
-                        @if ($monitor->state->status === 'paused')
-                            <button wire:click="resume({{ $monitor->id }})" class="flex w-full items-center gap-2 rounded-[4px] px-2.5 py-1.5 text-left text-sm text-ink-2 hover:bg-surface-2">
-                                <x-phosphor-play class="size-4" /> {{ __('app.monitors_resume') }}
-                            </button>
-                        @else
-                            <button wire:click="pause({{ $monitor->id }})" class="flex w-full items-center gap-2 rounded-[4px] px-2.5 py-1.5 text-left text-sm text-ink-2 hover:bg-surface-2">
-                                <x-phosphor-pause class="size-4" /> {{ __('app.monitors_pause') }}
-                            </button>
-                        @endif
-                    </x-ui.dropdown>
-                </td>
             </tr>
         @empty
             <tr>
-                <td colspan="6">
+                <td colspan="5">
                     <x-ui.empty-state icon="pulse" :title="__('app.monitors_empty_title')" :description="__('app.monitors_empty_description')">
                         <x-slot:action>
                             <x-ui.button variant="secondary" size="sm" href="{{ route('monitors.create') }}" wire:navigate>
@@ -272,7 +247,7 @@ new #[Layout('layouts.app')] class extends Component
 
         @if ($collapsible && $remainingHealthy > 0)
             <tr>
-                <td colspan="6" class="bg-surface-2 text-[13px] text-muted">
+                <td colspan="5" class="bg-surface-2 text-[13px] text-muted">
                     {{ __('app.monitors_more_healthy', ['count' => $remainingHealthy]) }}
                     <button type="button" wire:click="$set('expanded', true)" class="ml-2 font-medium text-ink underline decoration-line-strong underline-offset-[3px] hover:decoration-ink">{{ __('app.monitors_show_all') }}</button>
                 </td>
