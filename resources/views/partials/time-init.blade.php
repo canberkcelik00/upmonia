@@ -24,15 +24,29 @@
             time: new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }),
         };
 
+        // Writes only when something differs, so re-formatting from the observer below
+        // can't feed back into itself.
         function format(el) {
             var formatter = formatters[el.dataset.xTime] || formatters.datetime;
             var date = new Date(el.dataset.xTimeUtc);
 
             if (!isNaN(date.getTime())) {
-                el.textContent = formatter.format(date);
+                var text = formatter.format(date);
+
+                if (el.textContent !== text) {
+                    el.textContent = text;
+                }
             }
 
-            el.style.visibility = 'visible';
+            if (el.style.visibility !== 'visible') {
+                el.style.visibility = 'visible';
+            }
+        }
+
+        function closestTime(node) {
+            var el = node.nodeType === 1 ? node : node.parentElement;
+
+            return el && el.closest ? el.closest('[data-x-time-utc]') : null;
         }
 
         function localize(root) {
@@ -47,8 +61,17 @@
 
         document.addEventListener('livewire:navigated', function () { localize(); });
 
+        // Livewire morphs existing elements in place rather than re-adding them: it resets the
+        // text to the server fallback and strips the inline visibility, which a childList-only
+        // watch on added elements misses — so also re-format whatever time element was touched.
         new MutationObserver(function (mutations) {
             mutations.forEach(function (mutation) {
+                var touched = closestTime(mutation.target);
+
+                if (touched) {
+                    format(touched);
+                }
+
                 mutation.addedNodes.forEach(function (node) {
                     if (node.nodeType !== 1) {
                         return;
@@ -63,6 +86,12 @@
                     }
                 });
             });
-        }).observe(document.documentElement, { childList: true, subtree: true });
+        }).observe(document.documentElement, {
+            childList: true,
+            subtree: true,
+            characterData: true,
+            attributes: true,
+            attributeFilter: ['style', 'data-x-time-utc'],
+        });
     })();
 </script>

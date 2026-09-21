@@ -338,13 +338,26 @@ new #[Layout('layouts.app')] class extends Component
                         {{ __('app.monitor_channels_empty') }} <a href="{{ route('settings.channels') }}" wire:navigate class="font-medium text-ink hover:underline">{{ __('app.monitor_channels_empty_cta') }}</a>.
                     </p>
                 @else
-                    <div class="space-y-2">
+                    <div class="divide-y divide-line">
                         @foreach ($channels as $channel)
-                            <x-ui.checkbox wire:click="toggleChannel({{ $channel->id }})" :checked="in_array($channel->id, $attachedChannelIds)" :label="$channel->name">
-                                @unless ($channel->isVerified())
-                                    <x-ui.badge color="amber" class="ml-1.5">{{ __('app.channel_unverified') }}</x-ui.badge>
-                                @endunless
-                            </x-ui.checkbox>
+                            @php($attached = in_array($channel->id, $attachedChannelIds))
+                            <div wire:key="channel-{{ $channel->id }}" class="flex items-center gap-3 py-2.5">
+                                <div class="min-w-0 flex-1">
+                                    <div class="flex items-center gap-1.5">
+                                        <span id="channel-{{ $channel->id }}-name" class="truncate text-[13.5px] font-medium {{ $attached ? 'text-ink' : 'text-ink-2' }}">{{ $channel->name }}</span>
+                                        @unless ($channel->isVerified())
+                                            <x-ui.badge color="amber" class="shrink-0">{{ __('app.channel_unverified') }}</x-ui.badge>
+                                        @endunless
+                                        @unless ($channel->enabled)
+                                            <x-ui.badge color="neutral" class="shrink-0">{{ __('app.channel_inactive') }}</x-ui.badge>
+                                        @endunless
+                                    </div>
+                                    @if ($channel->config['email'] ?? null)
+                                        <div class="truncate text-xs text-muted">{{ $channel->config['email'] }}</div>
+                                    @endif
+                                </div>
+                                <x-ui.switch wire:click="toggleChannel({{ $channel->id }})" :checked="$attached" aria-labelledby="channel-{{ $channel->id }}-name" />
+                            </div>
                         @endforeach
                     </div>
                 @endif
