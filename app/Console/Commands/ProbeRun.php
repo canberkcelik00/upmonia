@@ -59,13 +59,19 @@ class ProbeRun extends Command
         $batchSize = config('upmonia.probe.batch_size');
         $lockSeconds = config('upmonia.probe.lock_seconds');
 
+        // Ticks are a minute apart, so a monitor coming due a few seconds after this tick would
+        // otherwise wait ~a full extra minute — a 60s monitor checked at :03 is next due at
+        // ~:03 of the following minute, just after that tick's :02 start. Taking anything due
+        // within half a tick keeps checks on schedule to within ±30s.
+        $dueBy = now()->addSeconds(30);
+
         $ids = DB::table('monitor_states')
             ->join('monitors', 'monitors.id', '=', 'monitor_states.monitor_id')
             ->where('monitors.enabled', true)
             ->where('monitor_states.status', '!=', 'paused')
             ->whereIn('monitors.type', ['http', 'keyword', 'ssl', 'tcp_port'])
-            ->where(function ($q) {
-                $q->where('monitor_states.next_check_at', '<=', now())
+            ->where(function ($q) use ($dueBy) {
+                $q->where('monitor_states.next_check_at', '<=', $dueBy)
                     ->orWhereNotNull('monitor_states.check_requested_at');
             })
             ->where(function ($q) {
