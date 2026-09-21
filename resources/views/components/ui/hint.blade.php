@@ -11,6 +11,7 @@
         open: false,
         style: '',
         show() {
+            if (window.hintsOn && ! window.hintsOn()) return;
             const r = this.$el.getBoundingClientRect();
             const left = @js($align) === 'start' ? r.left : @js($align) === 'end' ? r.right : r.left + r.width / 2;
             const shift = @js($align) === 'start' ? '0' : @js($align) === 'end' ? '-100%' : '-50%';
@@ -24,7 +25,9 @@
     x-on:blur="open = false"
     x-on:scroll.window="open = false"
     tabindex="0"
-    {{ $attributes->merge(['class' => 'cursor-help focus:outline-none focus-visible:rounded-[2px] focus-visible:ring-2 focus-visible:ring-ink/15'.($underline ? ' underline decoration-faint decoration-dotted underline-offset-[3px]' : '')]) }}
+    {{-- .hints-off on <html> (header toggle, partials/theme-init) turns the term back into plain
+         text; the sr-only explanation stays for screen readers either way. --}}
+    {{ $attributes->merge(['class' => 'cursor-help focus:outline-none focus-visible:rounded-[2px] focus-visible:ring-2 focus-visible:ring-ink/15 in-[.hints-off]:cursor-auto in-[.hints-off]:no-underline'.($underline ? ' underline decoration-faint decoration-dotted underline-offset-[3px]' : '')]) }}
 >{{ $slot }}<span class="sr-only"> — {{ $text }}</span><span
         x-show="open"
         x-cloak

@@ -18,10 +18,26 @@
             return theme;
         }
 
+        // Term explanations (x-ui.hint) — on unless switched off; same before-paint handling so a
+        // switched-off page never flashes dotted underlines.
+        function hintsOn() {
+            return localStorage.getItem('hints') !== 'off';
+        }
+
+        function applyHints() {
+            document.documentElement.classList.toggle('hints-off', ! hintsOn());
+        }
+
         window.resolveTheme = resolve;
         window.applyTheme = apply;
+        window.hintsOn = hintsOn;
+        window.applyHints = applyHints;
         apply();
+        applyHints();
 
-        document.addEventListener('livewire:navigated', apply);
+        document.addEventListener('livewire:navigated', function () {
+            apply();
+            applyHints();
+        });
     })();
 </script>

@@ -14,6 +14,8 @@ return [
     'theme_to_dark' => 'Koyu temaya geç',
     'theme_to_light' => 'Açık temaya geç',
     'language_switch' => 'Dili değiştir',
+    'hints_show' => 'Terim açıklamalarını göster',
+    'hints_hide' => 'Terim açıklamalarını gizle',
 
     // Common actions
     'save' => 'Kaydet',

@@ -40,6 +40,7 @@
                     {{ auth()->user()->currentOrganization()?->name }}
                 </span>
                 <x-ui.locale-switcher class="hidden sm:block" />
+                <x-ui.hints-toggle />
                 <x-ui.theme-toggle />
 
                 <x-ui.dropdown>

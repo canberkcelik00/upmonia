@@ -14,6 +14,8 @@ return [
     'theme_to_dark' => 'Switch to dark theme',
     'theme_to_light' => 'Switch to light theme',
     'language_switch' => 'Switch language',
+    'hints_show' => 'Show term explanations',
+    'hints_hide' => 'Hide term explanations',
 
     // Common actions
     'save' => 'Save',
