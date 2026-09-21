@@ -1,5 +1,5 @@
 @props([
-    'buckets', // hourly buckets, any order: ->ts (hour start), ->p50, ->p95, ->ok_n, ->fail_n
+    'buckets', // hourly buckets, any order: ->ts (hour start), ->p50, ->ok_n, ->fail_n
     'hours' => 24, // window length; one slot per hour, the last slot is the hour in progress
     'timeoutMs' => null, // draws a dashed reference line + label, skipped if it would flatten the real data
     'tone' => 'up', // endpoint dot colour — matches the monitor's current status, not the last bucket's own result
@@ -28,7 +28,6 @@
             't' => $t,
             'x' => round($padLeft + ($i + 0.5) * $slotW, 1),
             'p50' => $b?->p50,
-            'p95' => $b?->p95,
             'ok' => $b->ok_n ?? 0,
             'fail' => $b->fail_n ?? 0,
         ];
@@ -85,7 +84,6 @@
         'x' => round($s['x'] / $width * 100, 2),
         't' => $s['t']->copy()->utc()->toIso8601String(),
         'p50' => $s['p50'],
-        'p95' => $s['p95'],
         'ok' => $s['ok'],
         'fail' => $s['fail'],
     ])->values();
@@ -188,11 +186,19 @@
                         <div class="text-muted">{{ __('app.chart_no_data') }}</div>
                     </template>
                     <template x-if="slot.p50 !== null">
-                        <dl class="grid grid-cols-[auto_auto] gap-x-4 gap-y-0.5">
-                            <dt class="text-muted">{{ __('app.chart_tooltip_median') }}</dt><dd class="text-right font-mono text-ink" x-text="ms(slot.p50)"></dd>
-                            <dt class="text-muted">{{ __('app.chart_tooltip_p95') }}</dt><dd class="text-right font-mono text-ink" x-text="ms(slot.p95)"></dd>
-                            <dt class="text-muted">{{ __('app.chart_tooltip_failed') }}</dt><dd class="text-right font-mono" x-bind:class="slot.fail > 0 ? 'text-down-text' : 'text-ink'" x-text="slot.fail + ' / ' + (slot.ok + slot.fail)"></dd>
-                        </dl>
+                        <div>
+                            <div class="flex items-baseline justify-between gap-4">
+                                <span class="text-muted">{{ __('app.chart_tooltip_response') }}</span>
+                                <span class="font-mono text-ink" x-text="ms(slot.p50)"></span>
+                            </div>
+                            <div
+                                class="mt-0.5 whitespace-nowrap"
+                                x-bind:class="slot.fail > 0 ? 'text-down-text' : 'text-muted'"
+                                x-text="slot.fail > 0
+                                    ? @js(__('app.chart_tooltip_some_failed')).replace(':failed', slot.fail).replace(':total', slot.ok + slot.fail)
+                                    : @js(__('app.chart_tooltip_all_ok'))"
+                            ></div>
+                        </div>
                     </template>
                 </div>
             </template>

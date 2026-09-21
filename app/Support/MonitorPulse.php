@@ -134,7 +134,6 @@ class MonitorPulse
             ->map(fn ($r) => (object) [
                 'ts' => $r->bucket,
                 'p50' => $r->p50,
-                'p95' => $r->p95,
                 'ok_n' => (int) $r->ok_n,
                 'fail_n' => (int) $r->fail_n,
             ]);
@@ -152,7 +151,6 @@ class MonitorPulse
             $buckets->push((object) [
                 'ts' => $currentHour,
                 'p50' => self::percentile($latencies, 0.5),
-                'p95' => self::percentile($latencies, 0.95),
                 'ok_n' => (int) $minutes->sum('ok_n'),
                 'fail_n' => (int) $minutes->sum('fail_n'),
             ]);
