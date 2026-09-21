@@ -11,15 +11,22 @@ Artisan::command('inspire', function () {
 // The only cron entry this app needs on the host: `* * * * * php artisan schedule:run`.
 // withoutOverlapping() stands in for the source Node worker's pg_try_advisory_lock /
 // FOR UPDATE SKIP LOCKED — on shared hosting there's exactly one process, ever, so that's
-// sufficient (see ProbeRun/MaintenanceRun docblocks for the full reasoning). Deliberately NOT
-// ->runInBackground(): that needs proc_open(), which restrictive shared-hosting PHP configs
-// often disable. Both commands run in-process, one after the other, inside one schedule:run —
-// fine, since ConcurrentHttpChecker keeps probe:run itself fast regardless of batch size.
+// sufficient (see ProbeRun/MaintenanceRun docblocks for the full reasoning).
 //
-// withoutOverlapping(5): an explicit 5-minute mutex expiry. Without an argument Laravel
-// defaults to 1440 minutes (24h) — if a run is ever killed abnormally (OOM, host kill,
-// max_execution_time) without a graceful signal, the mutex is never released and both
-// commands would silently stop firing for up to a day. 5 minutes comfortably covers normal
-// runtime (ProbeRun's own lock_seconds default is 50s) while keeping any stuck-lock outage short.
-Schedule::command('probe:run')->everyMinute()->withoutOverlapping(5);
-Schedule::command('maintenance:run')->everyMinute()->withoutOverlapping(5);
+// Schedule::call + Artisan::call, not Schedule::command: the latter spawns each command as a
+// child process via proc_open(), which shared hosts commonly list in disable_functions — the
+// event then "finishes" instantly without ever running. Calling in-process avoids it.
+//
+// withoutOverlapping(5, false): 5-minute mutex expiry instead of the 24h default, so a run
+// killed abnormally can't silence both commands for a day. `false` skips Laravel's
+// pcntl_signal() handler — with pcntl loaded but pcntl_signal disabled, that call throws right
+// after the mutex is acquired and before it can be released, wedging the lock every run.
+Schedule::call(fn () => Artisan::call('probe:run'))
+    ->name('probe:run')
+    ->everyMinute()
+    ->withoutOverlapping(5, false);
+
+Schedule::call(fn () => Artisan::call('maintenance:run'))
+    ->name('maintenance:run')
+    ->everyMinute()
+    ->withoutOverlapping(5, false);
