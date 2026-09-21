@@ -32,7 +32,7 @@
                     <p class="truncate text-[11.5px] text-muted">{{ $monitor['sub'] }}</p>
                 </div>
                 <x-ui.tick-strip :tones="$monitor['tones']" :label="$monitor['aria']" class="h-5 w-24 shrink-0" data-reveal-stagger />
-                <x-ui.status-pill :status="$monitor['status']" class="shrink-0" />
+                <x-ui.status-pill :status="$monitor['status']" :hint="false" class="shrink-0" />
             </li>
         @endforeach
     </ul>

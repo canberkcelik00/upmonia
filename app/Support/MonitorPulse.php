@@ -21,7 +21,7 @@ class MonitorPulse
      *                                                to tell an empty *paused* bucket (idle) apart
      *                                                from an empty bucket on an active monitor
      *                                                (nodata — a real gap, or too new to have data).
-     * @return array<int, array{tones: list<string>, upN: int, warnN: int, downN: int}>
+     * @return array<int, array{tones: list<string>, times: list<string>, upN: int, warnN: int, downN: int}>
      */
     public static function ticks(iterable $monitorIds, array $statusByMonitor, int $count = 30): array
     {
@@ -79,7 +79,9 @@ class MonitorPulse
                 return $confirmed ? 'down' : 'warn';
             })->values()->all();
 
-            return [$id => ['tones' => $tones, 'upN' => $upN, 'warnN' => $warnN, 'downN' => $downN]];
+            $times = $buckets->map(fn (Carbon $b) => $b->copy()->utc()->toIso8601String())->values()->all();
+
+            return [$id => ['tones' => $tones, 'times' => $times, 'upN' => $upN, 'warnN' => $warnN, 'downN' => $downN]];
         })->all();
     }
 

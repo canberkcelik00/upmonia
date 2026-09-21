@@ -285,10 +285,10 @@ new #[Layout('layouts.app')] class extends Component
             };
         @endphp
         <div class="mb-6 grid grid-cols-2 divide-x divide-line rounded-panel border border-line bg-surface sm:grid-cols-4">
-            <x-ui.figure class="px-4 py-3.5" :label="__('app.monitor_last_latency')" :value="$monitor->state->last_latency_ms ?? '—'" unit="ms" :tone="$figureTone" />
-            <x-ui.figure class="px-4 py-3.5" :label="__('app.monitor_uptime_24h')" :value="$uptime24h ?? '—'" />
-            <x-ui.figure class="px-4 py-3.5" :label="__('app.monitor_uptime_30d')" :value="$uptime30d ?? '—'" />
-            <x-ui.figure class="px-4 py-3.5" :label="__('app.monitor_timeout')" :value="Format::ms($monitor->timeout_ms)" />
+            <x-ui.figure class="px-4 py-3.5" :label="__('app.monitor_last_latency')" :hint="__('app.monitor_last_latency_hint')" :value="$monitor->state->last_latency_ms ?? '—'" unit="ms" :tone="$figureTone" />
+            <x-ui.figure class="px-4 py-3.5" :label="__('app.monitor_uptime_24h')" :hint="__('app.monitor_uptime_hint')" :value="$uptime24h ?? '—'" />
+            <x-ui.figure class="px-4 py-3.5" :label="__('app.monitor_uptime_30d')" :hint="__('app.monitor_uptime_hint')" :value="$uptime30d ?? '—'" />
+            <x-ui.figure class="px-4 py-3.5" :label="__('app.monitor_timeout')" :hint="__('app.monitor_timeout_hint')" :value="Format::ms($monitor->timeout_ms)" />
         </div>
 
         <div class="mb-6 grid grid-cols-1 gap-4 lg:grid-cols-[1.45fr_1fr]">
@@ -326,8 +326,8 @@ new #[Layout('layouts.app')] class extends Component
                     <dl class="divide-y divide-line text-[13px]">
                         @if (in_array($monitor->type, ['http', 'keyword']))
                             <div class="flex justify-between py-2"><dt class="text-muted">{{ __('app.field_method') }}</dt><dd class="text-ink">{{ $monitor->method }}</dd></div>
-                            <div class="flex justify-between py-2"><dt class="text-muted">{{ __('app.field_follow_redirects') }}</dt><dd class="text-ink">{{ $monitor->follow_redirects ? __('app.monitor_on') : __('app.monitor_off') }}</dd></div>
-                            <div class="flex justify-between py-2"><dt class="text-muted">{{ __('app.field_verify_ssl') }}</dt><dd class="text-ink">{{ $monitor->verify_ssl ? __('app.monitor_on') : __('app.monitor_off') }}</dd></div>
+                            <div class="flex justify-between py-2"><dt class="text-muted"><x-ui.hint :text="__('app.field_follow_redirects_hint')" align="start">{{ __('app.field_follow_redirects') }}</x-ui.hint></dt><dd class="text-ink">{{ $monitor->follow_redirects ? __('app.monitor_on') : __('app.monitor_off') }}</dd></div>
+                            <div class="flex justify-between py-2"><dt class="text-muted"><x-ui.hint :text="__('app.field_verify_ssl_hint')" align="start">{{ __('app.field_verify_ssl') }}</x-ui.hint></dt><dd class="text-ink">{{ $monitor->verify_ssl ? __('app.monitor_on') : __('app.monitor_off') }}</dd></div>
                         @endif
                         @if ($monitor->type === 'ssl' && $monitor->state->cert_expires_at)
                             <div class="flex justify-between py-2"><dt class="text-muted">{{ __('app.monitor_cert_expiry') }}</dt><dd class="text-ink">{!! $monitor->state->cert_expires_at->toDisplayHtml('date') !!}</dd></div>

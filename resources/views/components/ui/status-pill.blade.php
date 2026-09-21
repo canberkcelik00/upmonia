@@ -1,4 +1,4 @@
-@props(['status' => 'pending', 'flapping' => false])
+@props(['status' => 'pending', 'flapping' => false, 'hint' => true])
 
 @php
 $labels = [
@@ -28,9 +28,19 @@ $dotClasses = [
 <span class="inline-flex items-center gap-1.5">
     <span {{ $attributes->merge(['class' => 'inline-flex h-[22px] items-center gap-1.5 rounded-tag px-2 text-[12.5px] font-medium '.$toneClasses[$tone]]) }}>
         <span class="size-1.5 rounded-full {{ $dotClasses[$tone] }}" aria-hidden="true"></span>
-        {{ $labels[$status] ?? $status }}
+        @if ($hint && array_key_exists($status, $labels))
+            <x-ui.hint :text="__('app.status_'.$status.'_hint')" :underline="false">{{ $labels[$status] }}</x-ui.hint>
+        @else
+            {{ $labels[$status] ?? $status }}
+        @endif
     </span>
     @if ($flapping)
-        <span class="inline-flex h-[22px] items-center rounded-tag bg-warn-soft px-2 text-[12.5px] font-medium text-warn-text">{{ __('app.monitor_flapping') }}</span>
+        <span class="inline-flex h-[22px] items-center rounded-tag bg-warn-soft px-2 text-[12.5px] font-medium text-warn-text">
+            @if ($hint)
+                <x-ui.hint :text="__('app.monitor_flapping_hint')" :underline="false">{{ __('app.monitor_flapping') }}</x-ui.hint>
+            @else
+                {{ __('app.monitor_flapping') }}
+            @endif
+        </span>
     @endif
 </span>

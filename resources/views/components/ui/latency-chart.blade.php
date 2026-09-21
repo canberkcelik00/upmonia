@@ -190,7 +190,7 @@
                     <template x-if="slot.p50 !== null">
                         <dl class="grid grid-cols-[auto_auto] gap-x-4 gap-y-0.5">
                             <dt class="text-muted">{{ __('app.chart_tooltip_median') }}</dt><dd class="text-right font-mono text-ink" x-text="ms(slot.p50)"></dd>
-                            <dt class="text-muted">p95</dt><dd class="text-right font-mono text-ink" x-text="ms(slot.p95)"></dd>
+                            <dt class="text-muted">{{ __('app.chart_tooltip_p95') }}</dt><dd class="text-right font-mono text-ink" x-text="ms(slot.p95)"></dd>
                             <dt class="text-muted">{{ __('app.chart_tooltip_failed') }}</dt><dd class="text-right font-mono" x-bind:class="slot.fail > 0 ? 'text-down-text' : 'text-ink'" x-text="slot.fail + ' / ' + (slot.ok + slot.fail)"></dd>
                         </dl>
                     </template>
@@ -199,7 +199,7 @@
         </div>
 
         <div class="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 px-4 text-[11.5px] text-muted">
-            <span class="flex items-center gap-1.5"><span class="h-0.5 w-3 rounded-full bg-ink"></span>{{ __('app.chart_legend_median') }}</span>
+            <span class="flex items-center gap-1.5"><span class="h-0.5 w-3 rounded-full bg-ink"></span><x-ui.hint :text="__('app.chart_legend_median_hint')" align="start">{{ __('app.chart_legend_median') }}</x-ui.hint></span>
             <span class="flex items-center gap-1.5"><span class="h-[3px] w-3 rounded-full bg-down"></span>{{ __('app.chart_legend_failed') }}</span>
             @if ($showTimeout)
                 <span class="flex items-center gap-1.5"><span class="w-3 border-t border-dashed border-line-strong"></span>{{ __('app.chart_timeout_limit') }}</span>

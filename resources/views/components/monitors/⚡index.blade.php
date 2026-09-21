@@ -191,10 +191,10 @@ new #[Layout('layouts.app')] class extends Component
     <x-ui.table wire:loading.delay.class="opacity-50" wire:target="search,status,client,expanded,gotoPage,previousPage,nextPage" class="transition-opacity duration-150" wire:poll.30s>
         <x-slot:head>
             <th>{{ __('app.monitors_col_name') }}</th>
-            <th>{{ __('app.monitors_col_recent_checks') }}</th>
+            <th><x-ui.hint :text="__('app.monitors_col_recent_checks_hint')" align="start">{{ __('app.monitors_col_recent_checks') }}</x-ui.hint></th>
             <th>{{ __('app.monitors_col_status') }}</th>
-            <th class="text-right">{{ __('app.monitors_col_latency') }}</th>
-            <th class="text-right">{{ __('app.monitors_col_24h') }}</th>
+            <th class="text-right"><x-ui.hint :text="__('app.monitors_col_latency_hint')" align="end">{{ __('app.monitors_col_latency') }}</x-ui.hint></th>
+            <th class="text-right"><x-ui.hint :text="__('app.monitors_col_24h_hint')" align="end">{{ __('app.monitors_col_24h') }}</x-ui.hint></th>
         </x-slot:head>
 
         @forelse ($rows as $monitor)
@@ -218,7 +218,7 @@ new #[Layout('layouts.app')] class extends Component
                     </div>
                 </td>
                 <td class="w-[190px]">
-                    <x-ui.tick-strip :tones="$ticks[$monitor->id]['tones'] ?? []" :label="__('app.chart_uptime_aria')" />
+                    <x-ui.tick-strip :tones="$ticks[$monitor->id]['tones'] ?? []" :times="$ticks[$monitor->id]['times'] ?? null" :label="__('app.chart_uptime_aria')" />
                 </td>
                 <td>
                     <div class="flex items-center gap-2">
