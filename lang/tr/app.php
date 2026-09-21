@@ -158,6 +158,12 @@ return [
     'chart_uptime_partial' => 'Kısmi kesinti yaşandı',
     'chart_uptime_down' => 'Kesinti yaşandı',
     'chart_timeout_limit' => 'zaman aşımı',
+    'chart_range_24h' => '24 sa',
+    'chart_range_7d' => '7 gün',
+    'chart_legend_median' => 'Saatlik medyan',
+    'chart_legend_failed' => 'Hatalı kontrol',
+    'chart_tooltip_median' => 'Medyan',
+    'chart_tooltip_failed' => 'Hatalı',
 
     'monitor_create_submit' => 'Monitörü oluştur',
 

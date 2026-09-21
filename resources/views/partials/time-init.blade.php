@@ -22,6 +22,8 @@
             datetime: new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false }),
             date: new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long', year: 'numeric' }),
             time: new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }),
+            hm: new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit', hour12: false }),
+            day: new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short' }),
         };
 
         // Writes only when something differs, so re-formatting from the observer below

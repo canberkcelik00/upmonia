@@ -158,6 +158,12 @@ return [
     'chart_uptime_partial' => 'Partial outage',
     'chart_uptime_down' => 'Outage',
     'chart_timeout_limit' => 'timeout',
+    'chart_range_24h' => '24 h',
+    'chart_range_7d' => '7 d',
+    'chart_legend_median' => 'Hourly median',
+    'chart_legend_failed' => 'Failed checks',
+    'chart_tooltip_median' => 'Median',
+    'chart_tooltip_failed' => 'Failed',
 
     'monitor_create_submit' => 'Create monitor',
 

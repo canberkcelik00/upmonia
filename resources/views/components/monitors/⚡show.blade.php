@@ -14,6 +14,8 @@ new #[Layout('layouts.app')] class extends Component
 
     public bool $editing = false;
 
+    public string $chartRange = '24h'; // '24h' | '7d'
+
     // Form fields — mirrors monitors.form, populated from $monitor in mount().
     public string $name = '';
 
@@ -184,7 +186,8 @@ new #[Layout('layouts.app')] class extends Component
         return [
             'clients' => Client::orderBy('name')->get(),
             'recentChecks' => $this->monitor->checkResults()->orderByDesc('ts')->limit(20)->get(),
-            'chartChecks' => MonitorPulse::hourlyLatency($this->monitor->id),
+            'chartHours' => $chartHours = $this->chartRange === '7d' ? 168 : 24,
+            'chartBuckets' => MonitorPulse::hourlyLatency($this->monitor->id, $chartHours),
             'uptime24h' => MonitorPulse::uptimePercents([$this->monitor->id], now()->subDay())[$this->monitor->id] ?? null,
             'uptime30d' => MonitorPulse::uptimePercents([$this->monitor->id], now()->subDays(30))[$this->monitor->id] ?? null,
             'channels' => \App\Models\AlertChannel::whereNull('client_id')->orderBy('name')->get(),
@@ -290,7 +293,15 @@ new #[Layout('layouts.app')] class extends Component
 
         <div class="mb-6 grid grid-cols-1 gap-4 lg:grid-cols-[1.45fr_1fr]">
             <x-ui.card padding="p-0" :title="__('app.monitor_latency_trend')" class="[&>div:first-child]:mx-5 [&>div:first-child]:mt-5">
-                <x-ui.latency-chart :checks="$chartChecks" :timeout-ms="$monitor->timeout_ms" :tone="$figureTone ?? 'up'" class="px-1 pb-4" />
+                <x-slot:titleMeta>
+                    <x-ui.segmented
+                        :options="['24h' => __('app.chart_range_24h'), '7d' => __('app.chart_range_7d')]"
+                        :active="$chartRange"
+                        action="$set('chartRange', '%s')"
+                        class="-my-1.5 font-sans [&>button]:px-2 [&>button]:py-0.5 [&>button]:text-[12px]"
+                    />
+                </x-slot:titleMeta>
+                <x-ui.latency-chart :buckets="$chartBuckets" :hours="$chartHours" :timeout-ms="$monitor->timeout_ms" :tone="$figureTone ?? 'up'" class="px-1 pb-4" />
             </x-ui.card>
 
             <x-ui.card padding="p-0" :title="__('app.monitor_recent_checks')" :title-meta="__('app.monitor_checks_merged_hint')" class="[&>div:first-child]:mx-5 [&>div:first-child]:mt-5">

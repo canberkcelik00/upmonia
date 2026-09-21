@@ -116,22 +116,59 @@ class MonitorPulse
     }
 
     /**
-     * Hourly p50 latency series for one monitor's trend chart, newest first (matches
-     * x-ui.latency-chart's expected input shape — it reverses to chronological order itself).
-     * "saatlik medyan", not "ortalama": the 1h rollup only carries p50/p95/max, never a mean.
+     * Hourly buckets for one monitor's trend chart, covering the last $hours whole hours
+     * including the current one. "saatlik medyan", not "ortalama": the 1h rollup only
+     * carries p50/p95/max, never a mean.
      */
     public static function hourlyLatency(int $monitorId, int $hours = 24): Collection
     {
-        return CheckRollup1h::query()
+        $currentHour = Carbon::now()->startOfHour();
+
+        $buckets = CheckRollup1h::query()
             ->where('monitor_id', $monitorId)
-            ->where('bucket', '>=', Carbon::now()->subHours($hours))
-            ->orderByDesc('bucket')
-            ->limit($hours)
+            ->where('bucket', '>=', $currentHour->copy()->subHours($hours - 1))
+            ->orderBy('bucket')
             ->get()
             ->map(fn ($r) => (object) [
                 'ts' => $r->bucket,
-                'ok' => (int) $r->fail_n === 0,
-                'latency_ms' => $r->p50,
+                'p50' => $r->p50,
+                'p95' => $r->p95,
+                'ok_n' => (int) $r->ok_n,
+                'fail_n' => (int) $r->fail_n,
             ]);
+
+        // MaintenanceRun only rolls up completed hours, so the hour in progress is built from
+        // its 1m buckets — otherwise the chart would always trail "now" by up to an hour.
+        $minutes = CheckRollup1m::query()
+            ->where('monitor_id', $monitorId)
+            ->where('bucket', '>=', $currentHour)
+            ->get(['p50', 'ok_n', 'fail_n']);
+
+        if ($minutes->isNotEmpty() && ! $buckets->contains(fn ($b) => $b->ts->equalTo($currentHour))) {
+            $latencies = $minutes->pluck('p50')->filter(fn ($v) => $v !== null)->sort()->values();
+
+            $buckets->push((object) [
+                'ts' => $currentHour,
+                'p50' => self::percentile($latencies, 0.5),
+                'p95' => self::percentile($latencies, 0.95),
+                'ok_n' => (int) $minutes->sum('ok_n'),
+                'fail_n' => (int) $minutes->sum('fail_n'),
+            ]);
+        }
+
+        return $buckets;
+    }
+
+    /**
+     * Nearest-rank percentile over already-sorted values. For monitors checked once a minute
+     * each 1m bucket holds a single sample, so this is exact rather than a median of medians.
+     */
+    private static function percentile(Collection $sorted, float $p): ?int
+    {
+        if ($sorted->isEmpty()) {
+            return null;
+        }
+
+        return (int) $sorted[max(0, (int) ceil($p * $sorted->count()) - 1)];
     }
 }
